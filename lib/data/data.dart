@@ -298,48 +298,5 @@ List<Hobby> hobbies = [
       users[1],
       users[3],
     ],
-  ),
-  Hobby(
-    name: 'Chess',
-    imgUrl: 'https://miro.medium.com/max/1000/0*mD7F8b6gIjsq3gsi',
-    description:
-        'Chess, one of the oldest and most popular board games, played by two opponents on a checkered board with specially designed pieces of contrasting colours, commonly white and black. White moves first, after which the players alternate turns in accordance with fixed rules, each player attempting to force the opponent’s principal piece, the King, into checkmate—a position where it is unable to avoid capture.',
-    followers: [
-      currentUser,
-      users[3],
-    ],
-  ),
-  Hobby(
-    name: 'Cooking ',
-    imgUrl:
-        'https://whatsnewindonesia.com/wp-content/uploads/2020/03/Cooking-IG_2.jpg',
-    description:
-        'Cooking or cookery is the art, science, and craft of using heat to prepare food for consumption. Cooking techniques and ingredients vary widely across the world, from grilling food over an open fire to using electric stoves, to baking in various types of ovens, reflecting unique environmental, economic, and cultural traditions and trends.',
-    followers: [
-      users[1],
-      users[3],
-    ],
-  ),
-  Hobby(
-    name: 'Traveling',
-    imgUrl:
-        'https://theplaidzebra.com/wp-content/uploads/2016/11/11-Benefits-to-starting-a-travel-blog-and-traveling-the-world.jpg',
-    description:
-        'When we travel, it is not just to consume a maximum of products and services or stay in an “all inclusive resort” and enjoy the sun – This is what I call a good vacation – all you want is some rest, not want to mix with other people, nor the local population. Apart from some of the easy accessible tourist attractions maybe. I really do not agree with the idea that you have to go very far to travel – often next to us are the places we least know…',
-    followers: [
-      users[1],
-      users[3],
-    ],
-  ),
-  Hobby(
-    name: 'Coding',
-    imgUrl:
-        'https://www.spacesworks.com/wp-content/uploads/2016/06/coding-in-the-classroom.png',
-    description:
-        'Coding, in simpler terms, is the language used by computers to understand our commands and, therefore, process our requests.Programming is a list of codes arranged in a sequence that results in the completion of work.Take, for example, the following analogy - you click on a video app on your smartphones, and it plays a video.A program is what brings about the completion of the task \' \nplaying the said video.\'\nThe program is made up of a series of smaller tasks that direct your smartphone to do the above task and bring it to completion. Each smaller task is written in code, i.e., the computer language, and that is what coding is all about.',
-    followers: [
-      users[1],
-      users[3],
-    ],
-  ),
+  )
 ];

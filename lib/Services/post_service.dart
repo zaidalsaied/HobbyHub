@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'package:hobby_hub_ui/models/comment_model.dart';
 import 'package:http/http.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 
 class PostService {
   Future<List<Post>> getPosts() async {
-    final url = "http://www.hobbyHub.com?/posts";
+    final url = "http://www.hobbyHub.com/posts";
     final response = await get(url);
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
