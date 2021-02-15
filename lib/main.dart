@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hobby_hub_ui/Services/hobby_service.dart';
 import 'package:hobby_hub_ui/config/palette.dart';
 import 'package:hobby_hub_ui/screens/hobbies_screen.dart';
 import 'package:hobby_hub_ui/screens/screens.dart';
@@ -7,9 +8,14 @@ void main() {
   runApp(MyApp());
 }
 
+void getHobbies() async {
+  await HobbyService().fetchHobbies();
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    getHobbies();
     return MaterialApp(
       initialRoute: LoginScreen.id,
       routes: {
@@ -25,7 +31,7 @@ class MyApp extends StatelessWidget {
         FollowersScreen.id: (context) => FollowersScreen(),
         FollowingScreen.id: (context) => FollowingScreen(),
       },
-      title: 'Flutter Graduation Project One',
+      title: 'Flutter Project, Graduation Project two.',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         accentColor: Color(0xFFFEF9EB),

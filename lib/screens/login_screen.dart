@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hobby_hub_ui/models/hobby.dart';
 import 'package:hobby_hub_ui/screens/nav_screen.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';

@@ -41,7 +41,7 @@ class _FollowHobbyButtonState extends State<FollowHobbyButton> {
       ),
       onPressed: onPress,
       child: Text(
-        hobby.followers.contains(currentUser) ? 'UNFOLLOW' : 'FOLLOW',
+        hobby.followers.contains(currentUser) ? 'FOLLOWING' : 'FOLLOW',
         style: TextStyle(color: Colors.white, fontSize: 14),
       ),
     );

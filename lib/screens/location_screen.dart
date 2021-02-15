@@ -9,7 +9,7 @@ class LocationScreen extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: CachedNetworkImageProvider(
-                "https://uxw.hcgwhining.pw/img/582878.jpg"),
+                "https://1.bp.blogspot.com/-7J1QxG7-dJU/U9pShrClwGI/AAAAAAAAEf8/oxwnD8ihkGs/s1600/example.png"),
             fit: BoxFit.cover,
           ),
         ),
