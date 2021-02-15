@@ -1,3 +1,3 @@
-# hobby_hub_ui
+# HobbyHub
 
-hobby hub is a graduation project built using flutter sdk.
+Hobby Hub is a graduation project built using flutter and spring boot.
