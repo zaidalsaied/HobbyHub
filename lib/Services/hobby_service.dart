@@ -27,7 +27,7 @@ class HobbyService extends ChangeNotifier {
       final body = jsonDecode(response.body);
       return Hobby.fromJson(body);
     } else {
-      throw Exception("Unable to get hobbies!");
+      throw Exception("Unable to get hobby!");
     }
   }
 }

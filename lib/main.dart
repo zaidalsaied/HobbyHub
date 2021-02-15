@@ -3,19 +3,21 @@ import 'package:hobby_hub_ui/Services/hobby_service.dart';
 import 'package:hobby_hub_ui/config/palette.dart';
 import 'package:hobby_hub_ui/screens/hobbies_screen.dart';
 import 'package:hobby_hub_ui/screens/screens.dart';
+import 'package:hobby_hub_ui/view_models/hobbies_list_view_model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
-}
-
-void getHobbies() async {
-  await HobbyService().fetchHobbies();
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => HobbiesListViewModel(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    getHobbies();
     return MaterialApp(
       initialRoute: LoginScreen.id,
       routes: {

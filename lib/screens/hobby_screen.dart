@@ -1,14 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/models/models.dart';
-import 'package:hobby_hub_ui/data/data.dart';
-import 'package:hobby_hub_ui/widgets/follow_hobby_button.dart';
+import 'package:hobby_hub_ui/view_models/hobbies_list_view_model.dart';
 
 class HobbyScreen extends StatefulWidget {
-  final Hobby hobby;
+  final HobbyViewModel hobbyViewModel;
 
-  const HobbyScreen({Key key, this.hobby}) : super(key: key);
+  const HobbyScreen({Key key, @required this.hobbyViewModel}) : super(key: key);
   @override
   _HobbyScreenState createState() => _HobbyScreenState();
 }
@@ -28,7 +26,7 @@ class _HobbyScreenState extends State<HobbyScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          widget.hobby.name,
+          widget.hobbyViewModel.hobbyName,
           style: TextStyle(
               fontSize: 28.0,
               fontWeight: FontWeight.bold,
@@ -36,15 +34,17 @@ class _HobbyScreenState extends State<HobbyScreen> {
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Stack(
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Hero(
-                  tag: widget.hobby.imgUrl,
+                  tag: widget.hobbyViewModel.imageUrl,
                   child: Image(
-                    image: CachedNetworkImageProvider(widget.hobby.imgUrl),
+                    image: CachedNetworkImageProvider(
+                        widget.hobbyViewModel.imageUrl),
                     width: MediaQuery.of(context).size.width,
                     height: 250,
                     fit: BoxFit.cover,
@@ -56,7 +56,7 @@ class _HobbyScreenState extends State<HobbyScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    FollowHobbyButton(hobby: widget.hobby, user: currentUser),
+                    // FollowHobbyButton(hobby: widget.hobbyViewModel),
                   ],
                 ),
               ),
@@ -75,7 +75,7 @@ class _HobbyScreenState extends State<HobbyScreen> {
               padding: EdgeInsets.all(12.0),
               child: SingleChildScrollView(
                 child: Text(
-                  widget.hobby.description,
+                  widget.hobbyViewModel.description,
                   style: TextStyle(
                     fontSize: 18,
                     wordSpacing: 1.2,
@@ -83,7 +83,7 @@ class _HobbyScreenState extends State<HobbyScreen> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

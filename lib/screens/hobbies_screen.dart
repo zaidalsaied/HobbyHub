@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/data/data.dart';
-import 'package:hobby_hub_ui/models/models.dart';
-import 'package:hobby_hub_ui/widgets/widgets.dart';
-import 'screens.dart';
+import 'package:hobby_hub_ui/view_models/hobbies_list_view_model.dart';
+import 'package:provider/provider.dart';
+import 'hobby_list_item.dart';
 
 class HobbiesScreen extends StatefulWidget {
   static const String id = 'hobbies_screen';
@@ -12,74 +11,15 @@ class HobbiesScreen extends StatefulWidget {
 }
 
 class _HobbiesScreenState extends State<HobbiesScreen> {
-  List<Widget> _buildHobbies() {
-    List<Widget> hobbiesList = [];
-    hobbies.forEach((Hobby hobby) {
-      hobbiesList.add(GestureDetector(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => HobbyScreen(hobby: hobby),
-          ),
-        ),
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(width: 1.0, color: Colors.grey[200]),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
-                child: Hero(
-                  tag: hobby.imgUrl,
-                  child: Image(
-                    image: NetworkImage(hobby.imgUrl),
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(6.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      hobby.name,
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(height: 3),
-                    Text(hobby.description.substring(0, 20) + '...'),
-                    SizedBox(height: 3),
-                    Text('followers:${hobby.followers.length}')
-                  ],
-                ),
-              ),
-              Flexible(
-                child: Container(
-                  margin: EdgeInsets.only(right: 10.0, top: 10),
-                  child: FollowHobbyButton(
-                    hobby: hobby,
-                    user: currentUser,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ));
-    });
-    return hobbiesList;
+  @override
+  initState() {
+    super.initState();
+    Provider.of<HobbiesListViewModel>(this.context, listen: false).getHobbies();
   }
 
   @override
   Widget build(BuildContext context) {
+    final hobbiesListViewModel = Provider.of<HobbiesListViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -104,8 +44,13 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 20.0),
-        child: ListView(
-          children: _buildHobbies(),
+        child: ListView.builder(
+          itemCount: hobbiesListViewModel.hobbies.length,
+          itemBuilder: (context, index) {
+            return HobbyListItem(
+              hobbyViewModel: hobbiesListViewModel.hobbies[index],
+            );
+          },
         ),
       ),
     );
