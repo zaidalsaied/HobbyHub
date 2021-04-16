@@ -15,7 +15,7 @@ class BottomButton extends StatelessWidget {
           child: Container(
             alignment: Alignment.center,
             color: Theme.of(context).primaryColor,
-            height: 80.0,
+            height: 50.0,
             child: Text(
               text,
               style: TextStyle(

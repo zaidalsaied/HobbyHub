@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:hobby_hub_ui/Services/hobby_service.dart';
+
 import 'package:hobby_hub_ui/models/hobby.dart';
 
 class HobbiesListViewModel extends ChangeNotifier {
   List<HobbyViewModel> hobbies = new List<HobbyViewModel>();
-  Future<void> getHobbies() async {
-    final results = await HobbyService().fetchHobbies();
-    this.hobbies = results.map((item) => HobbyViewModel(item)).toList();
-    notifyListeners();
-  }
+  Future<void> getHobbies() async {}
 }
 
 class HobbyViewModel {

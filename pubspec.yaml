@@ -19,8 +19,9 @@ dependencies:
   cupertino_icons: ^1.0.0
   cached_network_image: ^2.2.0+1
   material_design_icons_flutter: ^4.0.5345
-  http: ^0.12.2
-  provider: ^3.2.0
+  provider: ^5.0.0
+  http: ^0.13.1
+  form_field_validator: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

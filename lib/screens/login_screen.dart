@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/screens/nav_screen.dart';
+import 'package:hobby_hub_ui/screens/signup_screen.dart';
+import 'package:hobby_hub_ui/view_models/sign_in_view_model.dart';
+import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';
+import 'package:form_field_validator/form_field_validator.dart' as validator;
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -11,86 +14,103 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _email = "";
-  String _password = "";
-  String _emailError = "";
-  String _passwordError = "";
-
-  void loginValidator() {
-    if (_email.isEmpty) {
-      setState(() {
-        _emailError = 'please enter your email';
-      });
-    }
-    if (_password.isEmpty) {
-      setState(() {
-        _passwordError = 'please enter your password';
-      });
-    } else {
-      Navigator.pushReplacementNamed(context, NavScreen.id);
-    }
-  }
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  bool _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+  final requiredValidator =
+      validator.RequiredValidator(errorText: 'this field is required');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * .3,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * .3,
+                    ),
+                    CustomTextField(
+                      icon: Icons.email,
+                      hintText: 'Email',
+                      inputType: TextInputType.emailAddress,
+                      controller: _email,
+                      validator: requiredValidator,
+                      onChange: (value) {},
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextField(
+                      icon: Icons.lock,
+                      hintText: 'Password',
+                      validator: requiredValidator,
+                      controller: _password,
+                      obscureText: true,
+                      onChange: (value) {},
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Center(
+                      child: MainButton(
+                          text: 'Login',
+                          onTap: () async {
+                            if (_formKey.currentState.validate()) {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              bool isUser = await SignInViewModel().signIn(
+                                  _email.text.trim(), _password.text.trim());
+                              if (isUser) {
+                                Navigator.pushReplacementNamed(
+                                    context, NavScreen.id);
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return MessageAlertDialog(
+                                      title: "Incorrect Password",
+                                      message:
+                                          "email or password is incorrect please try again.",
+                                    );
+                                  },
+                                );
+                              }
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
+                          }),
+                    ),
+                    BottomButton(
+                      text: 'Don\'t have an account? Sign up!',
+                      onTap: () => Navigator.pushReplacementNamed(
+                          context, SignupScreen.id),
+                    )
+                  ],
+                ),
               ),
-              TextFieldName(
-                name: 'Email',
-              ),
-              CustomTextField(
-                icon: Icons.email,
-                hintText: 'john@mail.com',
-                inputType: TextInputType.emailAddress,
-                onChange: (value) {
-                  _email = value;
-                  _emailError = "";
-                },
-              ),
-              TextFieldErrorMessage(
-                errorMessage: _emailError,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TextFieldName(
-                name: 'Password',
-              ),
-              CustomTextField(
-                icon: Icons.lock,
-                hintText: 'your password',
-                obscureText: true,
-                onChange: (value) {
-                  _password = value;
-                  _passwordError = "";
-                },
-              ),
-              TextFieldErrorMessage(
-                errorMessage: _passwordError,
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              MainButton(
-                text: 'Login',
-                onTap: loginValidator,
-              ),
-              BottomButton(
-                text: 'Don\'t have an account? Sign up!',
-                onTap: () => Navigator.pushNamed(context, SignupScreen.id),
-              )
-            ],
+            ),
           ),
-        ),
+          Container(
+            color: Colors.white.withOpacity(0.5),
+            child: _isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                    backgroundColor: Colors.blue,
+                  ))
+                : SizedBox(),
+          ),
+        ],
       ),
     );
   }

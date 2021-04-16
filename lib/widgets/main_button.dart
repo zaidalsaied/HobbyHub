@@ -8,15 +8,16 @@ class MainButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 60),
-        alignment: Alignment.center,
-        height: 45.0,
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(30),
+    return Container(
+      width: MediaQuery.of(context).size.width * .7,
+      height: 40,
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          primary: Theme.of(context).primaryColor,
         ),
         child: Text(
           text,

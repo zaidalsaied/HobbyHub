@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/data/data.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class NavScreen extends StatefulWidget {
   static const String id = 'nav_screen';

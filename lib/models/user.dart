@@ -3,6 +3,7 @@ class User {
   String _username;
   String _firstName;
   String _lastName;
+  String password;
   String _email;
   String _profileImage;
   String _location;
