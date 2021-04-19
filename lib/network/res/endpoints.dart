@@ -1,9 +1,15 @@
+import 'package:hobby_hub_ui/db/token_db.dart';
+
 class Endpoints {
   static const host = "https://hobby-hub-project.herokuapp.com/";
-  static const Map<String, String> headers = {
-    "Content-Type": "application/json"
+  static Map<String, String> headers = {
+    "Content-Type": "application/json",
   };
-  static const String userEndpoint = "user/";
+  static Map<String, String> authorizedHeaders = {
+    'Content-Type': 'application/json',
+    'Authorization': TokenDB().getUserToken(),
+  };
+  static const String userEndpoint = "user";
   static const String signUp = "sign-up";
   static const String signIn = "sign-in";
   static const String authenticateClient = "authenticate-client";
@@ -16,4 +22,7 @@ class Endpoints {
   static const String commentEndPoint = "comment";
 
   static const String likeEndPoint = "like";
+
+  static const String hobbyEndpoint = "hobby";
+  static const String getAllHobbies = "all";
 }

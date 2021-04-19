@@ -1,5 +1,4 @@
-import 'models.dart';
-import 'package:hobby_hub_ui/data/data.dart';
+import 'package:hobby_hub_ui/models/user_model.dart';
 
 class Hobby {
   final String name;
