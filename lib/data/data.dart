@@ -1,9 +1,9 @@
 import 'package:hobby_hub_ui/models/models.dart';
 
 final User currentUser = User(
-  id: 0,
+  id: "0",
   name: 'Zaid alsaid',
-  imageUrl:
+  imgUrl:
       'https://envato-shoebox-0.imgix.net/9b1d/d466-d514-44c5-beb3-53313e6793f2/AI11999.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=1600&s=5b8717ff159d96b36ccba0c9a8b5ada1',
   followers: [
     users[0],
@@ -32,99 +32,75 @@ final User currentUser = User(
 final List<User> users = [
   User(
     name: 'Waleed nm',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
   ),
   User(
     name: 'Samer',
-    imageUrl: 'https://wallpaperaccess.com/full/82955.jpg',
+    imgUrl: 'https://wallpaperaccess.com/full/82955.jpg',
   ),
   User(
     name: 'Abderraouf',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1331&q=80',
   ),
   User(
     name: 'ahamd',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80',
   ),
   User(
     name: 'Ed Morris',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1521119989659-a83eee488004?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=664&q=80',
   ),
   User(
-    name: 'Carolyn Duncan',
-    imageUrl:
-        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-  ),
-  User(
-    name: 'Paul Pinnock',
-    imageUrl:
-        'https://images.unsplash.com/photo-1519631128182-433895475ffe?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-  ),
-  User(
-      name: 'Elizabeth Wong',
-      imageUrl:
-          'https://images.unsplash.com/photo-1515077678510-ce3bdf418862?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=675&q=80'),
-  User(
-    name: 'James Lathrop',
-    imageUrl:
-        'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=592&q=80',
-  ),
-  User(
-    name: 'Jessie Samson',
-    imageUrl:
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-  ),
-  User(
     name: 'David Brooks',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
   ),
   User(
     name: 'Jane Doe',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
   ),
   User(
     name: 'Matthew Hinkle',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1331&q=80',
   ),
   User(
     name: 'Amy Smith',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80',
   ),
   User(
     name: 'Ed Morris',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1521119989659-a83eee488004?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=664&q=80',
   ),
   User(
     name: 'Carolyn Duncan',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
   ),
   User(
     name: 'Paul Pinnock',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1519631128182-433895475ffe?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
   ),
   User(
       name: 'Elizabeth Wong',
-      imageUrl:
+      imgUrl:
           'https://images.unsplash.com/photo-1515077678510-ce3bdf418862?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=675&q=80'),
   User(
     name: 'James Lathrop',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=592&q=80',
   ),
   User(
     name: 'Jessie Samson',
-    imageUrl:
+    imgUrl:
         'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
   ),
 ];
@@ -294,9 +270,5 @@ List<Hobby> hobbies = [
         'https://envato-shoebox-0.imgix.net/9b1d/d466-d514-44c5-beb3-53313e6793f2/AI11999.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=1600&s=5b8717ff159d96b36ccba0c9a8b5ada1',
     description:
         'The sport of soccer (called football in most of the world) is considered to be the world\'s most popular sport. In soccer there are two teams of eleven players. Soccer is played on a large grass field with a goal at each end. The object of the game is to get the soccer ball into the opposing team\'s goal. The key to soccer is that, with the exception of the goalie, players cannot touch the ball with their hands, they can only kick, knee, or head the ball to advance it or score a goal.',
-    followers: [
-      users[1],
-      users[3],
-    ],
   )
 ];

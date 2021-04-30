@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hobby_hub_ui/config/palette.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/screens/hobbies_screen.dart';
 import 'package:hobby_hub_ui/screens/screens.dart';
-import 'package:hobby_hub_ui/view_models/hobbies_list_view_model.dart';
+import 'package:hobby_hub_ui/controller/hobbies_list_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
+  await initApp();
   runApp(
     ChangeNotifierProvider(
       create: (context) => HobbiesListViewModel(),
@@ -18,11 +20,25 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+bool isAuth = false;
+
+initApp() async {
+  await Hive.initFlutter();
+  await TokenDB().openTokenBox();
+  isAuth = await UserController().authenticateToken();
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    print("isAuth:$isAuth");
     return MaterialApp(
-      initialRoute: LoginScreen.id,
+      initialRoute: isAuth ? NavScreen.id : LoginScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         SignupScreen.id: (context) => SignupScreen(),
@@ -44,7 +60,6 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         scaffoldBackgroundColor: Palette.scaffold,
       ),
-      home: LoginScreen(),
     );
   }
 }

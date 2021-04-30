@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/data/data.dart';
-import 'package:hobby_hub_ui/view_models/hobbies_list_view_model.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:hobby_hub_ui/models/hobby_model.dart';
+import 'package:hobby_hub_ui/models/models.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';
 
 class HobbyListItem extends StatelessWidget {
-  final HobbyViewModel hobbyViewModel;
+  final Hobby hobby;
 
-  const HobbyListItem({Key key, @required this.hobbyViewModel})
-      : super(key: key);
+  const HobbyListItem({Key key, @required this.hobby}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class HobbyListItem extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (_) => HobbyScreen(
-            hobbyViewModel: hobbyViewModel,
+            hobby: hobby,
           ),
         ),
       ),
@@ -35,9 +35,9 @@ class HobbyListItem extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(15.0),
               child: Hero(
-                tag: hobbyViewModel.imageUrl,
+                tag: hobby.imgUrl,
                 child: Image(
-                  image: NetworkImage(hobbyViewModel.imageUrl),
+                  image: NetworkImage(hobby.imgUrl),
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
@@ -51,17 +51,16 @@ class HobbyListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      hobbyViewModel.hobbyName,
+                      hobby.name,
                       style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 3),
                     Text(
-                      hobbyViewModel.description,
+                      hobby.description,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 3),
-                    Text('followers:${hobbyViewModel.followers.length}')
                   ],
                 ),
               ),
@@ -70,8 +69,7 @@ class HobbyListItem extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(right: 10.0, top: 10),
                 child: FollowHobbyButton(
-                  hobby: hobbies[0],
-                  user: currentUser,
+                  hobby: hobby,
                 ),
               ),
             ),

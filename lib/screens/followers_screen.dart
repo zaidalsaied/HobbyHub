@@ -29,7 +29,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
               Row(
                 children: [
                   ProfileAvatar(
-                    imageUrl: otherUser.imageUrl,
+                    imageUrl: otherUser.imgUrl,
                   ),
                   SizedBox(
                     width: 10,

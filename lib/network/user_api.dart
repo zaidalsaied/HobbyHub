@@ -1,22 +1,30 @@
 import 'dart:convert';
-import 'package:hobby_hub_ui/models/user.dart';
+import 'dart:developer';
+import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/network/res/endpoints.dart';
 import 'package:http/http.dart' as http;
 
 class UserApi {
   Future<User> getUser(String username) async {
-    var request =
-        http.Request('GET', Uri.parse('${Endpoints.userEndpoint}/$username'));
-    request.headers.addAll(Endpoints.headers);
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
+    try {
+      print(username);
+      var request = http.Request('GET',
+          Uri.parse('${Endpoints.host}${Endpoints.userEndpoint}$username'));
+      request.headers.addAll(Endpoints.authorizedHeaders);
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        return User.fromJson(jsonDecode(await response.stream.bytesToString()));
+      } else {
+        print(response.reasonPhrase);
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
     }
   }
 
-  Future<void> signUp(User user) async {
+  Future<Map<String, dynamic>> signUp(User user) async {
     try {
       http.Request request = http.Request(
           'POST', Uri.parse("${Endpoints.host}${Endpoints.signUp}"));
@@ -33,19 +41,14 @@ class UserApi {
       request.headers.addAll(Endpoints.headers);
 
       http.StreamedResponse response = await request.send();
-
-      if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
-      } else {
-        print(response.reasonPhrase);
-      }
+      return jsonDecode(await response.stream.bytesToString());
     } on Exception catch (e) {
       print("UserApi signUp ERROR:$e");
-      return;
+      return null;
     }
   }
 
-  Future<bool> signIn(String username, String password) async {
+  Future<Map<String, dynamic>> signIn(String username, String password) async {
     try {
       var request = http.Request(
           'POST', Uri.parse("${Endpoints.host}${Endpoints.signIn}"));
@@ -56,35 +59,30 @@ class UserApi {
       request.body = jsonEncode(body);
       request.headers.addAll(Endpoints.headers);
       http.StreamedResponse response = await request.send();
-      if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
-        return true;
-      } else {
-        print(response.reasonPhrase);
-        return false;
-      }
+      return jsonDecode(await response.stream.bytesToString());
     } on Exception catch (e) {
       print("UserApi signIn ERROR: $e");
-      return false;
+      return null;
     }
   }
 
-  Future<void> authenticateClient() async {
+  Future<Map<String, dynamic>> authenticateClient() async {
     try {
       var request = http.Request(
           'GET', Uri.parse('${Endpoints.host}${Endpoints.authenticateClient}'));
-      request.headers.addAll(Endpoints.headers);
 
+      request.headers.addAll(Endpoints.authorizedHeaders);
+      log("Authorization");
       http.StreamedResponse response = await request.send();
-
       if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
+        return jsonDecode(await response.stream.bytesToString());
       } else {
         print(response.reasonPhrase);
+        return null;
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
+      return null;
     }
   }
 
@@ -132,47 +130,46 @@ class UserApi {
     }
   }
 
-  void followHobby(String hobbyName) async {
+  Future<bool> followHobby(String hobbyName) async {
     try {
       var request = http.Request(
           'PUT',
           Uri.parse(
               '${Endpoints.host}${Endpoints.userEndpoint}${Endpoints.followHobby}'));
       request.body = jsonEncode({"name": hobbyName});
-      request.headers.addAll(Endpoints.headers);
-
+      request.headers.addAll(Endpoints.authorizedHeaders);
       http.StreamedResponse response = await request.send();
-
       if (response.statusCode == 200) {
         print(await response.stream.bytesToString());
+        return true;
       } else {
-        print(response.reasonPhrase);
+        return false;
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
+      return false;
     }
   }
 
-  void unFollowHobby(String hobbyName) async {
+  Future<bool> unFollowHobby(String hobbyName) async {
     try {
       var request = http.Request(
           'PUT',
           Uri.parse(
               '${Endpoints.host}${Endpoints.userEndpoint}${Endpoints.unFollowHobby}'));
       request.body = jsonEncode({"name": hobbyName});
-      request.headers.addAll(Endpoints.headers);
+      request.headers.addAll(Endpoints.authorizedHeaders);
 
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
+        return true;
       } else {
-        print(response.reasonPhrase);
+        return false;
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
+      return false;
     }
   }
 }

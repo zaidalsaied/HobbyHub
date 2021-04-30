@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/screens/signup_screen.dart';
-import 'package:hobby_hub_ui/view_models/sign_in_view_model.dart';
+import 'package:hobby_hub_ui/controller/sign_in_view_model.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';
@@ -68,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               setState(() {
                                 _isLoading = true;
                               });
-                              bool isUser = await SignInViewModel().signIn(
+                              bool isUser = await UserController().signIn(
                                   _email.text.trim(), _password.text.trim());
                               if (isUser) {
                                 Navigator.pushReplacementNamed(

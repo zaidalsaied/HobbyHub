@@ -17,7 +17,7 @@ class UserCard extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ProfileAvatar(imageUrl: user.imageUrl),
+          ProfileAvatar(imageUrl: user.imgUrl),
           const SizedBox(width: 6.0),
           Flexible(
             child: Text(

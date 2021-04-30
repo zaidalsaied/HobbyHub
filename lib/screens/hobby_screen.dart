@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/view_models/hobbies_list_view_model.dart';
+import 'package:hobby_hub_ui/models/hobby_model.dart';
 
 class HobbyScreen extends StatefulWidget {
-  final HobbyViewModel hobbyViewModel;
+  final Hobby hobby;
 
-  const HobbyScreen({Key key, @required this.hobbyViewModel}) : super(key: key);
+  const HobbyScreen({Key key, @required this.hobby}) : super(key: key);
   @override
   _HobbyScreenState createState() => _HobbyScreenState();
 }
@@ -26,7 +26,7 @@ class _HobbyScreenState extends State<HobbyScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          widget.hobbyViewModel.hobbyName,
+          widget.hobby.name,
           style: TextStyle(
               fontSize: 28.0,
               fontWeight: FontWeight.bold,
@@ -38,17 +38,13 @@ class _HobbyScreenState extends State<HobbyScreen> {
         children: [
           Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Hero(
-                  tag: widget.hobbyViewModel.imageUrl,
-                  child: Image(
-                    image: CachedNetworkImageProvider(
-                        widget.hobbyViewModel.imageUrl),
-                    width: MediaQuery.of(context).size.width,
-                    height: 250,
-                    fit: BoxFit.cover,
-                  ),
+              Hero(
+                tag: widget.hobby.imgUrl,
+                child: Image(
+                  image: CachedNetworkImageProvider(widget.hobby.imgUrl),
+                  width: MediaQuery.of(context).size.width,
+                  height: 250,
+                  fit: BoxFit.contain,
                 ),
               ),
               Container(
@@ -75,7 +71,7 @@ class _HobbyScreenState extends State<HobbyScreen> {
               padding: EdgeInsets.all(12.0),
               child: SingleChildScrollView(
                 child: Text(
-                  widget.hobbyViewModel.description,
+                  widget.hobby.description,
                   style: TextStyle(
                     fontSize: 18,
                     wordSpacing: 1.2,

@@ -52,7 +52,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ProfileAvatar(
-                    imageUrl: currentUser.imageUrl,
+                    imageUrl: currentUser.imgUrl,
                     radius: 50,
                   ),
                   Column(

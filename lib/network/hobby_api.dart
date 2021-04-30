@@ -1,22 +1,25 @@
+import 'dart:developer';
+
 import 'package:hobby_hub_ui/network/res/endpoints.dart';
 import 'package:http/http.dart' as http;
 
 class HobbyApi {
-  Future getAllHobbies() async {
+  Future<String> getAllHobbies() async {
     try {
       var request = http.Request(
           'GET',
           Uri.parse(
               '${Endpoints.host}${Endpoints.hobbyEndpoint}${Endpoints.getAllHobbies}'));
-      request.headers.addAll(Endpoints.headers);
+      request.headers.addAll(Endpoints.authorizedHeaders);
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
+        return await response.stream.bytesToString();
       } else {
-        print(response.reasonPhrase);
+        return "";
       }
-    } on Exception catch (e) {
+    } catch (e) {
       print(e);
+      return "";
     }
   }
 }

@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:hive/hive.dart';
 
 class TokenDB {
   static var tokenDb;
 
-  void openTokenBox() async {
+  Future<void> openTokenBox() async {
     try {
       tokenDb = await Hive.openBox<String>("tokenDb");
     } on Exception catch (e) {
@@ -23,6 +25,8 @@ class TokenDB {
 
   String getUserToken() {
     try {
+      log("token");
+      log(tokenDb.get('token'));
       return tokenDb.get('token');
     } on Exception catch (e) {
       print("UserDB getUserToken ERROR:$e");

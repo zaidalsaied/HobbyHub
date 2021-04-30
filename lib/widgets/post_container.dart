@@ -74,7 +74,7 @@ class _PostHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ProfileAvatar(imageUrl: post.user.imageUrl),
+        ProfileAvatar(imageUrl: post.user.imgUrl),
         const SizedBox(width: 8.0),
         Expanded(
           child: Column(

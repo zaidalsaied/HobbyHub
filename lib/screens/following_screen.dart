@@ -29,7 +29,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
               Row(
                 children: [
                   ProfileAvatar(
-                    imageUrl: otherUser.imageUrl,
+                    imageUrl: otherUser.imgUrl,
                   ),
                   SizedBox(
                     width: 10,

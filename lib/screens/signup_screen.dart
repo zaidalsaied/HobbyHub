@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/models/user.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/login_screen.dart';
-import 'package:hobby_hub_ui/view_models/sign_up_view_model.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart' as validator;
 
@@ -117,7 +117,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             setState(() {
                               _isLoading = true;
                             });
-                            await SignUpViewModel().signUp(_user);
+                            await UserController().signUp(_user);
                             setState(() {
                               _isLoading = false;
                             });

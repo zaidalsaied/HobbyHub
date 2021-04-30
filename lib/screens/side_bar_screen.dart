@@ -21,7 +21,7 @@ class MainSideBar extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
                   child: CachedNetworkImage(
-                    imageUrl: currentUser.imageUrl,
+                    imageUrl: currentUser.imgUrl,
                     height: 100,
                     width: 100,
                   ),

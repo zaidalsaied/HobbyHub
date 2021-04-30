@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/view_models/hobbies_list_view_model.dart';
+import 'package:hobby_hub_ui/controller/hobbies_list_view_model.dart';
+import 'package:hobby_hub_ui/controller/hobby_controller.dart';
+import 'package:hobby_hub_ui/models/hobby_model.dart';
 import 'package:provider/provider.dart';
 import 'hobby_list_item.dart';
 
 class HobbiesScreen extends StatefulWidget {
   static const String id = 'hobbies_screen';
+
   @override
   _HobbiesScreenState createState() => _HobbiesScreenState();
 }
@@ -43,16 +46,22 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: 20.0),
-        child: ListView.builder(
-          itemCount: hobbiesListViewModel.hobbies.length,
-          itemBuilder: (context, index) {
-            return HobbyListItem(
-              hobbyViewModel: hobbiesListViewModel.hobbies[index],
-            );
-          },
-        ),
-      ),
+          padding: EdgeInsets.only(top: 20.0),
+          child: FutureBuilder(
+            future: HobbyController().getAllHobbies(),
+            builder: (context, snapshot) {
+              print("ok");
+              if (snapshot != null && snapshot.hasData) {
+                return ListView(children: [
+                  for (Hobby hobby in snapshot.data) HobbyListItem(hobby: hobby)
+                ]);
+              } else
+                return Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: Colors.blue,
+                ));
+            },
+          )),
     );
   }
 }
