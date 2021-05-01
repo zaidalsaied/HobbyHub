@@ -1,10 +1,17 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:hobby_hub_ui/models/hobby_model.dart';
 import 'package:hobby_hub_ui/network/hobby_api.dart';
 
 class HobbyController {
+  static List<Hobby> hobbies = [];
+
+  HobbyController._internal();
+
+  static final HobbyController _hobbyController = HobbyController._internal();
+
+  factory HobbyController() {
+    return _hobbyController;
+  }
   List<Hobby> parseHobbies(String res) {
     Iterable itr = json.decode(res);
     return List<Hobby>.from(itr.map((model) => Hobby.fromJson(model)));
@@ -12,6 +19,7 @@ class HobbyController {
 
   Future<List<Hobby>> getAllHobbies() async {
     String res = await HobbyApi().getAllHobbies();
-    return parseHobbies(res);
+    hobbies = parseHobbies(res);
+    return hobbies;
   }
 }

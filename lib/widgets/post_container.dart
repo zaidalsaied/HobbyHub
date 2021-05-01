@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/models/models.dart';
+import 'package:hobby_hub_ui/models/post.dart';
 import 'widgets.dart';
 
-class PostContainer extends StatelessWidget {
+class PostContainer extends StatefulWidget {
   final Post post;
 
   const PostContainer({
@@ -12,17 +12,16 @@ class PostContainer extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _PostContainerState createState() => _PostContainerState();
+}
+
+class _PostContainerState extends State<PostContainer> {
+  @override
   Widget build(BuildContext context) {
-    final bool isDesktop = Responsive.isDesktop(context);
     return Card(
       margin: EdgeInsets.symmetric(
         vertical: 5.0,
-        horizontal: isDesktop ? 5.0 : 0.0,
       ),
-      elevation: isDesktop ? 1.0 : 0.0,
-      shape: isDesktop
-          ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))
-          : null,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         color: Colors.white,
@@ -33,27 +32,34 @@ class PostContainer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _PostHeader(post: post),
-                  const SizedBox(height: 4.0),
-                  Text(post.caption),
-                  post.imageUrl != null
-                      ? const SizedBox.shrink()
-                      : const SizedBox(height: 6.0),
+                  _PostHeader(post: widget.post),
+                  Text(
+                    widget.post.text == null ? "" : widget.post.text,
+                    maxLines: null,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  widget.post.imageUrl == null
+                      ? const SizedBox(height: 6.0)
+                      : const SizedBox.shrink(),
                 ],
               ),
             ),
-            post.imageUrl != null
+            widget.post.imageUrl != null &&
+                    widget.post.imageUrl.trim().length > 0
                 ? Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12.0, vertical: 10.0),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
-                        child: CachedNetworkImage(imageUrl: post.imageUrl)),
+                        child: CachedNetworkImage(
+                            imageUrl:
+                                "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg")),
                   )
                 : const SizedBox.shrink(),
+            Divider(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: _PostStats(post: post),
+              child: _PostStats(post: widget.post),
             ),
           ],
         ),
@@ -74,7 +80,9 @@ class _PostHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ProfileAvatar(imageUrl: post.user.imgUrl),
+        ProfileAvatar(
+            imageUrl:
+                "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"),
         const SizedBox(width: 8.0),
         Expanded(
           child: Column(
@@ -82,7 +90,7 @@ class _PostHeader extends StatelessWidget {
             children: [
               Row(children: [
                 Text(
-                  post.user.name,
+                  post.ownerUsername,
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                   ),
@@ -91,14 +99,14 @@ class _PostHeader extends StatelessWidget {
                   width: 5.0,
                 ),
                 Text(
-                  '@zaidalsaid11 • ',
+                  '@${post.ownerUsername} • ',
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 12.0,
                   ),
                 ),
                 Text(
-                  '${post.timeAgo}',
+                  post.date.substring(0, 10),
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 12.0,
@@ -138,7 +146,7 @@ class _PostStats extends StatelessWidget {
                 color: Colors.grey,
                 size: 20.0,
               ),
-              label: '${post.likes}',
+              label: '${post.numberOfLikes}',
             ),
             Container(
               width: 1,
@@ -151,7 +159,7 @@ class _PostStats extends StatelessWidget {
                 color: Colors.grey[600],
                 size: 20.0,
               ),
-              label: '${post.comments}',
+              label: '${post.numberOfComments}',
               onTap: () => print('Comment'),
             ),
           ],
@@ -165,6 +173,7 @@ class _PostButton extends StatefulWidget {
   final Icon icon;
   final String label;
   final Function onTap;
+
   _PostButton({
     Key key,
     @required this.icon,
@@ -183,7 +192,7 @@ class __PostButtonState extends State<_PostButton> {
       child: Material(
         color: Colors.white,
         child: InkWell(
-          onTap: () {},
+          onTap: widget.onTap,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             height: 25.0,

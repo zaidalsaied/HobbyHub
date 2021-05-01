@@ -73,6 +73,7 @@ class UserController {
       if (res != null && res["userModel"] != null) {
         _currentUser = User.fromJson(res["userModel"]);
         log(_currentUser.hobbies.toString());
+        print("true");
         return true;
       }
       return false;

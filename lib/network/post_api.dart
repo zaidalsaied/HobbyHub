@@ -1,25 +1,59 @@
 import 'dart:convert';
 import 'package:hobby_hub_ui/models/comment_model.dart';
-import 'package:hobby_hub_ui/models/post_model.dart';
+import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/network/res/endpoints.dart';
 import 'package:http/http.dart' as http;
 
 class PostApi {
-  void post(Post post) async {
+  Future<bool> post(Post post) async {
     try {
       var request = http.Request(
           'POST', Uri.parse('${Endpoints.host}${Endpoints.postEndPoint}'));
-      request.body = jsonEncode(post);
-      request.headers.addAll(Endpoints.headers);
+      request.body = _getPostBodyRequest(post);
+      request.headers.addAll(Endpoints.authorizedHeaders);
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         print(await response.stream.bytesToString());
+        return true;
       } else {
         print(response.reasonPhrase);
+        return false;
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
+    }
+  }
+
+  String _getPostBodyRequest(Post post) {
+    Map body = {};
+    if (post.text.length > 0) {
+      body.addAll({
+        "contentList": [
+          {"contentType": "TEXT", "value": post.text}
+        ],
+        "categories": post.tags
+      });
+    }
+    print(jsonEncode(body));
+    return jsonEncode(body);
+  }
+
+  Future<String> getFeed() async {
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${Endpoints.host}${Endpoints.userEndpoint}${Endpoints.feed}'));
+      request.headers.addAll(Endpoints.authorizedHeaders);
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        return (await response.stream.bytesToString());
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
     }
   }
 

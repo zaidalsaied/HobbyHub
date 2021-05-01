@@ -15,7 +15,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     List<PostContainer> postContainerList = [];
     posts.forEach((Post post) {
       post.user = currentUser;
-      postContainerList.add(PostContainer(post: post));
+      postContainerList.add(PostContainer());
     });
     return postContainerList;
   }

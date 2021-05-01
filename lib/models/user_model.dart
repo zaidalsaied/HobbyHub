@@ -41,20 +41,7 @@ class User {
       location: json["location"],
       email: json["email"],
       gender: json["gender"],
-      hobbies: List.from(json["hobbiesFollowing"]),
+      hobbies: List<String>.from(json["hobbiesFollowing"]),
     );
-  }
-}
-
-List<Hobby> _parseHobbies(String responseBody) {
-  try {
-    print(responseBody);
-    var parseResponse = jsonDecode(responseBody);
-    final parsed = parseResponse.cast<Map<String, dynamic>>();
-    return parsed.map<Hobby>((json) => Hobby.fromJson(json)).toList();
-  } catch (e) {
-    print("JsonParser _parseHobbies error");
-    print(e.toString());
-    return [];
   }
 }

@@ -10,18 +10,14 @@ class ProfileAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        CircleAvatar(
-          radius: radius,
-          backgroundColor: Theme.of(context).primaryColor,
-          child: CircleAvatar(
-            radius: radius,
-            backgroundColor: Colors.grey[200],
-            backgroundImage: CachedNetworkImageProvider(imageUrl),
-          ),
-        ),
-      ],
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: Theme.of(context).primaryColor,
+      child: CircleAvatar(
+        radius: radius,
+        backgroundColor: Colors.grey[200],
+        backgroundImage: CachedNetworkImageProvider(imageUrl),
+      ),
     );
   }
 }
