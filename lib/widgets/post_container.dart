@@ -1,12 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hobby_hub_ui/controller/pos_controller.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
+import 'package:hobby_hub_ui/screens/post_view.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'widgets.dart';
 
 class PostContainer extends StatefulWidget {
   final Post post;
 
-  const PostContainer({
+  PostContainer({
     Key key,
     @required this.post,
   }) : super(key: key);
@@ -16,52 +20,80 @@ class PostContainer extends StatefulWidget {
 }
 
 class _PostContainerState extends State<PostContainer> {
+  String _getTagsString(List<String> tags) {
+    String tagsString = "";
+    for (var tag in tags) tagsString += "#$tag";
+    return tagsString;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(
-        vertical: 5.0,
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PostView(
+              post: widget.post,
+            ),
+          ),
+        );
+      },
+      child: Card(
+        margin: EdgeInsets.symmetric(
+          vertical: 5.0,
+        ),
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _PostHeader(post: widget.post),
+                    Text(
+                      widget.post.text == null ? "" : widget.post.text,
+                      maxLines: null,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+              widget.post.imageUrl != null &&
+                      widget.post.imageUrl.trim().length > 0
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 10.0),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: CachedNetworkImage(
+                              imageUrl:
+                                  "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg")),
+                    )
+                  : const SizedBox.shrink(),
+              Wrap(
                 children: [
-                  _PostHeader(post: widget.post),
-                  Text(
-                    widget.post.text == null ? "" : widget.post.text,
-                    maxLines: null,
-                    style: TextStyle(fontSize: 18),
+                  SizedBox(
+                    width: 10,
                   ),
-                  widget.post.imageUrl == null
-                      ? const SizedBox(height: 6.0)
-                      : const SizedBox.shrink(),
+                  Text(
+                    _getTagsString(widget.post.tags),
+                    style: TextStyle(color: Colors.blue),
+                    textAlign: TextAlign.start,
+                  ),
                 ],
               ),
-            ),
-            widget.post.imageUrl != null &&
-                    widget.post.imageUrl.trim().length > 0
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 10.0),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: CachedNetworkImage(
-                            imageUrl:
-                                "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg")),
-                  )
-                : const SizedBox.shrink(),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: _PostStats(post: widget.post),
-            ),
-          ],
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
+                child: _PostStats(post: widget.post),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -106,7 +138,7 @@ class _PostHeader extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  post.date.substring(0, 10),
+                  timeago.format(DateTime.parse(post.date)),
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 12.0,
@@ -125,7 +157,7 @@ class _PostHeader extends StatelessWidget {
   }
 }
 
-class _PostStats extends StatelessWidget {
+class _PostStats extends StatefulWidget {
   final Post post;
 
   const _PostStats({
@@ -134,33 +166,59 @@ class _PostStats extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  __PostStatsState createState() => __PostStatsState();
+}
+
+class __PostStatsState extends State<_PostStats> {
+  @override
   Widget build(BuildContext context) {
+    bool liked =
+        widget.post.likes.contains(UserController().currentUser.username);
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _PostButton(
               icon: Icon(
                 Icons.favorite,
-                color: Colors.grey,
-                size: 20.0,
+                color: liked ? Theme.of(context).primaryColor : Colors.grey,
+                size: 25.0,
               ),
-              label: '${post.numberOfLikes}',
-            ),
-            Container(
-              width: 1,
-              height: 20.0,
-              color: Colors.grey,
+              onTap: () async {
+                if (liked) {
+                  setState(() {
+                    widget.post.likes
+                        .remove(UserController().currentUser.username);
+                  });
+                  await PostController().unlike(widget.post.postId);
+                } else {
+                  setState(() {
+                    widget.post.likes
+                        .add(UserController().currentUser.username);
+                  });
+                  await PostController().like(widget.post.postId);
+                }
+              },
+              label: '${widget.post.numberOfLikes}',
             ),
             _PostButton(
               icon: Icon(
                 Icons.textsms_outlined,
                 color: Colors.grey[600],
-                size: 20.0,
+                size: 25.0,
               ),
-              label: '${post.numberOfComments}',
+              label: '${widget.post.numberOfComments}',
               onTap: () => print('Comment'),
+            ),
+            _PostButton(
+              icon: Icon(
+                Icons.ios_share,
+                color: Theme.of(context).primaryColor,
+                size: 25.0,
+              ),
+              onTap: () async {},
+              label: '',
             ),
           ],
         ),
@@ -188,25 +246,17 @@ class _PostButton extends StatefulWidget {
 class __PostButtonState extends State<_PostButton> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Material(
-        color: Colors.white,
-        child: InkWell(
-          onTap: widget.onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            height: 25.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                widget.icon,
-                const SizedBox(width: 4.0),
-                Text(widget.label),
-              ],
-            ),
-          ),
+    return Row(
+      children: [
+        IconButton(
+          icon: widget.icon,
+          onPressed: widget.onTap,
         ),
-      ),
+        Text(
+          widget.label,
+          style: TextStyle(fontSize: 18),
+        )
+      ],
     );
   }
 }

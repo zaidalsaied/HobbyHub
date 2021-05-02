@@ -7,7 +7,7 @@ class PostController {
   static List<Post> feed;
 
   Future<List<Post>> getUserFeed() async {
-    feed = parsePosts(await PostApi().getFeed());
+    feed = _parsePosts(await PostApi().getFeed());
     return feed;
   }
 
@@ -15,7 +15,15 @@ class PostController {
     return await PostApi().post(post);
   }
 
-  List<Post> parsePosts(String res) {
+  Future<bool> like(String postId) async {
+    return await PostApi().like(postId);
+  }
+
+  Future<bool> unlike(String postId) async {
+    return await PostApi().removeLike(postId);
+  }
+
+  List<Post> _parsePosts(String res) {
     try {
       Iterable itr = json.decode(res);
       return List<Post>.from(itr.map((model) => Post.fromJson(model)));

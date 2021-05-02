@@ -8,6 +8,7 @@ import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/screens/create_post_screen.dart';
 import 'package:hobby_hub_ui/screens/hobbies_screen.dart';
+import 'package:hobby_hub_ui/screens/post_view.dart';
 import 'package:hobby_hub_ui/screens/screens.dart';
 import 'package:hobby_hub_ui/controller/hobbies_list_view_model.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,7 @@ class _MyAppState extends State<MyApp> {
         FollowersScreen.id: (context) => FollowersScreen(),
         FollowingScreen.id: (context) => FollowingScreen(),
         CreatePostScreen.id: (context) => CreatePostScreen(),
+        PostView.id: (context) => PostView(),
       },
       title: 'Flutter Project, Graduation Project two.',
       debugShowCheckedModeBanner: false,

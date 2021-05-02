@@ -49,32 +49,45 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       : Theme.of(context).accentColor.withOpacity(.7),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
-              onPressed: () async {
-                bool isSubmitted = false;
-                if (isValid) {
-                  isSubmitted = await PostController().post(post);
-                  if (isSubmitted) {
-                    await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return MessageAlertDialog(
-                            title: "Posted!",
-                            message: "your post has been sucssfuly posted!",
-                          );
+              onPressed: isValid
+                  ? () async {
+                      bool isSubmitted = false;
+                      if (isValid) {
+                        setState(() {
+                          _isLoading = true;
                         });
-                    Navigator.pop(context);
-                  } else {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return MessageAlertDialog(
-                            title: "Something went wrong",
-                            message: "something went wrong please try again",
-                          );
-                        });
-                  }
-                }
-              },
+                        isSubmitted = await PostController().post(post);
+                        if (isSubmitted) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MessageAlertDialog(
+                                  title: "Posted!",
+                                  message:
+                                      "your post has been sucssfuly posted!",
+                                );
+                              });
+                          Navigator.pop(context);
+                        } else {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MessageAlertDialog(
+                                  title: "Something went wrong",
+                                  message:
+                                      "something went wrong please try again",
+                                );
+                              });
+                        }
+                      }
+                    }
+                  : () {},
               child: Text(
                 "Post",
                 style: TextStyle(
@@ -152,9 +165,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ),
           ),
           _isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Theme.of(context).primaryColor,
+              ? Container(
+                  color: Theme.of(context).primaryColor.withOpacity(.5),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                   ),
                 )
               : SizedBox()

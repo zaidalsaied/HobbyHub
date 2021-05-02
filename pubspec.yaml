@@ -23,6 +23,7 @@ dependencies:
   hive: ^2.0.3
   hive_flutter: ^1.0.0
   multi_select_flutter: ^4.0.0
+  timeago: ^3.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

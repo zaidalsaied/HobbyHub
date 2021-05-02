@@ -135,48 +135,48 @@ class PostApi {
       } else {
         print(response.reasonPhrase);
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
     }
   }
 
-  Future<void> like(String userId) async {
+  Future<bool> like(String postId) async {
     try {
       var request = http.Request(
           'POST',
           Uri.parse(
               '${Endpoints.host}${Endpoints.postEndPoint}${Endpoints.likeEndPoint}'));
-      request.body = jsonEncode({"id": userId});
-      request.headers.addAll(Endpoints.headers);
+      request.body = jsonEncode({"id": postId});
+      request.headers.addAll(Endpoints.authorizedHeaders);
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         print(await response.stream.bytesToString());
+        return true;
       } else {
         print(response.reasonPhrase);
+        return false;
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
+      return false;
     }
   }
 
-  Future<void> removeLike(String userId) async {
+  Future<bool> removeLike(String postId) async {
     try {
       var request = http.Request(
           'DELETE',
           Uri.parse(
-              '${Endpoints.host}${Endpoints.postEndPoint}${Endpoints.likeEndPoint}$userId'));
-      request.headers.addAll(Endpoints.headers);
+              '${Endpoints.host}${Endpoints.postEndPoint}${Endpoints.likeEndPoint}/$postId'));
+      request.headers.addAll(Endpoints.authorizedHeaders);
       http.StreamedResponse response = await request.send();
-      if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
-      } else {
-        print(response.reasonPhrase);
-      }
-    } on Exception catch (e) {
-      // TODO
+      if (response.statusCode == 200) return true;
+
+      return false;
+    } catch (e) {
       print(e);
+      print("error");
+      return false;
     }
   }
 }

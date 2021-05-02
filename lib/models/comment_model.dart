@@ -1,24 +1,30 @@
 class Comment {
-  String _commentId;
-  String _text;
-  String _imageUrl;
-  Comment();
-  Comment.fromServer(this._commentId, this._text, this._imageUrl);
+  String commentId;
+  String text;
+  String imageUrl;
+  String creatorUsername;
+
+  Comment({this.commentId, this.text, this.imageUrl, this.creatorUsername});
+
   factory Comment.fromJson(Map<String, dynamic> json) {
-    return Comment.fromServer(
-        json["commentId"], json["text"], json["imageUrl"]);
+    Comment comment = Comment(
+        commentId: json['id'], creatorUsername: json['creatorUsername']);
+    _populateCommentContent(json['contentList'], comment);
+    return comment;
   }
-  String get commentId => _commentId;
+}
 
-  String get text => _text;
-
-  String get imageUrl => _imageUrl;
-
-  set imageUrl(String value) {
-    _imageUrl = value;
-  }
-
-  set text(String value) {
-    _text = value;
+void _populateCommentContent(json, Comment comment) {
+  try {
+    for (var content in json) {
+      if (content["contentType"] == "TEXT") {
+        print("comValue:${content["value"]}");
+        comment.text = content["value"];
+      } else if (content["contentType"] == "IMAGE") {
+        comment.imageUrl = content["value"];
+      }
+    }
+  } catch (e) {
+    print(e);
   }
 }
