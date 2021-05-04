@@ -71,7 +71,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               });
                               bool isUser = await UserController().signIn(
                                   _email.text.trim(), _password.text.trim());
+                              setState(() {
+                                _isLoading = false;
+                              });
                               if (isUser) {
+                                print("user is user");
                                 Navigator.pushReplacementNamed(
                                     context, NavScreen.id);
                               } else {
@@ -86,9 +90,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 );
                               }
-                              setState(() {
-                                _isLoading = false;
-                              });
                             }
                           }),
                     ),

@@ -23,6 +23,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   initState() {
     super.initState();
     _items.add(MultiSelectItem<String>("other", "other"));
+    if (post.tags == null) post.tags = [];
   }
 
   bool _isLoading = false;

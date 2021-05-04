@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:hobby_hub_ui/models/comment_model.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/network/post_api.dart';
 
@@ -13,6 +14,10 @@ class PostController {
 
   Future<bool> post(Post post) async {
     return await PostApi().post(post);
+  }
+
+  Future<bool> comment(String postId, Comment comment) async {
+    await PostApi().addComment(postId, comment);
   }
 
   Future<bool> like(String postId) async {

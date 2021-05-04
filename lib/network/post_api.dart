@@ -92,7 +92,7 @@ class PostApi {
     }
   }
 
-  Future<void> addComment(String postId, Comment comment) async {
+  Future<bool> addComment(String postId, Comment comment) async {
     try {
       var request = http.Request(
           'POST',
@@ -101,21 +101,23 @@ class PostApi {
       request.body = jsonEncode({
         "postId": postId,
         "contentList": [
-          {"contentType": "TEXT", "value": "new comment"}
+          {"contentType": "TEXT", "value": "${comment.text}"}
         ]
       });
-      request.headers.addAll(Endpoints.headers);
+      request.headers.addAll(Endpoints.authorizedHeaders);
 
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {
         print(await response.stream.bytesToString());
+        return true;
       } else {
         print(response.reasonPhrase);
+        return false;
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
+      return false;
     }
   }
 

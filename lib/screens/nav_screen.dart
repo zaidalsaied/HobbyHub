@@ -5,6 +5,7 @@ import 'screens.dart';
 
 class NavScreen extends StatefulWidget {
   static const String id = 'nav_screen';
+
   @override
   _NavScreenState createState() => _NavScreenState();
 }
