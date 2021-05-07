@@ -5,28 +5,6 @@ final User currentUser = User(
   name: 'Zaid alsaid',
   imgUrl:
       'https://envato-shoebox-0.imgix.net/9b1d/d466-d514-44c5-beb3-53313e6793f2/AI11999.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=1600&s=5b8717ff159d96b36ccba0c9a8b5ada1',
-  followers: [
-    users[0],
-    users[1],
-    users[2],
-    users[3],
-    users[4],
-    users[5],
-    users[6],
-    users[7],
-    users[8]
-  ],
-  following: [
-    users[0],
-    users[1],
-    users[2],
-    users[3],
-    users[4],
-    users[5],
-    users[6],
-    users[7],
-    users[8]
-  ],
 );
 
 final List<User> users = [

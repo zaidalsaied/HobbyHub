@@ -9,7 +9,7 @@ class UserApi {
     try {
       print(username);
       var request = http.Request('GET',
-          Uri.parse('${Endpoints.host}${Endpoints.userEndpoint}$username'));
+          Uri.parse('${Endpoints.host}${Endpoints.userEndpoint}/$username'));
       request.headers.addAll(Endpoints.authorizedHeaders);
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
@@ -72,7 +72,6 @@ class UserApi {
           'GET', Uri.parse('${Endpoints.host}${Endpoints.authenticateClient}'));
 
       request.headers.addAll(Endpoints.authorizedHeaders);
-      log("Authorization");
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         return jsonDecode(await response.stream.bytesToString());

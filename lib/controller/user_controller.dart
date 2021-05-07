@@ -72,8 +72,7 @@ class UserController {
       Map<String, dynamic> res = await UserApi().authenticateClient();
       if (res != null && res["userModel"] != null) {
         _currentUser = User.fromJson(res["userModel"]);
-        log(_currentUser.hobbies.toString());
-        print("true");
+        log(_currentUser.toString());
         return true;
       }
       return false;
@@ -89,6 +88,10 @@ class UserController {
 
   Future<void> getCurrentUser() async {
     _currentUser = await UserApi().getUser(_currentUser.username);
+  }
+
+  Future<User> getUserByUsername(String username) async {
+    return await UserApi().getUser(username);
   }
 
   Future<bool> followHobby(String hobbyName) async {

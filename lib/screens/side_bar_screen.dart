@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/data/data.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:hobby_hub_ui/models/user_model.dart';
 import 'screens.dart';
 
 class MainSideBar extends StatelessWidget {
+  final User currentUser;
   static const String id = 'main_sidebar_screen';
+
+  const MainSideBar({Key key, @required this.currentUser}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -21,7 +25,8 @@ class MainSideBar extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
                   child: CachedNetworkImage(
-                    imageUrl: currentUser.imgUrl,
+                    imageUrl:
+                        "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg",
                     height: 100,
                     width: 100,
                   ),
@@ -29,11 +34,11 @@ class MainSideBar extends StatelessWidget {
               ),
             ),
             accountName: Text(
-              'User Name',
+              currentUser.username,
               style: TextStyle(color: Colors.black),
             ),
             accountEmail: Text(
-              '@username',
+              currentUser.username,
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -41,7 +46,11 @@ class MainSideBar extends StatelessWidget {
             icon: Icons.person,
             text: 'Profile',
             onTap: () {
-              Navigator.pushNamed(context, UserProfileScreen.id);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          UserProfileScreen(username: currentUser.username)));
             },
           ),
           SideBarItem(

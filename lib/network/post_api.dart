@@ -57,6 +57,25 @@ class PostApi {
     }
   }
 
+  Future<String> getTrending() async {
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${Endpoints.host}${Endpoints.postEndPoint}${Endpoints.trending}'));
+      request.headers.addAll(Endpoints.authorizedHeaders);
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        return (await response.stream.bytesToString());
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   void deletePost(String postId) async {
     try {
       var request = http.Request('DELETE',
@@ -75,19 +94,18 @@ class PostApi {
     }
   }
 
-  Future<Post> getPost(String postId) async {
+  Future<String> getPost(String postId) async {
     try {
       var request = http.Request('GET',
-          Uri.parse('${Endpoints.host}${Endpoints.postEndPoint}$postId'));
-      request.headers.addAll(Endpoints.headers);
+          Uri.parse('${Endpoints.host}${Endpoints.postEndPoint}/$postId'));
+      request.headers.addAll(Endpoints.authorizedHeaders);
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
+        return await response.stream.bytesToString();
       } else {
         print(response.reasonPhrase);
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
     }
   }

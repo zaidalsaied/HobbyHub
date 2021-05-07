@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/controller/hobbies_list_view_model.dart';
 import 'package:hobby_hub_ui/controller/hobby_controller.dart';
 import 'package:hobby_hub_ui/models/hobby_model.dart';
-import 'package:provider/provider.dart';
 import 'hobby_list_item.dart';
 
 class HobbiesScreen extends StatefulWidget {
@@ -17,12 +15,10 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
   @override
   initState() {
     super.initState();
-    Provider.of<HobbiesListViewModel>(this.context, listen: false).getHobbies();
   }
 
   @override
   Widget build(BuildContext context) {
-    final hobbiesListViewModel = Provider.of<HobbiesListViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

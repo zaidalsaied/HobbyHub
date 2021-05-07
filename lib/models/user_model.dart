@@ -1,8 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:hobby_hub_ui/models/hobby_model.dart';
-
 ///{"userModel":{"id":"","username":"za","password":"12345678?","email":"zaidalsaid@gmail.com","firstName":"z","lastName":"a","gender":"male","currentLocation":null,"imageUrl":null,"usersFollowing":[],"followers":[],"hobbiesFollowing":[],"posts":[]}}
 class User {
   final String id;
@@ -14,10 +9,11 @@ class User {
   String lastName;
   String gender;
   String location;
+  List<String> posts = [];
   List<String> hobbies = [];
-  final String imgUrl;
-  List<User> followers = [];
-  List<User> following = [];
+  String imgUrl;
+  List<String> followers = [];
+  List<String> following = [];
 
   User(
       {this.id,
@@ -31,6 +27,7 @@ class User {
       this.hobbies,
       this.imgUrl,
       this.followers,
+      this.posts,
       this.following});
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -42,6 +39,7 @@ class User {
       email: json["email"],
       gender: json["gender"],
       hobbies: List<String>.from(json["hobbiesFollowing"]),
+      posts: List<String>.from(json["posts"]),
     );
   }
 }

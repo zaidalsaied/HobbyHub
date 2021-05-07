@@ -4,15 +4,18 @@ import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/screens/post_view.dart';
+import 'package:hobby_hub_ui/screens/screens.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'widgets.dart';
 
 class PostContainer extends StatefulWidget {
   final Post post;
+  final Function setState;
 
   PostContainer({
     Key key,
     @required this.post,
+    this.setState,
   }) : super(key: key);
 
   @override
@@ -28,72 +31,84 @@ class _PostContainerState extends State<PostContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PostView(
-              post: widget.post,
-            ),
-          ),
-        );
-      },
-      child: Card(
-        margin: EdgeInsets.symmetric(
-          vertical: 5.0,
-        ),
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _PostHeader(post: widget.post),
-                    Text(
+    return Card(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserProfileScreen(
+                              username: widget.post.ownerUsername,
+                            ),
+                          ),
+                        );
+                      },
+                      child: _PostHeader(post: widget.post)),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PostView(
+                            post: widget.post,
+                            setState: setState,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
                       widget.post.text == null ? "" : widget.post.text,
                       maxLines: null,
                       style: TextStyle(fontSize: 18),
                     ),
-                  ],
-                ),
-              ),
-              widget.post.imageUrl != null &&
-                      widget.post.imageUrl.trim().length > 0
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 10.0),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: CachedNetworkImage(
-                              imageUrl:
-                                  "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg")),
-                    )
-                  : const SizedBox.shrink(),
-              Wrap(
-                children: [
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    _getTagsString(widget.post.tags),
-                    style: TextStyle(color: Colors.blue),
-                    textAlign: TextAlign.start,
                   ),
                 ],
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
-                child: _PostStats(post: widget.post),
+            ),
+            widget.post.imageUrl != null &&
+                    widget.post.imageUrl.trim().length > 0
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 10.0),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: CachedNetworkImage(
+                            imageUrl:
+                                "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg")),
+                  )
+                : const SizedBox.shrink(),
+            Wrap(
+              children: [
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  _getTagsString(widget.post.tags),
+                  style: TextStyle(color: Colors.blue),
+                  textAlign: TextAlign.start,
+                ),
+              ],
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
+              child: _PostStats(
+                post: widget.post,
+                setState: widget.setState,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -159,10 +174,12 @@ class _PostHeader extends StatelessWidget {
 
 class _PostStats extends StatefulWidget {
   final Post post;
+  final Function setState;
 
   const _PostStats({
     Key key,
     @required this.post,
+    this.setState,
   }) : super(key: key);
 
   @override
@@ -190,13 +207,21 @@ class __PostStatsState extends State<_PostStats> {
                   setState(() {
                     widget.post.likes
                         .remove(UserController().currentUser.username);
+                    widget.post.numberOfLikes--;
                   });
+                  if (widget.setState != null) {
+                    widget.setState(() {});
+                  }
                   await PostController().unlike(widget.post.postId);
                 } else {
                   setState(() {
                     widget.post.likes
                         .add(UserController().currentUser.username);
+                    widget.post.numberOfLikes++;
                   });
+                  if (widget.setState != null) {
+                    widget.setState(() {});
+                  }
                   await PostController().like(widget.post.postId);
                 }
               },

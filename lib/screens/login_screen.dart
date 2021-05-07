@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/screens/signup_screen.dart';
-import 'package:hobby_hub_ui/controller/sign_in_view_model.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';
@@ -25,11 +24,16 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomButton(
+        text: 'Don\'t have an account? Sign up!',
+        onTap: () => Navigator.pushReplacementNamed(context, SignupScreen.id),
+      ),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
               height: MediaQuery.of(context).size.height,
               child: Form(
                 key: _formKey,
@@ -40,8 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: MediaQuery.of(context).size.height * .3,
                     ),
                     CustomTextField(
-                      icon: Icons.email,
-                      hintText: 'Email',
+                      icon: Icons.person,
+                      hintText: 'Username',
                       inputType: TextInputType.emailAddress,
                       controller: _email,
                       validator: requiredValidator,
@@ -93,11 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           }),
                     ),
-                    BottomButton(
-                      text: 'Don\'t have an account? Sign up!',
-                      onTap: () => Navigator.pushReplacementNamed(
-                          context, SignupScreen.id),
-                    )
                   ],
                 ),
               ),

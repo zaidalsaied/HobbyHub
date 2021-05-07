@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
-import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
-import 'package:hobby_hub_ui/screens/create_post_screen.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const String id = 'home_screen';
+class TrendingScreen extends StatefulWidget {
+  static const String id = 'trending_screen';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<TrendingScreen> {
   final TrackingScrollController _trackingScrollController =
       TrackingScrollController();
 
@@ -57,23 +55,11 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.post_add,
-          color: Theme.of(context).primaryColor,
-          size: 30,
-        ),
-        onPressed: () {
-          Navigator.pushNamed(context, CreatePostScreen.id);
-        },
-      ),
-      drawer: MainSideBar(
-        currentUser: UserController().currentUser,
-      ),
+      drawer: MainSideBar(),
       body: RefreshIndicator(
         backgroundColor: Theme.of(context).primaryColor,
         onRefresh: () async {
-          await PostController().getUserFeed();
+          await PostController().getUserTrending();
           setState(() {});
         },
         child: CustomScrollView(
@@ -84,7 +70,7 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
               brightness: Brightness.light,
               backgroundColor: Theme.of(context).primaryColor,
               title: Text(
-                'Home',
+                'Trending',
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   color: Theme.of(context).accentColor,
@@ -99,14 +85,14 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  if (PostController.feed != null &&
-                      PostController.feed[index] != null) {
-                    Post post = PostController.feed[index];
+                  if (PostController.trending != null &&
+                      PostController.trending[index] != null) {
+                    Post post = PostController.trending[index];
                     return PostContainer(post: post);
                   } else
                     return SizedBox();
                 },
-                childCount: PostController.feed?.length,
+                childCount: PostController.trending?.length,
               ),
             ),
           ],

@@ -10,18 +10,12 @@ import 'package:hobby_hub_ui/screens/create_post_screen.dart';
 import 'package:hobby_hub_ui/screens/hobbies_screen.dart';
 import 'package:hobby_hub_ui/screens/post_view.dart';
 import 'package:hobby_hub_ui/screens/screens.dart';
-import 'package:hobby_hub_ui/controller/hobbies_list_view_model.dart';
-import 'package:provider/provider.dart';
+import 'package:hobby_hub_ui/screens/trending_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initApp();
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => HobbiesListViewModel(),
-      child: MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 bool isAuth = false;
@@ -33,6 +27,7 @@ initApp() async {
     isAuth = await UserController().authenticateToken();
     if (isAuth) {
       await PostController().getUserFeed();
+      await PostController().getUserTrending();
       await HobbyController().getAllHobbies();
     }
   } catch (e) {
@@ -50,7 +45,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     print("isAuth:$isAuth");
     return MaterialApp(
-      initialRoute: isAuth ? NavScreen.id : LoginScreen.id,
+      initialRoute: NavScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         SignupScreen.id: (context) => SignupScreen(),
@@ -65,10 +60,12 @@ class _MyAppState extends State<MyApp> {
         FollowingScreen.id: (context) => FollowingScreen(),
         CreatePostScreen.id: (context) => CreatePostScreen(),
         PostView.id: (context) => PostView(),
+        TrendingScreen.id: (context) => TrendingScreen(),
       },
       title: 'Flutter Project, Graduation Project two.',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        textTheme: TextTheme(bodyText2: TextStyle(fontSize: 16)),
         accentColor: Color(0xFFFEF9EB),
         primaryColor: Palette.hobbyHubPrimaryColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,

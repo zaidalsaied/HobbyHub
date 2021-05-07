@@ -7,22 +7,19 @@ class BottomButton extends StatelessWidget {
   const BottomButton({Key key, this.text, this.onTap}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Align(
-        alignment: FractionalOffset.bottomCenter,
-        child: GestureDetector(
-          onTap: onTap,
-          child: Container(
-            alignment: Alignment.center,
-            color: Theme.of(context).primaryColor,
-            height: 50.0,
-            child: Text(
-              text,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500),
-            ),
+    return BottomAppBar(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 60,
+          alignment: Alignment.center,
+          color: Theme.of(context).primaryColor,
+          child: Text(
+            text,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500),
           ),
         ),
       ),

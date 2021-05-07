@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'screens.dart';
 import 'package:hobby_hub_ui/widgets/recent_chats.dart';
 
@@ -12,7 +13,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainSideBar(),
+      drawer: MainSideBar(
+        currentUser: UserController().currentUser,
+      ),
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: Text(

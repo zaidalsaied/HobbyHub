@@ -15,17 +15,7 @@ class _FollowUserButtonState extends State<FollowUserButton> {
   final User otherUser;
 
   _FollowUserButtonState(this.otherUser);
-  onPress() {
-    if (currentUser.following.contains(otherUser)) {
-      setState(() {
-        currentUser.following.remove(otherUser);
-      });
-    } else {
-      setState(() {
-        currentUser.following.add(otherUser);
-      });
-    }
-  }
+  onPress() {}
 
   @override
   Widget build(BuildContext context) {

@@ -38,113 +38,109 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              child: Form(
-                key: formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * .1,
-                    ),
-                    CustomTextField(
-                      controller: _firstName,
-                      hintText: 'First Name',
-                      icon: Icons.person,
-                      onChange: (firstName) {
-                        _user.firstName = firstName;
-                      },
-                      validator: requiredValidator,
-                    ),
-                    CustomTextField(
-                      controller: _lastName,
-                      hintText: 'Last Name',
-                      icon: Icons.person,
-                      onChange: (lastName) {
-                        _user.lastName = lastName;
-                      },
-                      validator: requiredValidator,
-                    ),
-                    CustomTextField(
-                      controller: _email,
-                      hintText: 'Email',
-                      icon: Icons.email,
-                      inputType: TextInputType.emailAddress,
-                      validator: validator.MultiValidator([
-                        validator.EmailValidator(
-                            errorText: "enter a valid email address"),
-                        requiredValidator,
-                      ]),
-                      onChange: (email) {
-                        _user.email = email;
-                      },
-                    ),
-                    CustomTextField(
-                      controller: _password,
-                      hintText: 'Password',
-                      icon: Icons.lock,
-                      onChange: (password) {
-                        _user.password = password;
-                      },
-                      validator: passwordValidator,
-                      obscureText: true,
-                    ),
-                    CustomTextField(
-                      controller: _confirmPassword,
-                      hintText: 'Confirm Password',
-                      icon: Icons.lock,
-                      onChange: (value) {},
-                      validator: (val) {
-                        if (val != _user.password) {
-                          return "passwords does not match";
+      bottomNavigationBar: BottomButton(
+        text: 'Already have an account? Login!',
+        onTap: () => Navigator.pushReplacementNamed(context, LoginScreen.id),
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Form(
+              key: formKey,
+              child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                children: [
+                  FlutterLogo(
+                    size: 100,
+                  ),
+                  CustomTextField(
+                    controller: _firstName,
+                    hintText: 'First Name',
+                    icon: Icons.person,
+                    onChange: (firstName) {
+                      _user.firstName = firstName;
+                    },
+                    validator: requiredValidator,
+                  ),
+                  CustomTextField(
+                    controller: _lastName,
+                    hintText: 'Last Name',
+                    icon: Icons.person,
+                    onChange: (lastName) {
+                      _user.lastName = lastName;
+                    },
+                    validator: requiredValidator,
+                  ),
+                  CustomTextField(
+                    controller: _email,
+                    hintText: 'Email',
+                    icon: Icons.email,
+                    inputType: TextInputType.emailAddress,
+                    validator: validator.MultiValidator([
+                      validator.EmailValidator(
+                          errorText: "enter a valid email address"),
+                      requiredValidator,
+                    ]),
+                    onChange: (email) {
+                      _user.email = email;
+                    },
+                  ),
+                  CustomTextField(
+                    controller: _password,
+                    hintText: 'Password',
+                    icon: Icons.lock,
+                    onChange: (password) {
+                      _user.password = password;
+                    },
+                    validator: passwordValidator,
+                    obscureText: true,
+                  ),
+                  CustomTextField(
+                    controller: _confirmPassword,
+                    hintText: 'Confirm Password',
+                    icon: Icons.lock,
+                    onChange: (value) {},
+                    validator: (val) {
+                      if (val != _user.password) {
+                        return "passwords does not match";
+                      }
+                      return null;
+                    },
+                    obscureText: true,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Center(
+                    child: MainButton(
+                      text: 'Signup',
+                      onTap: () async {
+                        if (formKey.currentState.validate()) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          await UserController().signUp(_user);
+                          setState(() {
+                            _isLoading = false;
+                          });
                         }
-                        return null;
                       },
-                      obscureText: true,
                     ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Center(
-                      child: MainButton(
-                        text: 'Signup',
-                        onTap: () async {
-                          if (formKey.currentState.validate()) {
-                            setState(() {
-                              _isLoading = true;
-                            });
-                            await UserController().signUp(_user);
-                            setState(() {
-                              _isLoading = false;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                    BottomButton(
-                      text: 'Already have an account? Login!',
-                      onTap: () => Navigator.pushReplacementNamed(
-                          context, LoginScreen.id),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ),
-          Container(
-            color: Colors.white.withOpacity(0.5),
-            child: _isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                    backgroundColor: Colors.blue,
-                  ))
-                : SizedBox(),
-          ),
-        ],
+            Container(
+              color: Colors.white.withOpacity(0.5),
+              child: _isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                      backgroundColor: Colors.blue,
+                    ))
+                  : SizedBox(),
+            ),
+          ],
+        ),
       ),
     );
   }

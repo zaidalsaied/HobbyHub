@@ -32,8 +32,6 @@ class Post {
       this.date = ''});
 
   factory Post.fromJson(Map<String, dynamic> json) {
-    print('json:$json');
-
     ///[{'creatorUsername':'za','dateCreated':'2021-04-30T18:09:05.474+00:00','id':'608c47c16260306bba862ec1','numberOfLikes':0,'contentList':[{'contentType':'TEXT','value':'zaid like chess'}],'numberOfContent':1,'categories':['chess'],'numberOfComments':0,'comments':[],'likes':[]},]
     Post post = Post(
       postId: json['id'],

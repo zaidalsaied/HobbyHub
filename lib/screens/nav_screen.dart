@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/data/data.dart';
+import 'package:hobby_hub_ui/screens/trending_screen.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';
 
@@ -13,17 +13,15 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   final List<Widget> _screens = [
     HomeScreen(),
-    //TopPosts(),
-    Scaffold(),
+    TrendingScreen(),
     LocationScreen(),
-    ChatListScreen(),
-    Scaffold(),
+    ChatListScreen()
   ];
   final List<IconData> _icons = const [
     Icons.home,
     Icons.trending_up,
-    Icons.pin_drop,
-    Icons.email,
+    Icons.location_on,
+    Icons.mail
   ];
   int _selectedIndex = 0;
 
@@ -33,33 +31,19 @@ class _NavScreenState extends State<NavScreen> {
     return DefaultTabController(
       length: _icons.length,
       child: Scaffold(
-        appBar: Responsive.isDesktop(context)
-            ? PreferredSize(
-                preferredSize: Size(screenSize.width, 100.0),
-                child: CustomAppBar(
-                  currentUser: currentUser,
-                  icons: _icons,
-                  selectedIndex: _selectedIndex,
-                  onTap: (index) => setState(() => _selectedIndex = index),
-                ),
-              )
-            : null,
-        body: IndexedStack(
-          index: _selectedIndex,
-          children: _screens,
-        ),
-        bottomNavigationBar: !Responsive.isDesktop(context)
-            ? Container(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                color: Colors.white,
-                child: CustomTabBar(
-                  icons: _icons,
-                  selectedIndex: _selectedIndex,
-                  onTap: (index) => setState(() => _selectedIndex = index),
-                ),
-              )
-            : const SizedBox.shrink(),
-      ),
+          body: IndexedStack(
+            index: _selectedIndex,
+            children: _screens,
+          ),
+          bottomNavigationBar: Container(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            color: Colors.white,
+            child: CustomTabBar(
+              icons: _icons,
+              selectedIndex: _selectedIndex,
+              onTap: (index) => setState(() => _selectedIndex = index),
+            ),
+          )),
     );
   }
 }

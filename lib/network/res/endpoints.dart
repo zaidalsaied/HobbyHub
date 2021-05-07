@@ -19,6 +19,7 @@ class Endpoints {
   static const String unFollowHobby = "/unfollow-hobby";
 
   static const String postEndPoint = "/post";
+  static const String trending = "/trending";
   static const String commentEndPoint = "/comment";
   static const String feed = "/feed";
   static const String likeEndPoint = "/like";
