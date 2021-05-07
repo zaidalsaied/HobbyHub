@@ -17,11 +17,9 @@ class PostController {
 
   Future<List<Post>> getOwnedPostsByUsername(String username) async {
     User user = await UserController().getUserByUsername(username);
-    print("user is ${user.username}");
     List<Post> ownedPosts = [];
     for (var postId in user.posts) {
       ownedPosts.add(await getPostByPostId(postId));
-      print(ownedPosts.last.text);
     }
     return ownedPosts;
   }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
-import 'package:hobby_hub_ui/screens/home_screen.dart';
 import 'package:hobby_hub_ui/screens/nav_screen.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  final String username;
   static const String id = 'user_profile_screen';
+  final String username;
 
   const UserProfileScreen({Key key, @required this.username}) : super(key: key);
 
@@ -22,18 +22,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.username);
     return Scaffold(
       backgroundColor: ThemeData.light().scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-          onPressed: () =>
-              Navigator.pushReplacementNamed(context, NavScreen.id),
-        ),
+            icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () => Navigator.pop(context)),
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           widget.username ?? "",
@@ -130,30 +124,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                     ),
                     Column(children: [
-                      FutureBuilder(
-                        initialData: [],
-                        future: PostController()
-                            .getOwnedPostsByUsername(user.username),
-                        builder: (context, AsyncSnapshot snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            List<Post> posts = snapshot.data;
+                      for (var post in user.posts)
+                        FutureBuilder(
+                          initialData: [],
+                          future: PostController().getPostByPostId(post),
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              Post post = snapshot.data;
+                              return PostContainer(post: post);
+                            }
                             return Container(
-                              child: Column(
-                                children: [
-                                  for (var post in posts)
-                                    PostContainer(post: post)
-                                ],
-                              ),
+                              height: 80,
+                              width: double.infinity,
+                              margin: EdgeInsets.symmetric(vertical: 15),
+                              color: Colors.grey.withOpacity(0.5),
+                              child: SpinKitThreeBounce(
+                                  color: Theme.of(context).primaryColor,
+                                  size: 50.0),
                             );
-                          }
-                          return Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor: Theme.of(context).primaryColor,
-                            ),
-                          );
-                        },
-                      ),
+                          },
+                        ),
                     ])
                   ],
                 ),
@@ -167,4 +158,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           }),
     );
   }
+
+  List<FutureBuilder> _buildPosts() {}
 }

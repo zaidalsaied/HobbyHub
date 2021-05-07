@@ -4,6 +4,7 @@ import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/screens/create_post_screen.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'screens.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -43,8 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _HomeScreenMobile extends StatefulWidget {
   final TrackingScrollController scrollController;
-
-  const _HomeScreenMobile({
+  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
+      GlobalKey<LiquidPullToRefreshState>();
+  _HomeScreenMobile({
     Key key,
     @required this.scrollController,
   }) : super(key: key);
@@ -70,7 +72,9 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
       drawer: MainSideBar(
         currentUser: UserController().currentUser,
       ),
-      body: RefreshIndicator(
+      body: LiquidPullToRefresh(
+        key: widget._refreshIndicatorKey,
+        showChildOpacityTransition: true,
         backgroundColor: Theme.of(context).primaryColor,
         onRefresh: () async {
           await PostController().getUserFeed();
