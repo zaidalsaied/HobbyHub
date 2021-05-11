@@ -7,6 +7,7 @@ import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/screens/create_post_screen.dart';
+import 'package:hobby_hub_ui/screens/following_screen.dart';
 import 'package:hobby_hub_ui/screens/hobbies_screen.dart';
 import 'package:hobby_hub_ui/screens/post_view.dart';
 import 'package:hobby_hub_ui/screens/screens.dart';
@@ -43,15 +44,15 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    print("isAuth:$isAuth");
     return MaterialApp(
-      initialRoute: NavScreen.id,
+      initialRoute: LoginScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         SignupScreen.id: (context) => SignupScreen(),
         HomeScreen.id: (context) => HomeScreen(),
         NavScreen.id: (context) => NavScreen(),
-        MainSideBar.id: (context) => MainSideBar(),
+        MainSideBar.id: (context) =>
+            MainSideBar(currentUser: UserController().currentUser),
         ChatListScreen.id: (context) => ChatListScreen(),
         ChatScreen.id: (context) => ChatScreen(),
         HobbiesScreen.id: (context) => HobbiesScreen(),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/models/comment_model.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
@@ -11,6 +12,7 @@ class PostController {
   static List<Post> trending;
 
   Future<List<Post>> getUserFeed() async {
+    print(TokenDB().getUserToken());
     feed = _parsePosts(await PostApi().getFeed());
     return feed;
   }

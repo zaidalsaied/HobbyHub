@@ -1,52 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/data/data.dart';
-import 'package:hobby_hub_ui/models/models.dart';
-import 'package:hobby_hub_ui/widgets/follow_user_button.dart';
-import 'package:hobby_hub_ui/widgets/widgets.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:hobby_hub_ui/screens/user_profile.dart';
+import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
 
 class FollowingScreen extends StatefulWidget {
   static const String id = 'following_screen';
+
   @override
   _FollowingScreenState createState() => _FollowingScreenState();
 }
 
 class _FollowingScreenState extends State<FollowingScreen> {
-  // _buildFollowList() {
-  //   List<Widget> followList = [];
-  //   currentUser.following.forEach((User otherUser) {
-  //     followList.add(
-  //       Container(
-  //         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-  //         margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-  //         decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.circular(15),
-  //           border: Border.all(width: 1.0, color: Colors.grey[200]),
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Row(
-  //               children: [
-  //                 ProfileAvatar(
-  //                   imageUrl: otherUser.imgUrl,
-  //                 ),
-  //                 SizedBox(
-  //                   width: 10,
-  //                 ),
-  //                 Text(otherUser.name),
-  //               ],
-  //             ),
-  //             FollowUserButton(
-  //               otherUser: otherUser,
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     );
-  //   });
-  //   return followList;
-  // }
+  void _unfollow(String username) async {
+    await UserController().unfollowUser(username);
+    setState(() {
+      UserController().currentUser.following.remove(username);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +44,74 @@ class _FollowingScreenState extends State<FollowingScreen> {
           ),
         ),
         body: ListView(
-          children: [],
+          children: [
+            if (UserController().currentUser.following.isEmpty)
+              Center(
+                heightFactor: 8,
+                child: Text("You are not following anyone yet!"),
+              ),
+            for (var username in UserController().currentUser.following)
+              FutureBuilder(
+                  future: UserController().getUserByUsername(username),
+                  builder: (_, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      UserProfileScreen(username: username)));
+                        },
+                        child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 10.0),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 10.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                  width: 1.0, color: Colors.grey[200]),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    ProfileAvatar(
+                                      imageUrl:
+                                          "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg",
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(username ?? ""),
+                                  ],
+                                ),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                    onPressed: () {
+                                      _unfollow(username);
+                                    },
+                                    child: Text("Following"))
+                              ],
+                            )),
+                      );
+                    } else {
+                      return Container(
+                        height: 40,
+                        width: double.infinity,
+                        margin: EdgeInsets.symmetric(vertical: 15),
+                        color: Colors.grey.withOpacity(0.5),
+                        child: SpinKitThreeBounce(
+                            color: Theme.of(context).primaryColor, size: 50.0),
+                      );
+                    }
+                  })
+          ],
         ));
   }
 }

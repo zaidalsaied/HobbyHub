@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
+import 'package:hobby_hub_ui/screens/following_screen.dart';
 import 'screens.dart';
 
 class MainSideBar extends StatelessWidget {
@@ -89,8 +91,10 @@ class MainSideBar extends StatelessWidget {
           SideBarItem(
             icon: Icons.logout,
             text: 'Logout',
-            onTap: () =>
-                Navigator.pushReplacementNamed(context, LoginScreen.id),
+            onTap: () {
+              UserController().logout();
+              Navigator.pushReplacementNamed(context, LoginScreen.id);
+            },
           ),
         ],
       ),

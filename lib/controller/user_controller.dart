@@ -43,7 +43,7 @@ class UserController {
         return true;
       }
       return false;
-    } on Exception catch (e) {
+    } catch (e) {
       print(LoggerStackTrace.from(StackTrace.current).print(e.toString()));
       return false;
     }
@@ -51,6 +51,7 @@ class UserController {
 
   String getUserToken() {
     try {
+      print("tokkkkkkkken");
       return TokenDB().getUserToken();
     } catch (e) {
       print(LoggerStackTrace.from(StackTrace.current).print(e.toString()));
@@ -110,5 +111,27 @@ class UserController {
       print(e);
       return false;
     }
+  }
+
+  Future<void> followUser(String username) async {
+    try {
+      await UserApi().followUser(username);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<void> unfollowUser(String username) async {
+    try {
+      await UserApi().unFollowUser(username);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  void logout() {
+    TokenDB().clearUserToken();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';
@@ -55,7 +56,9 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainSideBar(),
+      drawer: MainSideBar(
+        currentUser: UserController().currentUser,
+      ),
       body: RefreshIndicator(
         backgroundColor: Theme.of(context).primaryColor,
         onRefresh: () async {

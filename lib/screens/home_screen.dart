@@ -9,6 +9,7 @@ import 'screens.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'home_screen';
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -46,6 +47,7 @@ class _HomeScreenMobile extends StatefulWidget {
   final TrackingScrollController scrollController;
   final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
       GlobalKey<LiquidPullToRefreshState>();
+
   _HomeScreenMobile({
     Key key,
     @required this.scrollController,

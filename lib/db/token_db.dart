@@ -37,7 +37,7 @@ class TokenDB {
   void clearUserToken() {
     try {
       return tokenDb.put('token', null);
-    } on Exception catch (e) {
+    } catch (e) {
       print("UserDB clearUserToken ERROR:$e");
       return null;
     }

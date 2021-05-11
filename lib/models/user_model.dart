@@ -36,6 +36,8 @@ class User {
       imgUrl: json["image"],
       username: json["username"],
       location: json["location"],
+      followers: List<String>.from(json['followers']),
+      following: List<String>.from(json['usersFollowing']),
       email: json["email"],
       gender: json["gender"],
       hobbies: List<String>.from(json["hobbiesFollowing"]),

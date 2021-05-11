@@ -85,14 +85,14 @@ class UserApi {
     }
   }
 
-  void followUser(String username) async {
+  Future<void> followUser(String username) async {
     try {
       http.Request request = http.Request(
           'PUT',
           Uri.parse(
               '${Endpoints.host}${Endpoints.userEndpoint}${Endpoints.followUser}'));
       request.body = jsonEncode({"username": username});
-      request.headers.addAll(Endpoints.headers);
+      request.headers.addAll(Endpoints.authorizedHeaders);
 
       http.StreamedResponse response = await request.send();
 
@@ -101,20 +101,19 @@ class UserApi {
       } else {
         print(response.reasonPhrase);
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
     }
   }
 
-  void unFollowUser(String username) async {
+  Future<void> unFollowUser(String username) async {
     try {
       http.Request request = http.Request(
           'PUT',
           Uri.parse(
               '${Endpoints.host}${Endpoints.userEndpoint}${Endpoints.unFollowUser}'));
       request.body = jsonEncode({"username": username});
-      request.headers.addAll(Endpoints.headers);
+      request.headers.addAll(Endpoints.authorizedHeaders);
 
       http.StreamedResponse response = await request.send();
 
@@ -123,8 +122,7 @@ class UserApi {
       } else {
         print(response.reasonPhrase);
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
     }
   }

@@ -40,6 +40,7 @@ class PostApi {
 
   Future<String> getFeed() async {
     try {
+      print(Endpoints.authorizedHeaders);
       var request = http.Request(
           'GET',
           Uri.parse(

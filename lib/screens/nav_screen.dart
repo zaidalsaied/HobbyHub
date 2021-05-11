@@ -11,6 +11,7 @@ class NavScreen extends StatefulWidget {
 }
 
 class _NavScreenState extends State<NavScreen> {
+  @override
   final List<Widget> _screens = [
     HomeScreen(),
     TrendingScreen(),

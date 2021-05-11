@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/screens/signup_screen.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
@@ -14,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _email = TextEditingController();
+  TextEditingController _username = TextEditingController();
   TextEditingController _password = TextEditingController();
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
@@ -47,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       icon: Icons.person,
                       hintText: 'Username',
                       inputType: TextInputType.emailAddress,
-                      controller: _email,
+                      controller: _username,
                       validator: requiredValidator,
                       onChange: (value) {},
                     ),
@@ -74,15 +75,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                 _isLoading = true;
                               });
                               bool isUser = await UserController().signIn(
-                                  _email.text.trim(), _password.text.trim());
-                              setState(() {
-                                _isLoading = false;
-                              });
+                                  _username.text.trim(), _password.text.trim());
+
                               if (isUser) {
-                                print("user is user");
+                                await PostController().getUserFeed();
+                                await PostController().getUserTrending();
                                 Navigator.pushReplacementNamed(
                                     context, NavScreen.id);
                               } else {
+                                setState(() {
+                                  _isLoading = false;
+                                });
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
