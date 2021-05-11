@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:hive/hive.dart';
 
 class TokenDB {
@@ -26,9 +25,8 @@ class TokenDB {
   String getUserToken() {
     try {
       log("token");
-      log(tokenDb.get('token'));
       return tokenDb.get('token');
-    } on Exception catch (e) {
+    } catch (e) {
       print("UserDB getUserToken ERROR:$e");
       return null;
     }
@@ -39,7 +37,7 @@ class TokenDB {
       return tokenDb.put('token', null);
     } catch (e) {
       print("UserDB clearUserToken ERROR:$e");
-      return null;
+      return;
     }
   }
 }

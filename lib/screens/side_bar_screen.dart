@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/following_screen.dart';
+import 'package:hobby_hub_ui/screens/settings_screen.dart';
+import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
 import 'screens.dart';
 
 class MainSideBar extends StatelessWidget {
@@ -16,32 +17,32 @@ class MainSideBar extends StatelessWidget {
     return Drawer(
       child: Column(
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.zero,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30.0),
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg",
-                    height: 100,
-                    width: 100,
-                  ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      UserProfileScreen(username: currentUser.username),
                 ),
+              );
+            },
+            child: UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.white,
               ),
-            ),
-            accountName: Text(
-              currentUser.username,
-              style: TextStyle(color: Colors.black),
-            ),
-            accountEmail: Text(
-              currentUser.username,
-              style: TextStyle(color: Colors.black),
+              currentAccountPicture: ProfileAvatar(
+                  radius: 35,
+                  imageUrl:
+                      "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"),
+              accountName: Text(
+                currentUser.username,
+                style: TextStyle(color: Colors.black),
+              ),
+              accountEmail: Text(
+                '@ ${currentUser.username}',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ),
           SideBarItem(
@@ -79,6 +80,9 @@ class MainSideBar extends StatelessWidget {
           SideBarItem(
             icon: Icons.settings,
             text: 'Settings',
+            onTap: () {
+              Navigator.pushNamed(context, SettingScreen.id);
+            },
           ),
           Divider(
             height: 1,
@@ -125,6 +129,7 @@ class SideBarItem extends StatelessWidget {
       ),
       title: Text(
         text,
+        style: TextStyle(fontSize: 16),
       ),
       onTap: onTap,
     );

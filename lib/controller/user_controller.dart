@@ -51,7 +51,6 @@ class UserController {
 
   String getUserToken() {
     try {
-      print("tokkkkkkkken");
       return TokenDB().getUserToken();
     } catch (e) {
       print(LoggerStackTrace.from(StackTrace.current).print(e.toString()));

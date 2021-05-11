@@ -9,11 +9,11 @@ class User {
   String lastName;
   String gender;
   String location;
-  List<String> posts = [];
-  List<String> hobbies = [];
+  Set<String> posts = {};
+  Set<String> hobbies = {};
   String imgUrl;
-  List<String> followers = [];
-  List<String> following = [];
+  Set<String> followers = {};
+  Set<String> following = {};
 
   User(
       {this.id,
@@ -36,12 +36,12 @@ class User {
       imgUrl: json["image"],
       username: json["username"],
       location: json["location"],
-      followers: List<String>.from(json['followers']),
-      following: List<String>.from(json['usersFollowing']),
+      followers: Set<String>.from(json['followers']),
+      following: Set<String>.from(json['usersFollowing']),
       email: json["email"],
       gender: json["gender"],
-      hobbies: List<String>.from(json["hobbiesFollowing"]),
-      posts: List<String>.from(json["posts"]),
+      hobbies: Set<String>.from(json["hobbiesFollowing"]),
+      posts: Set<String>.from(json["posts"]),
     );
   }
 }

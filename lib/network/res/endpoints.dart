@@ -2,19 +2,19 @@ import 'package:hobby_hub_ui/controller/user_controller.dart';
 
 class Endpoints {
   static String _getUserToken() {
-    print("geting toen");
     return UserController().getUserToken();
   }
 
-  static const host = "https://hobby-hub-project.herokuapp.com";
-  static Map<String, String> headers = {
-    "Content-Type": "application/json",
-  };
+  static String get host {
+    return "https://hobby-hub-project.herokuapp.com";
+  }
+
+  static Map<String, String> headers = {"Content-Type": "application/json"};
 
   static Map<String, String> get authorizedHeaders {
     return {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_getUserToken()}',
+      'Authorization': 'Bearer ${_getUserToken()}'
     };
   }
 

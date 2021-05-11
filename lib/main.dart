@@ -11,6 +11,7 @@ import 'package:hobby_hub_ui/screens/following_screen.dart';
 import 'package:hobby_hub_ui/screens/hobbies_screen.dart';
 import 'package:hobby_hub_ui/screens/post_view.dart';
 import 'package:hobby_hub_ui/screens/screens.dart';
+import 'package:hobby_hub_ui/screens/settings_screen.dart';
 import 'package:hobby_hub_ui/screens/trending_screen.dart';
 
 void main() async {
@@ -45,7 +46,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: LoginScreen.id,
+      initialRoute: isAuth ? NavScreen.id : LoginScreen.id,
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         SignupScreen.id: (context) => SignupScreen(),
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
             MainSideBar(currentUser: UserController().currentUser),
         ChatListScreen.id: (context) => ChatListScreen(),
         ChatScreen.id: (context) => ChatScreen(),
+        SettingScreen.id: (context) => SettingScreen(),
         HobbiesScreen.id: (context) => HobbiesScreen(),
         UserProfileScreen.id: (context) => UserProfileScreen(),
         FollowersScreen.id: (context) => FollowersScreen(),
@@ -67,7 +69,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         textTheme: TextTheme(bodyText2: TextStyle(fontSize: 16)),
-        accentColor: Color(0xFFFEF9EB),
+        accentColor: Palette.accentColor,
         primaryColor: Palette.hobbyHubPrimaryColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         scaffoldBackgroundColor: Palette.scaffold,

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/user_profile.dart';
 import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
 
 class FollowingScreen extends StatefulWidget {
   static const String id = 'following_screen';
+  User user;
+
+  FollowingScreen({Key key, this.user}) : super(key: key);
 
   @override
   _FollowingScreenState createState() => _FollowingScreenState();
@@ -21,6 +25,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.user == null) widget.user = UserController().currentUser;
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -45,12 +50,13 @@ class _FollowingScreenState extends State<FollowingScreen> {
         ),
         body: ListView(
           children: [
-            if (UserController().currentUser.following.isEmpty)
+            if (widget.user.username == UserController().currentUser.username &&
+                UserController().currentUser.following.isEmpty)
               Center(
                 heightFactor: 8,
                 child: Text("You are not following anyone yet!"),
               ),
-            for (var username in UserController().currentUser.following)
+            for (var username in widget.user.following)
               FutureBuilder(
                   future: UserController().getUserByUsername(username),
                   builder: (_, snapshot) {

@@ -4,6 +4,8 @@ import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
+import 'package:hobby_hub_ui/screens/following_screen.dart';
+import 'package:hobby_hub_ui/screens/screens.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -80,47 +82,63 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg",
                   radius: 50,
                 ),
-                Column(
-                  children: [
-                    Text(
-                      'Following',
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 18,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => FollowingScreen(user: user)));
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        'Following',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      user.following.length.toString(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                      SizedBox(
+                        height: 2,
                       ),
-                    ),
-                  ],
+                      Text(
+                        user.following.length.toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                Column(
-                  children: [
-                    Text(
-                      'Followers',
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 18,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => FollowersScreen(user: user)));
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        'Followers',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      user.followers.length.toString(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                      SizedBox(
+                        height: 2,
                       ),
-                    ),
-                  ],
+                      Text(
+                        user.followers.length.toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Column(
                   children: [
