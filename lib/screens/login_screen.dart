@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/screens/signup_screen.dart';
@@ -109,9 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.white.withOpacity(0.5),
             child: _isLoading
                 ? Center(
-                    child: CircularProgressIndicator(
-                    backgroundColor: Colors.blue,
-                  ))
+                    child: SpinKitCircle(color: Theme.of(context).primaryColor))
                 : SizedBox(),
           ),
         ],

@@ -5,7 +5,6 @@ export 'circle_button.dart';
 export 'custom_tap_bar.dart';
 export 'responsive.dart';
 export 'post_container.dart';
-export 'custom_loader.dart';
 export 'title_text.dart';
 export 'follow_hobby_button.dart';
 export 'custom_text_field.dart';

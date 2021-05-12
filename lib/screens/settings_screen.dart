@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/config/palette.dart';
-import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:hobby_hub_ui/db/app_color_db.dart';
 
 class SettingScreen extends StatefulWidget {
   static const String id = "settings_screen";
@@ -35,7 +36,79 @@ class _SettingScreenState extends State<SettingScreen> {
               text: 'App Color',
               icon: Icons.color_lens,
               onPressed: () {
-                Palette.hobbyHubPrimaryColor = Colors.greenAccent;
+                int index = AppColorDB().getAppColor();
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          "Choose your favorite app color",
+                          textAlign: TextAlign.center,
+                        ),
+                        content: StatefulBuilder(builder: (context, state) {
+                          return Container(
+                            height: MediaQuery.of(context).size.height * .3,
+                            width: MediaQuery.of(context).size.width * .6,
+                            child: ListView(
+                              children: [
+                                Wrap(
+                                  direction: Axis.horizontal,
+                                  alignment: WrapAlignment.center,
+                                  children: [
+                                    for (var color in Palette.colors)
+                                      GestureDetector(
+                                        onTap: () {
+                                          state(() {
+                                            index = Palette.colors
+                                                .toList()
+                                                .indexOf(color);
+                                          });
+                                        },
+                                        child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 3),
+                                            height: 30,
+                                            width: 30,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: color),
+                                            child: Palette.colors
+                                                        .toList()
+                                                        .indexOf(color) ==
+                                                    index
+                                                ? Center(
+                                                    child: Icon(
+                                                      Icons.check,
+                                                      color: Colors.white,
+                                                    ),
+                                                  )
+                                                : SizedBox()),
+                                      )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                        actions: [
+                          Container(
+                            width: 100,
+                            child: ElevatedButton(
+                              child: Text(
+                                "OK",
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Palette.hobbyHubPrimaryColor),
+                              onPressed: () {
+                                AppColorDB().saveAppColor(index);
+                                Phoenix.rebirth(context);
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    });
                 setState(() {});
               },
             ),

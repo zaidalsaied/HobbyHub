@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/hobby_controller.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
@@ -168,11 +169,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ),
           _isLoading
               ? Container(
-                  color: Theme.of(context).primaryColor.withOpacity(.5),
+                  color: Theme.of(context).primaryColor.withOpacity(.2),
                   child: Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
+                    child: SpinKitCircle(color: Theme.of(context).primaryColor),
                   ),
                 )
               : SizedBox()

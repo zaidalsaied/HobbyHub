@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/helper/stack_trace_helper.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
@@ -131,6 +132,8 @@ class UserController {
   }
 
   void logout() {
+    PostController.feed = [];
+    PostController.trending = [];
     TokenDB().clearUserToken();
   }
 }

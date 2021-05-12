@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/login_screen.dart';
@@ -134,9 +135,8 @@ class _SignupScreenState extends State<SignupScreen> {
               color: Colors.white.withOpacity(0.5),
               child: _isLoading
                   ? Center(
-                      child: CircularProgressIndicator(
-                      backgroundColor: Colors.blue,
-                    ))
+                      child:
+                          SpinKitCircle(color: Theme.of(context).primaryColor))
                   : SizedBox(),
             ),
           ],

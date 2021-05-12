@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/hobby_controller.dart';
 import 'package:hobby_hub_ui/models/hobby_model.dart';
 import 'hobby_list_item.dart';
@@ -53,8 +54,8 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                 ]);
               } else
                 return Center(
-                    child: CircularProgressIndicator(
-                  backgroundColor: Colors.blue,
+                    child: SpinKitCircle(
+                  color: Theme.of(context).primaryColor,
                 ));
             },
           )),

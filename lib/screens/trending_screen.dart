@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
-import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'screens.dart';
 
 class TrendingScreen extends StatefulWidget {
   static const String id = 'trending_screen';
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _TrendingScreenState createState() => _TrendingScreenState();
 }
 
-class _HomeScreenState extends State<TrendingScreen> {
+class _TrendingScreenState extends State<TrendingScreen> {
   final TrackingScrollController _trackingScrollController =
       TrackingScrollController();
 
@@ -42,8 +44,10 @@ class _HomeScreenState extends State<TrendingScreen> {
 
 class _HomeScreenMobile extends StatefulWidget {
   final TrackingScrollController scrollController;
+  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
+      GlobalKey<LiquidPullToRefreshState>();
 
-  const _HomeScreenMobile({
+  _HomeScreenMobile({
     Key key,
     @required this.scrollController,
   }) : super(key: key);
@@ -56,51 +60,51 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainSideBar(
-        currentUser: UserController().currentUser,
-      ),
-      body: RefreshIndicator(
-        backgroundColor: Theme.of(context).primaryColor,
-        onRefresh: () async {
-          await PostController().getUserTrending();
-          setState(() {});
-        },
-        child: CustomScrollView(
-          controller: widget.scrollController,
-          slivers: [
-            SliverAppBar(
-              iconTheme: IconThemeData(color: Colors.white),
-              brightness: Brightness.light,
-              backgroundColor: Theme.of(context).primaryColor,
-              title: Text(
-                'Trending',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -1.2,
-                ),
-              ),
-              floating: true,
-              actions: [],
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          brightness: Brightness.light,
+          backgroundColor: Theme.of(context).primaryColor,
+          title: Text(
+            'Trending',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: Theme.of(context).accentColor,
+              fontSize: 28.0,
+              fontWeight: FontWeight.bold,
+              letterSpacing: -1.2,
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  if (PostController.trending != null &&
-                      PostController.trending[index] != null) {
-                    Post post = PostController.trending[index];
-                    return PostContainer(post: post);
-                  } else
-                    return SizedBox();
-                },
-                childCount: PostController.trending?.length,
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
-    );
+        drawer: MainSideBar(
+          currentUser: UserController().currentUser,
+        ),
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          child: FutureBuilder(
+              future: PostController().getUserTrending(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done)
+                  return LiquidPullToRefresh(
+                    key: widget._refreshIndicatorKey,
+                    showChildOpacityTransition: false,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    onRefresh: () async {
+                      await PostController().getUserTrending();
+                      setState(() {});
+                    },
+                    child: ListView(
+                      children: [
+                        for (var post in snapshot.data)
+                          PostContainer(
+                            post: post,
+                          )
+                      ],
+                    ),
+                  );
+                return SpinKitCircle(
+                  color: Theme.of(context).primaryColor,
+                );
+              }),
+        ));
   }
 }

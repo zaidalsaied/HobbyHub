@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hobby_hub_ui/config/palette.dart';
 import 'package:hobby_hub_ui/controller/hobby_controller.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:hobby_hub_ui/db/app_color_db.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/screens/create_post_screen.dart';
 import 'package:hobby_hub_ui/screens/following_screen.dart';
@@ -17,7 +19,7 @@ import 'package:hobby_hub_ui/screens/trending_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initApp();
-  runApp(MyApp());
+  runApp(Phoenix(child: MyApp()));
 }
 
 bool isAuth = false;
@@ -26,6 +28,7 @@ initApp() async {
   try {
     await Hive.initFlutter();
     await TokenDB().openTokenBox();
+    await AppColorDB().openAppColorDbBox();
     isAuth = await UserController().authenticateToken();
     if (isAuth) {
       await PostController().getUserFeed();

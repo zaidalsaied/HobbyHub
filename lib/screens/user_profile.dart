@@ -229,8 +229,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     return _profileHeader();
                   }
                   return Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Theme.of(context).primaryColor,
+                    child: SpinKitCircle(
+                      color: Theme.of(context).primaryColor,
                     ),
                   );
                 })
