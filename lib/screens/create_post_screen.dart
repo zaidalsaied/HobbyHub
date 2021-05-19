@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -7,6 +9,7 @@ import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
 import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_select_flutter/chip_field/multi_select_chip_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 
@@ -28,13 +31,28 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     if (post.tags == null) post.tags = [];
   }
 
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
   bool _isLoading = false;
   Post post = Post();
 
   @override
   Widget build(BuildContext context) {
     bool isValid = post.text.trim().length > 0 && post.tags.length > 0;
-
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -43,6 +61,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           "Create Post",
         ),
         actions: [
+          GestureDetector(
+              onTap: getImage, child: Icon(Icons.add_a_photo_rounded)),
           Container(
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             child: ElevatedButton(
@@ -59,7 +79,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         setState(() {
                           _isLoading = true;
                         });
-                        isSubmitted = await PostController().post(post);
+                        isSubmitted = await PostController().post(post, _image);
                         if (isSubmitted) {
                           setState(() {
                             _isLoading = false;
@@ -115,28 +135,57 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       imageUrl:
                           "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg",
                     ),
-                    Container(
-                      padding: EdgeInsets.zero,
-                      margin: EdgeInsets.zero,
-                      width: MediaQuery.of(context).size.width * .8,
-                      child: TextField(
-                        maxLines: null,
-                        minLines: 5,
-                        onChanged: (value) {
-                          setState(() {
-                            post.text = value;
-                          });
-                        },
-                        style: TextStyle(fontSize: 20),
-                        autofocus: true,
-                        decoration: InputDecoration(
-                          border:
-                              UnderlineInputBorder(borderSide: BorderSide.none),
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          hintText: 'What\'s on your mind?',
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.zero,
+                          margin: EdgeInsets.zero,
+                          width: MediaQuery.of(context).size.width * .8,
+                          child: TextField(
+                            maxLines: null,
+                            minLines: 2,
+                            onChanged: (value) {
+                              setState(() {
+                                post.text = value;
+                              });
+                            },
+                            style: TextStyle(fontSize: 20),
+                            autofocus: true,
+                            decoration: InputDecoration(
+                              border: UnderlineInputBorder(
+                                  borderSide: BorderSide.none),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              hintText: 'What\'s on your mind?',
+                            ),
+                          ),
                         ),
-                      ),
+                        if (_image != null)
+                          Center(
+                            child: Stack(
+                              children: [
+                                Container(
+                                  width: size.width - 100,
+                                  child: Image.file(
+                                    _image,
+                                    height: 200,
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 0,
+                                  right: 25,
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _image = null;
+                                        });
+                                      },
+                                      child: Icon(Icons.cancel)),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
                     ),
                   ],
                 ),

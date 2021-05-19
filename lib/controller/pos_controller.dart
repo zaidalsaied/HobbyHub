@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
@@ -31,7 +32,8 @@ class PostController {
     return trending;
   }
 
-  Future<bool> post(Post post) async {
+  Future<bool> post(Post post, File image) async {
+    //todo upload image
     return await PostApi().post(post);
   }
 

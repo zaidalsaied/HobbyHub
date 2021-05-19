@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
@@ -17,8 +18,9 @@ class UserController {
     return _userController;
   }
 
-  Future<bool> signUp(User user) async {
+  Future<bool> signUp(User user, File image) async {
     try {
+      //todo upload user image to talal db.
       Map<String, dynamic> response = await UserApi().signUp(user);
       print(response);
       String token = response["token"];

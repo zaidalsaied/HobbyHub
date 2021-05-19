@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
@@ -5,6 +6,7 @@ import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/login_screen.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart' as validator;
+import 'package:image_picker/image_picker.dart';
 
 class SignupScreen extends StatefulWidget {
   static const String id = 'signup_screen';
@@ -19,11 +21,26 @@ class _SignupScreenState extends State<SignupScreen> {
       _password,
       _email,
       _confirmPassword = TextEditingController();
-
   User _user = User();
   String selectedGender = "Gender";
   bool _isLoading = false;
   final formKey = GlobalKey<FormState>();
+
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
   final requiredValidator =
       validator.RequiredValidator(errorText: 'this field is required');
   final passwordValidator = validator.MultiValidator([
@@ -51,8 +68,50 @@ class _SignupScreenState extends State<SignupScreen> {
               child: ListView(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 children: [
-                  FlutterLogo(
-                    size: 100,
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                          onTap: getImage,
+                          child: _image == null
+                              ? Stack(
+                                  children: [
+                                    Container(
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 100,
+                                        ),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all())),
+                                    Positioned(
+                                        top: 0,
+                                        right: 2,
+                                        child: Container(
+                                            color: Colors.white,
+                                            child: Icon(
+                                                Icons.add_a_photo_rounded)))
+                                  ],
+                                )
+                              : CircleAvatar(
+                                  radius: 50,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(35),
+                                    child: Image.file(
+                                      _image,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   CustomTextField(
                     controller: _firstName,
@@ -120,7 +179,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           setState(() {
                             _isLoading = true;
                           });
-                          await UserController().signUp(_user);
+                          await UserController().signUp(_user, _image);
                           setState(() {
                             _isLoading = false;
                           });
