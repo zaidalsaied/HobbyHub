@@ -33,7 +33,7 @@ class User {
     return User(
       id: json["id"],
       name: json["name"],
-      imgUrl: json["image"],
+      imgUrl: json["imageUrl"],
       username: json["username"],
       location: json["location"],
       followers: Set<String>.from(json['followers']),

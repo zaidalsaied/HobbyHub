@@ -6,6 +6,7 @@ import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/helper/stack_trace_helper.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/network/user_api.dart';
+import 'package:hobby_hub_ui/service/upload_image_service.dart';
 
 class UserController {
   static User _currentUser;
@@ -20,7 +21,9 @@ class UserController {
 
   Future<bool> signUp(User user, File image) async {
     try {
-      //todo upload user image to talal db.
+      if (image != null)
+        user.imgUrl = await UploadImageService.uploadImage(
+            user.firstName + user.lastName, image.path);
       Map<String, dynamic> response = await UserApi().signUp(user);
       print(response);
       String token = response["token"];
@@ -29,7 +32,7 @@ class UserController {
         return true;
       }
       return false;
-    } on Exception catch (e) {
+    } catch (e) {
       print(LoggerStackTrace.from(StackTrace.current).print(e.toString()));
       return false;
     }

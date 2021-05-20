@@ -78,6 +78,7 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          heroTag: "btn1",
           child: Icon(
             Icons.post_add,
             color: Theme.of(context).primaryColor,

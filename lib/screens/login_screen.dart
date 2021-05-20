@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/screens/signup_screen.dart';
+import 'package:hobby_hub_ui/service/upload_image_service.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';

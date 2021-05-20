@@ -78,8 +78,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ProfileAvatar(
-                  imageUrl:
-                      "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg",
+                  imageUrl: (user.imgUrl == null || user.imgUrl.isEmpty)
+                      ? "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
+                      : user.imgUrl,
                   radius: 50,
                 ),
                 GestureDetector(
@@ -226,6 +227,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.data != null) user = snapshot.data;
+                    print(user.imgUrl);
+
                     return _profileHeader();
                   }
                   return Center(

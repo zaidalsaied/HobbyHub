@@ -15,6 +15,7 @@ import 'package:hobby_hub_ui/screens/post_view.dart';
 import 'package:hobby_hub_ui/screens/screens.dart';
 import 'package:hobby_hub_ui/screens/settings_screen.dart';
 import 'package:hobby_hub_ui/screens/trending_screen.dart';
+import 'package:hobby_hub_ui/service/upload_image_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

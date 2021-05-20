@@ -33,6 +33,7 @@ class UserApi {
         "username": user.firstName.trim() + user.lastName.trim(),
         "password": user.password.trim(),
         "email": user.email.trim(),
+        "imageUrl": user.imgUrl,
         "firstName": user.firstName.trim(),
         "lastName": user.lastName.trim(),
         "gender": "male",
