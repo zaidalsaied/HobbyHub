@@ -11,7 +11,6 @@ class NavScreen extends StatefulWidget {
 }
 
 class _NavScreenState extends State<NavScreen> {
-  @override
   final List<Widget> _screens = [
     HomeScreen(),
     TrendingScreen(),
@@ -42,7 +41,10 @@ class _NavScreenState extends State<NavScreen> {
             child: CustomTabBar(
               icons: _icons,
               selectedIndex: _selectedIndex,
-              onTap: (index) => setState(() => _selectedIndex = index),
+              onTap: (index) {
+                if (index == 2) _screens[2] = LocationScreen();
+                setState(() => _selectedIndex = index);
+              },
             ),
           )),
     );

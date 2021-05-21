@@ -35,7 +35,7 @@ class User {
       name: json["name"],
       imgUrl: json["imageUrl"],
       username: json["username"],
-      location: json["location"],
+      location: json["currentLocation"],
       followers: Set<String>.from(json['followers']),
       following: Set<String>.from(json['usersFollowing']),
       email: json["email"],

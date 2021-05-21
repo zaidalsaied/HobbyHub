@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:hobby_hub_ui/models/user_model.dart';
+import 'package:hobby_hub_ui/screens/user_profile.dart';
 import 'package:location/location.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -30,15 +32,34 @@ class _LocationScreenState extends State<LocationScreen> {
   Set<Marker> markers = {};
 
   Future<void> getMarkers() async {
-    List<String> locationString =
-        await UserController().getUserFollowingLocation();
-    for (int i = 0; i < locationString.length; i++) {
-      markers.add(Marker(
-          markerId: MarkerId(i.toString()),
-          position: LatLng(double.parse(locationString[i].split(',')[0]),
-              double.parse(locationString[i].split(',')[1]))));
+    try {
+      List<User> following = await UserController().getUserFollowing();
+      for (int i = 0; i < following.length; i++) {
+        double long, lat;
+        if (following[i].location != null &&
+            following[i].location.trim().isNotEmpty) {
+          lat = double.parse(following[i].location.split(',')[0]);
+          long = double.parse(following[i].location.split(',')[1]);
+          Marker marker = Marker(
+              infoWindow: InfoWindow(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => UserProfileScreen(
+                              username: following[i].username)));
+                },
+                title: following[i].username,
+              ),
+              markerId: MarkerId(following[i].username),
+              position: LatLng(lat, long));
+          markers.add(marker);
+        }
+      }
+      return;
+    } catch (e) {
+      print(e);
     }
-    return;
   }
 
   Future<LatLng> getLocation() async {
@@ -59,6 +80,7 @@ class _LocationScreenState extends State<LocationScreen> {
     }
     _locationData = await location.getLocation();
     await getMarkers();
+    print(_locationData.longitude);
     return LatLng(_locationData.latitude, _locationData.longitude);
   }
 
@@ -70,10 +92,12 @@ class _LocationScreenState extends State<LocationScreen> {
                 future: getLocation(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
+                    print("snap:${snapshot.data}");
                     LatLng userLocation = snapshot.data;
-                    UserController().updateUserLocation(
-                        userLocation.latitude.toString(),
-                        userLocation.longitude.toString());
+                    if (userLocation != null)
+                      UserController().updateUserLocation(
+                          userLocation.latitude.toString(),
+                          userLocation.longitude.toString());
                     return GoogleMap(
                         markers: markers,
                         myLocationButtonEnabled: true,

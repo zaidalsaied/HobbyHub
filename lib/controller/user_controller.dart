@@ -140,13 +140,9 @@ class UserController {
     await UserApi().updateUserLocation(lat, long);
   }
 
-  Future<List<String>> getUserFollowingLocation() async {
+  Future<List<User>> getUserFollowing() async {
     try {
-      List<User> users = _parseUsers(await UserApi().getUserFollowing());
-      List<String> locations = [];
-      for (User user in users)
-        if (user.location != null) locations.add(user.location);
-      return locations;
+      return _parseUsers(await UserApi().getUserFollowing());
     } catch (e) {
       return [];
     }

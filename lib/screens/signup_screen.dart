@@ -4,7 +4,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/login_screen.dart';
-import 'package:hobby_hub_ui/service/upload_image_service.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart' as validator;
 import 'package:image_picker/image_picker.dart';
