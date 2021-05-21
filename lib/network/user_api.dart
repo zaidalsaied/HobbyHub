@@ -170,4 +170,46 @@ class UserApi {
       return false;
     }
   }
+
+  Future<void> updateUserLocation(String lat, String long) async {
+    try {
+      var request = http.Request(
+          'PUT',
+          Uri.parse(
+              '${Endpoints.host}${Endpoints.userEndpoint}${Endpoints.location}'));
+      request.body = '$lat,$long';
+      request.headers.addAll(Endpoints.authorizedHeaders);
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        print("hello");
+        print(await response.stream.bytesToString());
+      } else {
+        print("no");
+        print(response.reasonPhrase);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<String> getUserFollowing() async {
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${Endpoints.host}${Endpoints.userEndpoint}/${Endpoints.following}'));
+      request.headers.addAll(Endpoints.authorizedHeaders);
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        print("ok");
+        return await response.stream.bytesToString();
+      } else {
+        print("no");
+        print(response.reasonPhrase);
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }

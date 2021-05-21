@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:location/location.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -9,33 +11,35 @@ class LocationScreen extends StatefulWidget {
     zoom: 14.4746,
   );
 
-//
-  CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
   final Completer<GoogleMapController> _controller = Completer();
+  Location location = new Location();
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
 
   @override
   initState() {
     super.initState();
-    getLocation();
   }
 
-  Location location = new Location();
+  Set<Marker> markers = {};
 
-  bool _serviceEnabled;
-
-  PermissionStatus _permissionGranted;
-
-  LocationData _locationData;
+  Future<void> getMarkers() async {
+    List<String> locationString =
+        await UserController().getUserFollowingLocation();
+    for (int i = 0; i < locationString.length; i++) {
+      markers.add(Marker(
+          markerId: MarkerId(i.toString()),
+          position: LatLng(double.parse(locationString[i].split(',')[0]),
+              double.parse(locationString[i].split(',')[1]))));
+    }
+    return;
+  }
 
   Future<LatLng> getLocation() async {
     _serviceEnabled = await location.serviceEnabled();
@@ -53,49 +57,38 @@ class _LocationScreenState extends State<LocationScreen> {
         return null;
       }
     }
-
     _locationData = await location.getLocation();
-    widget._kLake = CameraPosition(
-        bearing: 192.8334901395799,
-        target: LatLng(_locationData.latitude, _locationData.longitude),
-        tilt: 59.440717697143555,
-        zoom: 19.151926040649414);
-    print('lat ${_locationData.latitude}');
-    print('long ${_locationData.longitude}');
+    await getMarkers();
     return LatLng(_locationData.latitude, _locationData.longitude);
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: SafeArea(
-        child: FutureBuilder(
-            future: getLocation(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                print('loc ${snapshot.data}');
-                return GoogleMap(
-                  markers: {
-                    Marker(
-                        markerId: MarkerId("1"),
-                        position: snapshot.data ?? LatLng(32.56483, 35.8619039))
-                  },
-                  myLocationButtonEnabled: true,
-                  myLocationEnabled: true,
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                        target: snapshot.data,
-                        zoom: 14.4746,
-                      ) ??
-                      LocationScreen._kGooglePlex,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                );
-              } else
-                return Center(child: CircularProgressIndicator());
-            }),
-      ),
-    );
+        body: SafeArea(
+            child: FutureBuilder(
+                future: getLocation(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    LatLng userLocation = snapshot.data;
+                    UserController().updateUserLocation(
+                        userLocation.latitude.toString(),
+                        userLocation.longitude.toString());
+                    return GoogleMap(
+                        markers: markers,
+                        myLocationButtonEnabled: true,
+                        myLocationEnabled: true,
+                        mapType: MapType.normal,
+                        initialCameraPosition: CameraPosition(
+                                target: snapshot.data, zoom: 14.4746) ??
+                            LocationScreen._kGooglePlex,
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller.complete(controller);
+                        });
+                  } else
+                    return Center(
+                        child: SpinKitCircle(
+                            color: Theme.of(context).primaryColor));
+                })));
   }
 }

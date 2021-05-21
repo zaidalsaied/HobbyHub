@@ -1,6 +1,6 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/helper/stack_trace_helper.dart';
@@ -136,9 +136,36 @@ class UserController {
     }
   }
 
+  Future<void> updateUserLocation(String lat, String long) async {
+    await UserApi().updateUserLocation(lat, long);
+  }
+
+  Future<List<String>> getUserFollowingLocation() async {
+    try {
+      List<User> users = _parseUsers(await UserApi().getUserFollowing());
+      List<String> locations = [];
+      for (User user in users)
+        if (user.location != null) locations.add(user.location);
+      return locations;
+    } catch (e) {
+      return [];
+    }
+  }
+
   void logout() {
     PostController.feed = [];
     PostController.trending = [];
     TokenDB().clearUserToken();
+  }
+
+  List<User> _parseUsers(String res) {
+    try {
+      Iterable itr = json.decode(res);
+      return List<User>.from(itr.map((model) => User.fromJson(model)));
+    } catch (e) {
+      print("JsonParser _parseUsers error");
+      print(e.toString());
+      return [];
+    }
   }
 }
