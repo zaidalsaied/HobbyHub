@@ -131,10 +131,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ProfileAvatar(
-                      imageUrl:
-                          "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg",
-                    ),
+                    ProfileAvatar(),
                     Column(
                       children: [
                         Container(

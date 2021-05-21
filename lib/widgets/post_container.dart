@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
@@ -84,8 +85,16 @@ class _PostContainerState extends State<PostContainer> {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
                         child: CachedNetworkImage(
-                            imageUrl:
-                                "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg")),
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Center(
+                                  child: SpinKitPumpingHeart(
+                                    size: 100,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) =>
+                                Center(child: new Icon(Icons.error)),
+                            imageUrl: widget.post.imageUrl)),
                   )
                 : const SizedBox.shrink(),
             Wrap(

@@ -10,11 +10,13 @@ class NavScreen extends StatefulWidget {
   _NavScreenState createState() => _NavScreenState();
 }
 
+int _selectedIndex = 0;
+
 class _NavScreenState extends State<NavScreen> {
-  final List<Widget> _screens = [
+  List<Widget> _screens = [
     HomeScreen(),
     TrendingScreen(),
-    LocationScreen(),
+    Container(),
     ChatListScreen()
   ];
   final List<IconData> _icons = const [
@@ -23,7 +25,6 @@ class _NavScreenState extends State<NavScreen> {
     Icons.location_on,
     Icons.mail
   ];
-  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +43,9 @@ class _NavScreenState extends State<NavScreen> {
               icons: _icons,
               selectedIndex: _selectedIndex,
               onTap: (index) {
-                if (index == 2) _screens[2] = LocationScreen();
-                setState(() => _selectedIndex = index);
+                _selectedIndex = index;
+                if (_selectedIndex == 2) _screens[2] = LocationScreen();
+                setState(() {});
               },
             ),
           )),

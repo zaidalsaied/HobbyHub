@@ -32,9 +32,8 @@ class MainSideBar extends StatelessWidget {
                 color: Colors.white,
               ),
               currentAccountPicture: ProfileAvatar(
-                  radius: 35,
-                  imageUrl:
-                      "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"),
+                radius: 35,
+              ),
               accountName: Text(
                 currentUser.username,
                 style: TextStyle(color: Colors.black),

@@ -7,6 +7,7 @@ import 'package:hobby_hub_ui/models/comment_model.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/network/post_api.dart';
+import 'package:hobby_hub_ui/service/upload_image_service.dart';
 
 class PostController {
   static List<Post> feed;
@@ -33,8 +34,17 @@ class PostController {
   }
 
   Future<bool> post(Post post, File image) async {
-    //todo upload image
-    return await PostApi().post(post);
+    if (image != null) {
+      String fileName = UserController().currentUser.username +
+          (UserController().currentUser.posts.length + 1).toString();
+      post.imageUrl =
+          await UploadImageService.uploadImage(fileName, image.path);
+    }
+    if (await PostApi().post(post)) {
+      await getUserFeed();
+      return true;
+    }
+    return false;
   }
 
   Future<Post> getPostByPostId(String postId) async {

@@ -29,12 +29,13 @@ class PostApi {
     if (post.text.length > 0) {
       body.addAll({
         "contentList": [
-          {"contentType": "TEXT", "value": post.text}
+          {"contentType": "TEXT", "value": post.text},
+          if (post.imageUrl != null)
+            {"contentType": "IMAGE", "value": post.imageUrl}
         ],
         "categories": post.tags
       });
     }
-    print(jsonEncode(body));
     return jsonEncode(body);
   }
 
