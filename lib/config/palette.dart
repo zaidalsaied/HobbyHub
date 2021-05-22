@@ -54,9 +54,6 @@ class Palette {
       Colors.redAccent,
     };
   }
-// static const LinearGradient createRoomGradient = LinearGradient(
-//   colors: [Color(0xFF496AE1),, Color(0xFFCE48B1),],
-// ),;
 
 // static const Color online = Color(0xFF4BCB1F),;
 
