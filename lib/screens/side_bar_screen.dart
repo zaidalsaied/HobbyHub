@@ -28,7 +28,7 @@ class MainSideBar extends StatelessWidget {
               );
             },
             child: UserAccountsDrawerHeader(
-              currentAccountPicture: ProfileAvatar(radius: 40),
+              currentAccountPicture: ProfileAvatar(radius: 40,imageUrl: currentUser.imgUrl,),
               accountName: Text(currentUser.username),
               accountEmail: Text('@ ${currentUser.username}'),
             ),

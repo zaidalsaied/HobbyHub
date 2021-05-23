@@ -200,7 +200,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.data != null) user = snapshot.data;
-                    print(user.imgUrl);
 
                     return _profileHeader();
                   }

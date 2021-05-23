@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/post_view.dart';
+import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
 import 'package:hobby_hub_ui/screens/screens.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'widgets.dart';
@@ -13,11 +15,13 @@ import 'widgets.dart';
 class PostContainer extends StatefulWidget {
   final Post post;
   final Function setState;
+  final bool navigate;
 
   PostContainer({
     Key key,
     @required this.post,
     this.setState,
+    this.navigate = true,
   }) : super(key: key);
 
   @override
@@ -33,6 +37,7 @@ class _PostContainerState extends State<PostContainer> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.post.imageUrl);
     return Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -57,15 +62,16 @@ class _PostContainerState extends State<PostContainer> {
                     child: _PostHeader(post: widget.post)),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PostView(
-                          post: widget.post,
-                          setState: setState,
+                    if (widget.navigate)
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PostView(
+                            post: widget.post,
+                            setState: setState,
+                          ),
                         ),
-                      ),
-                    );
+                      );
                   },
                   child: Text(
                     widget.post.text == null ? "" : widget.post.text,
@@ -89,8 +95,13 @@ class _PostContainerState extends State<PostContainer> {
                                     size: 100,
                                     color: Theme.of(context).accentColor),
                               ),
-                          errorWidget: (context, url, error) =>
-                              Center(child: new Icon(Icons.error)),
+                          errorWidget: (context, url, error) => Center(
+                                child: SvgPicture.string(
+                                  SvgAssets.notFound,
+                                  allowDrawingOutsideViewBox: false,
+                                  height: 100,
+                                ),
+                              ),
                           imageUrl: widget.post.imageUrl)),
                 )
               : const SizedBox.shrink(),
@@ -114,6 +125,7 @@ class _PostContainerState extends State<PostContainer> {
             child: _PostStats(
               post: widget.post,
               setState: widget.setState,
+              navigate: widget.navigate,
             ),
           ),
         ],
@@ -152,31 +164,41 @@ class _PostHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(children: [
-                Text(
-                  post.ownerUsername,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 100,
+                child: Row(children: [
+                  Text(
+                    post.ownerUsername,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 5.0,
-                ),
-                Text(
-                  '@${post.ownerUsername} • ',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12.0,
+                  SizedBox(
+                    width: 5.0,
                   ),
-                ),
-                Text(
-                  timeago.format(DateTime.parse(post.date)),
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12.0,
+                  Text(
+                    '@${post.ownerUsername} • ',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 11.0,
+                    ),
                   ),
-                ),
-              ]),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * .25,
+                    child: Text(
+                      timeago.format(DateTime.parse(post.date)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 10.0,
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
             ],
           ),
         ),
@@ -192,11 +214,13 @@ class _PostHeader extends StatelessWidget {
 class _PostStats extends StatefulWidget {
   final Post post;
   final Function setState;
+  final navigate;
 
   const _PostStats({
     Key key,
     @required this.post,
     this.setState,
+    this.navigate,
   }) : super(key: key);
 
   @override
@@ -247,7 +271,18 @@ class __PostStatsState extends State<_PostStats> {
             _PostButton(
               icon: Icon(Icons.textsms_outlined, size: 25.0),
               label: '${widget.post.numberOfComments}',
-              onTap: () => print('Comment'),
+              onTap: () {
+                if (widget.navigate)
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostView(
+                        post: widget.post,
+                        setState: setState,
+                      ),
+                    ),
+                  );
+              },
             ),
             _PostButton(
               icon: Icon(Icons.ios_share, size: 25.0),

@@ -1,11 +1,14 @@
-import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/config/palette.dart';
 import 'package:whiteboard/whiteboard.dart';
-import '../application_manager.dart';
+
+import 'create_post_screen.dart';
 
 class HandWritingPage extends StatefulWidget {
+
+  HandWritingPage({Key key,}) : super(key: key);
+
   @override
   _HandWritingPageState createState() => _HandWritingPageState();
 }
@@ -22,7 +25,6 @@ class _HandWritingPageState extends State<HandWritingPage> {
   double strokeWidth = 15;
   Color pinColor = Palette.colors.toList()[0];
   Color boardColor;
-  Uint8List unit8List;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +88,12 @@ class _HandWritingPageState extends State<HandWritingPage> {
                       IconButton(
                           onPressed: () => _controller.redo(),
                           icon: Icon(Icons.redo)),
+                      IconButton(
+                          onPressed: () {
+                            _controller.convertToImage();
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(Icons.done_all)),
                     ])
               ]),
               Align(
@@ -151,7 +159,18 @@ class _HandWritingPageState extends State<HandWritingPage> {
                               color: pinColor, shape: BoxShape.circle),
                           height: strokeWidth,
                           width: strokeWidth))
-                  : SizedBox()
+                  : SizedBox(),
+              Positioned(
+                left: 5,
+                top: 5,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    size: 35,
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
             ],
           ),
         ),

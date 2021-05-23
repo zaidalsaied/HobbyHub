@@ -56,8 +56,10 @@ class HobbyListItem extends StatelessWidget {
                   children: [
                     Text(
                       hobby.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.w600),
+                          fontSize: 20.0, fontWeight: FontWeight.w600 ),
                     ),
                     SizedBox(height: 3),
                     Text(

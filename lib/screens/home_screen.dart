@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/screens/create_post_screen.dart';
+import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'screens.dart';
@@ -62,18 +64,10 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Home',
-            textAlign: TextAlign.left,
-          ),
-        ),
+        appBar: AppBar(title: Text('Home')),
         floatingActionButton: FloatingActionButton(
           heroTag: "btn1",
-          child: Icon(
-            Icons.post_add,
-            size: 30,
-          ),
+          child: Icon(Icons.post_add, size: 30),
           onPressed: () {
             Navigator.pushNamed(context, CreatePostScreen.id);
           },
@@ -105,7 +99,25 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
                               SizedBox(
                                 height: MediaQuery.of(context).size.width * .3,
                               ),
-                              Text("follow some hobbies to start!")
+                              SvgPicture.string(
+                                SvgAssets.noPosts,
+                                allowDrawingOutsideViewBox: false,
+                                height: 200,
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text("follow some hobbies to start!"),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              MainButton(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, HobbiesScreen.id);
+                                },
+                                text: "Let's go!",
+                              )
                             ],
                           ),
                         for (var post in snapshot.data)

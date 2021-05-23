@@ -1,11 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/hobby_controller.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
-import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/screens/hand_writing_screen.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
@@ -13,6 +14,8 @@ import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_select_flutter/chip_field/multi_select_chip_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
+
+Uint8List unit8List;
 
 class CreatePostScreen extends StatefulWidget {
   static const String id = 'create_post_screen';
@@ -30,6 +33,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     super.initState();
     _items.add(MultiSelectItem<String>("other", "other"));
     if (post.tags == null) post.tags = [];
+    unit8List = null;
   }
 
   File _image;
@@ -63,7 +67,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isValid = post.text.trim().length > 0 && post.tags.length > 0;
+    bool isValid =
+        ((post.text.trim().length > 0 || _image != null || unit8List != null) &&
+            post.tags.length > 0);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -83,7 +89,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         setState(() {
                           _isLoading = true;
                         });
-                        isSubmitted = await PostController().post(post, _image);
+
+                        isSubmitted = await PostController()
+                            .post(post, _image, unit8List);
                         if (isSubmitted) {
                           setState(() {
                             _isLoading = false;
@@ -166,6 +174,26 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                   ],
                 ),
+                if (unit8List != null)
+                  Stack(
+                    children: [
+                      Image.memory(
+                        unit8List,
+                        height: 250,
+                      ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                unit8List = null;
+                              });
+                            },
+                            child: Icon(Icons.cancel, size: 35)),
+                      ),
+                    ],
+                  ),
                 if (_image != null)
                   Stack(
                     children: [
@@ -212,6 +240,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         child: ElevatedButton.icon(
                             label: Text('Hand Write'),
                             onPressed: () {
+                              print(unit8List);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

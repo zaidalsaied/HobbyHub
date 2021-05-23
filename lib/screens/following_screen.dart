@@ -31,22 +31,11 @@ class _FollowingScreenState extends State<FollowingScreen> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios,
-              color: Theme.of(context).accentColor,
               size: 20.0,
             ),
             onPressed: () => Navigator.pop(context),
           ),
-          backgroundColor: Theme.of(context).primaryColor,
-          title: Text(
-            'Following',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontSize: 28.0,
-              fontWeight: FontWeight.bold,
-              letterSpacing: -1.2,
-            ),
-          ),
+          title: Text('Following'),
         ),
         body: ListView(
           children: [
@@ -61,6 +50,10 @@ class _FollowingScreenState extends State<FollowingScreen> {
                   future: UserController().getUserByUsername(username),
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
+                      bool following = UserController()
+                          .currentUser
+                          .followers
+                          .contains(username);
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -75,10 +68,12 @@ class _FollowingScreenState extends State<FollowingScreen> {
                             margin: EdgeInsets.symmetric(
                                 horizontal: 20.0, vertical: 10.0),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              boxShadow: [
+                                BoxShadow(color: Colors.grey),
+                                BoxShadow(color: Colors.grey)
+                              ],
                               borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                  width: 1.0, color: Colors.grey[200]),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,14 +87,17 @@ class _FollowingScreenState extends State<FollowingScreen> {
                                     Text(username ?? ""),
                                   ],
                                 ),
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Theme.of(context).primaryColor,
-                                    ),
-                                    onPressed: () {
-                                      _unfollow(username);
-                                    },
-                                    child: Text("Following"))
+                                if (username !=
+                                    UserController().currentUser.username)
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Theme.of(context).primaryColor,
+                                      ),
+                                      onPressed: () {
+                                        _unfollow(username);
+                                      },
+                                      child: Text(
+                                          following ? "Following" : "Follow"))
                               ],
                             )),
                       );

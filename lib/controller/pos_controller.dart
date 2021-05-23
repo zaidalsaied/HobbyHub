@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
@@ -7,6 +8,7 @@ import 'package:hobby_hub_ui/models/comment_model.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/network/post_api.dart';
+import 'package:hobby_hub_ui/screens/create_post_screen.dart';
 import 'package:hobby_hub_ui/service/upload_image_service.dart';
 
 class PostController {
@@ -33,12 +35,12 @@ class PostController {
     return trending;
   }
 
-  Future<bool> post(Post post, File image) async {
-    if (image != null) {
+  Future<bool> post(Post post, File image, Uint8List uint8List) async {
+    if (image != null || uint8List != null) {
       String fileName = UserController().currentUser.username +
           (UserController().currentUser.posts.length + 1).toString();
-      post.imageUrl =
-          await UploadImageService.uploadImage(fileName, image.path);
+      post.imageUrl = await UploadImageService.uploadImage(
+          fileName, image == null ? File.fromRawPath(uint8List).path : image.path);
     }
     if (await PostApi().post(post)) {
       await getUserFeed();

@@ -38,21 +38,12 @@ class _FollowersScreenState extends State<FollowersScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Theme.of(context).accentColor,
             size: 20.0,
           ),
           onPressed: () => Navigator.pop(context),
         ),
-        backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           'Followers',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            color: Theme.of(context).accentColor,
-            fontSize: 28.0,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -1.2,
-          ),
         ),
       ),
       body: ListView(
@@ -84,10 +75,12 @@ class _FollowersScreenState extends State<FollowersScreen> {
                         margin: EdgeInsets.symmetric(
                             horizontal: 20.0, vertical: 10.0),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          boxShadow: [
+                            BoxShadow(color: Colors.grey),
+                            BoxShadow(color: Colors.grey)
+                          ],
                           borderRadius: BorderRadius.circular(15),
-                          border:
-                              Border.all(width: 1.0, color: Colors.grey[200]),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,18 +94,20 @@ class _FollowersScreenState extends State<FollowersScreen> {
                                 Text(username),
                               ],
                             ),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Theme.of(context).primaryColor,
-                                ),
-                                onPressed: () {
-                                  following
-                                      ? _unfollow(username)
-                                      : _follow(username);
-                                },
-                                child: following
-                                    ? Text("Following")
-                                    : Text("Follow"))
+                            if (username !=
+                                UserController().currentUser.username)
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Theme.of(context).primaryColor,
+                                  ),
+                                  onPressed: () {
+                                    following
+                                        ? _unfollow(username)
+                                        : _follow(username);
+                                  },
+                                  child: following
+                                      ? Text("Following")
+                                      : Text("Follow"))
                           ],
                         )),
                   );

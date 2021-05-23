@@ -21,21 +21,20 @@ class PostApi {
       }
     } catch (e) {
       print(e);
+      return false;
     }
   }
 
   String _getPostBodyRequest(Post post) {
-    Map body = {};
-    if (post.text.length > 0) {
-      body.addAll({
-        "contentList": [
-          {"contentType": "TEXT", "value": post.text},
-          if (post.imageUrl != null)
-            {"contentType": "IMAGE", "value": post.imageUrl}
-        ],
-        "categories": post.tags
-      });
-    }
+    Map body = {
+      "contentList": [
+        if(post.text!=null)
+        {"contentType": "TEXT", "value": post.text.trim()},
+        if (post.imageUrl != null)
+          {"contentType": "IMAGE", "value": post.imageUrl}
+      ],
+      "categories": post.tags
+    };
     return jsonEncode(body);
   }
 

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/comment_model.dart';
 import 'package:hobby_hub_ui/models/post.dart';
+import 'package:hobby_hub_ui/models/user_model.dart';
+import 'package:hobby_hub_ui/screens/user_profile.dart';
 import 'package:hobby_hub_ui/widgets/post_container.dart';
 import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
 
@@ -32,66 +35,73 @@ class _PostViewState extends State<PostView> {
         height: MediaQuery.of(context).size.height,
         child: ListView(
           children: [
-            PostContainer(post: widget.post, setState: widget.setState),
+            PostContainer(
+              post: widget.post,
+              setState: widget.setState,
+              navigate: false,
+            ),
             Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(left: 15, bottom: 5, top: 5),
-              decoration: BoxDecoration(
-                boxShadow: [BoxShadow(blurRadius: 1.5, offset: Offset(0, 1))],
-                color: Colors.white,
-              ),
+              decoration: BoxDecoration(),
               child: Row(
                 children: [
+                  ProfileAvatar(
+                    imageUrl: UserController().currentUser.imgUrl,
+                  ),
                   Expanded(
                     child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        width: MediaQuery.of(context).size.width,
-                        child: TextField(
-                            style: TextStyle(fontSize: 22),
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 5,
-                            minLines: 1,
-                            onChanged: (value) {
-                              setState(() {});
-                            },
-                            controller: _commentController,
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 8),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(20.0))),
-                                hintText: "Write a comment..",
-                                hintStyle: TextStyle(fontSize: 18)))),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      width: MediaQuery.of(context).size.width,
+                      child: TextField(
+                        style: TextStyle(fontSize: 16),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 5,
+                        minLines: 1,
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                        controller: _commentController,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0))),
+                          hintText: "Write a comment..",
+                          hintStyle: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
                   ),
                   IconButton(
-                      icon: Icon(
-                        Icons.send,
-                        size: 25,
-                        color: _commentController.text.trim().length > 0
-                            ? Theme.of(context).primaryColor
-                            : Colors.grey,
-                      ),
+                      icon: Icon(Icons.send, size: 25),
                       onPressed: _commentController.text.trim().length > 0
                           ? () async {
+                              comment.creatorUsername =
+                                  UserController().currentUser.username;
+                              widget.post.comments.add(comment);
+                              widget.post.numberOfComments++;
                               comment.text = _commentController.text;
+                              _commentController.clear();
+                              setState(() {});
                               await PostController()
                                   .comment(widget.post.postId, comment);
                             }
-                          : () {})
+                          : null)
                 ],
               ),
             ),
             SizedBox(height: 15),
-            for (var com in widget.post.comments)
+            for (int i = widget.post.numberOfComments - 1; i >= 0; i--)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _CommentHeader(comment: com),
+                    _CommentHeader(comment: widget.post.comments[i]),
                     Container(
                         width: MediaQuery.of(context).size.width - 75,
                         padding:
@@ -99,7 +109,6 @@ class _PostViewState extends State<PostView> {
                         margin: EdgeInsets.only(left: 15, top: 4),
                         decoration: BoxDecoration(
                             border: Border.all(width: 1, color: Colors.grey),
-                            color: Colors.white,
                             borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(20),
                               topRight: Radius.circular(20),
@@ -110,22 +119,21 @@ class _PostViewState extends State<PostView> {
                           children: [
                             Row(children: [
                               Text(
-                                com.creatorUsername == null
+                                widget.post.comments[i].creatorUsername == null
                                     ? ''
-                                    : com.creatorUsername,
+                                    : widget.post.comments[i].creatorUsername,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                '@${com.creatorUsername} • ',
+                                '@${widget.post.comments[i].creatorUsername} • ',
                                 style: TextStyle(
-                                  color: Colors.grey[600],
                                   fontSize: 12.0,
                                 ),
                               ),
                             ]),
                             Text(
-                              com.text,
+                              widget.post.comments[i].text,
                               style: TextStyle(fontSize: 18),
                             ),
                           ],
@@ -153,12 +161,27 @@ class _CommentHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ProfileAvatar(
-            imageUrl:
-                "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"),
-      ],
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UserProfileScreen(
+            username: comment.creatorUsername,
+          ),
+        ),
+      ),
+      child: FutureBuilder(
+          future: UserController().getUserByUsername(comment.creatorUsername),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              User user = snapshot.data;
+              return ProfileAvatar(imageUrl: user?.imgUrl);
+            } else
+              return Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(shape: BoxShape.circle));
+          }),
     );
   }
 }

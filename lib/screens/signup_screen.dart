@@ -7,6 +7,7 @@ import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/login_screen.dart';
 import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
+import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart' as validator;
 import 'package:image_picker/image_picker.dart';
@@ -19,24 +20,21 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  TextEditingController _firstName,
-      _username,
-      _lastName,
-      _password,
-      _email,
-      _confirmPassword = TextEditingController();
-
-  User _user = User();
+  final TextEditingController _firstName = TextEditingController();
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _lastName = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _confirmPassword = TextEditingController();
+  final User _user = User();
   String selectedGender = "Gender";
   bool _isLoading = false;
   final formKey = GlobalKey<FormState>();
-
   File _image;
   final picker = ImagePicker();
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
@@ -61,6 +59,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(_confirmPassword);
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -184,10 +183,39 @@ class _SignupScreenState extends State<SignupScreen> {
                           setState(() {
                             _isLoading = true;
                           });
-                          await UserController().signUp(_user, _image);
+                          bool isSignedUp =
+                              await UserController().signUp(_user, _image);
                           setState(() {
                             _isLoading = false;
                           });
+                          if (isSignedUp) {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MessageAlertDialog(
+                                  title: "Welcome ${_user.firstName}!",
+                                  message:
+                                      "you signed up successfully! Login to start!",
+                                );
+                              },
+                            );
+                            Navigator.pushNamed(context, LoginScreen.id);
+                          } else {
+                            {
+                              await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return MessageAlertDialog(
+                                    title: "Username is not available!",
+                                    message:
+                                        "username already used, please try another username and try again.",
+                                  );
+                                },
+                              );
+                              print("clear");
+                              _username.clear();
+                            }
+                          }
                         }
                       },
                     ),

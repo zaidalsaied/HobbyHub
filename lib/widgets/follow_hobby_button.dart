@@ -34,7 +34,8 @@ class _FollowHobbyButtonState extends State<FollowHobbyButton> {
       },
       child: Text(
         isFollowing ? 'FOLLOWING' : 'Follow',
-        style: TextStyle(color: Colors.white, fontSize: 14),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

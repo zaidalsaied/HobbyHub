@@ -22,18 +22,18 @@ class UserController {
   Future<bool> signUp(User user, File image) async {
     try {
       if (image != null)
-        user.imgUrl = await UploadImageService.uploadImage(
-            user.firstName + user.lastName, image.path);
+        user.imgUrl =
+            await UploadImageService.uploadImage(user.username, image.path);
       Map<String, dynamic> response = await UserApi().signUp(user);
       print(response);
       String token = response["token"];
-      if (response != null && token.isNotEmpty) {
+      if (token != null && token.isNotEmpty) {
         saveUserToken(token);
         return true;
       }
       return false;
     } catch (e) {
-      print(LoggerStackTrace.from(StackTrace.current).print(e.toString()));
+      print(e);
       return false;
     }
   }

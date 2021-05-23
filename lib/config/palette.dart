@@ -44,10 +44,7 @@ class Palette {
         brightness: Brightness.light,
         buttonTheme: ButtonThemeData(buttonColor: Palette.hobbyHubPrimaryColor),
         textTheme: TextTheme(
-            headline6: TextStyle(
-                color: Palette.hobbyHubPrimaryColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold),
+            headline6: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             headline1: TextStyle(
                 color: Palette.hobbyHubPrimaryColor,
                 fontSize: 28,
@@ -58,6 +55,7 @@ class Palette {
             textTheme: CupertinoTextThemeData(
                 textStyle: TextStyle(color: Colors.black))),
         primarySwatch: primaryAppColor,
+        primaryColor: primaryAppColor,
         accentColor: primaryAppColor);
   }
 
@@ -93,7 +91,8 @@ class Palette {
             textTheme: CupertinoTextThemeData(
                 textStyle: TextStyle(color: Colors.white))),
         primarySwatch: primaryAppColorDark,
-        accentColor: primaryAppColor,
+        accentColor: primaryAppColorDark,
+        primaryColor: primaryAppColor,
         scaffoldBackgroundColor: Colors.grey[700]);
   }
 
