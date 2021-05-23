@@ -50,6 +50,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
                   future: UserController().getUserByUsername(username),
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
+                      User user = snapshot.data;
                       bool following = UserController()
                           .currentUser
                           .followers
@@ -80,7 +81,9 @@ class _FollowingScreenState extends State<FollowingScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    ProfileAvatar(),
+                                    ProfileAvatar(
+                                      imageUrl: user.imgUrl,
+                                    ),
                                     SizedBox(
                                       width: 10,
                                     ),

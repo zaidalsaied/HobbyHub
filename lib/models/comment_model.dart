@@ -3,12 +3,20 @@ class Comment {
   String text;
   String imageUrl;
   String creatorUsername;
+  String dateCreated;
 
-  Comment({this.commentId, this.text, this.imageUrl, this.creatorUsername});
+  Comment(
+      {this.commentId,
+      this.text,
+      this.imageUrl,
+      this.creatorUsername,
+      this.dateCreated});
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     Comment comment = Comment(
-        commentId: json['id'], creatorUsername: json['creatorUsername']);
+        dateCreated: json['dateCreated'],
+        commentId: json['id'],
+        creatorUsername: json['creatorUsername']);
     _populateCommentContent(json['contentList'], comment);
     return comment;
   }

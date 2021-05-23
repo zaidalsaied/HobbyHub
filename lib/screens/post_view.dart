@@ -7,6 +7,7 @@ import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/user_profile.dart';
 import 'package:hobby_hub_ui/widgets/post_container.dart';
 import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostView extends StatefulWidget {
   static const String id = "post_view";
@@ -84,6 +85,7 @@ class _PostViewState extends State<PostView> {
                               widget.post.comments.add(comment);
                               widget.post.numberOfComments++;
                               comment.text = _commentController.text;
+                              comment.dateCreated = DateTime.now().toString();
                               _commentController.clear();
                               setState(() {});
                               await PostController()
@@ -130,6 +132,17 @@ class _PostViewState extends State<PostView> {
                                 style: TextStyle(
                                   fontSize: 12.0,
                                 ),
+                              ),
+                              Expanded(
+                                child: SizedBox(),
+                              ),
+                              Text(
+                                timeago.format(DateTime.parse(
+                                    widget.post.comments[i].dateCreated)),
+                                maxLines: 1,
+                                textAlign: TextAlign.right,
+                                style: TextStyle(fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ]),
                             Text(

@@ -58,6 +58,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
             FutureBuilder(
               future: UserController().getUserByUsername(username),
               builder: (_, snapshot) {
+                User user = snapshot.data;
                 if (snapshot.connectionState == ConnectionState.done) {
                   bool following =
                       UserController().currentUser.followers.contains(username);
@@ -87,7 +88,9 @@ class _FollowersScreenState extends State<FollowersScreen> {
                           children: [
                             Row(
                               children: [
-                                ProfileAvatar(),
+                                ProfileAvatar(
+                                  imageUrl: user.imgUrl,
+                                ),
                                 SizedBox(
                                   width: 10,
                                 ),
