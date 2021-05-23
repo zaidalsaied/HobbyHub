@@ -60,51 +60,47 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
-          brightness: Brightness.light,
-          backgroundColor: Theme.of(context).primaryColor,
-          title: Text(
-            'Trending',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontSize: 28.0,
-              fontWeight: FontWeight.bold,
-              letterSpacing: -1.2,
-            ),
-          ),
+      appBar: AppBar(
+        brightness: Brightness.light,
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(
+          'Trending',
+          textAlign: TextAlign.left,
         ),
-        drawer: MainSideBar(
-          currentUser: UserController().currentUser,
+      ),
+      drawer: MainSideBar(
+        currentUser: UserController().currentUser,
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: FutureBuilder(
+          future: PostController().getUserTrending(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done)
+              return LiquidPullToRefresh(
+                key: widget._refreshIndicatorKey,
+                showChildOpacityTransition: false,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                color: Theme.of(context).primaryColor,
+                onRefresh: () async {
+                  await PostController().getUserTrending();
+                  setState(() {});
+                },
+                child: ListView(
+                  children: [
+                    for (var post in snapshot.data)
+                      PostContainer(
+                        post: post,
+                      )
+                  ],
+                ),
+              );
+            return SpinKitCircle(
+              color: Theme.of(context).primaryColor,
+            );
+          },
         ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          child: FutureBuilder(
-              future: PostController().getUserTrending(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done)
-                  return LiquidPullToRefresh(
-                    key: widget._refreshIndicatorKey,
-                    showChildOpacityTransition: false,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    onRefresh: () async {
-                      await PostController().getUserTrending();
-                      setState(() {});
-                    },
-                    child: ListView(
-                      children: [
-                        for (var post in snapshot.data)
-                          PostContainer(
-                            post: post,
-                          )
-                      ],
-                    ),
-                  );
-                return SpinKitCircle(
-                  color: Theme.of(context).primaryColor,
-                );
-              }),
-        ));
+      ),
+    );
   }
 }

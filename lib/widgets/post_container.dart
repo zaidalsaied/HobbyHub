@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
+import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/post_view.dart';
 import 'package:hobby_hub_ui/screens/screens.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -100,7 +101,10 @@ class _PostContainerState extends State<PostContainer> {
               ),
               Text(
                 _getTagsString(widget.post.tags),
-                style: Theme.of(context).textTheme.caption.copyWith(color: Colors.blueAccent),
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    .copyWith(color: Colors.blueAccent),
                 textAlign: TextAlign.start,
               ),
             ],
@@ -130,9 +134,19 @@ class _PostHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ProfileAvatar(
-            imageUrl:
-                "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"),
+        FutureBuilder(
+            future: UserController().getUserByUsername(post.ownerUsername),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                User user = snapshot.data;
+                return ProfileAvatar(imageUrl: user?.imgUrl);
+              } else
+                return Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        color: Colors.grey, shape: BoxShape.circle));
+            }),
         const SizedBox(width: 8.0),
         Expanded(
           child: Column(
@@ -202,7 +216,7 @@ class __PostStatsState extends State<_PostStats> {
             _PostButton(
               icon: Icon(
                 Icons.favorite,
-                color: liked ? Theme.of(context).accentColor : null,
+                color: liked ? Theme.of(context).accentColor : Colors.grey,
                 size: 25.0,
               ),
               onTap: () async {

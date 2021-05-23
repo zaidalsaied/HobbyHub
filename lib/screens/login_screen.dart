@@ -4,12 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hobby_hub_ui/config/palette.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
 import 'package:hobby_hub_ui/screens/signup_screen.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'screens.dart';
 import 'package:form_field_validator/form_field_validator.dart' as validator;
 
+//flip_card: ^0.5.0
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
 
@@ -38,8 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 100,
                 ),
-                SvgPicture.asset(
-                  'assets/welcome_cats.svg',
+                SvgPicture.string(
+                  SvgAssets.loginWelcome,
                   allowDrawingOutsideViewBox: false,
                   height: 150,
                 ),
@@ -50,9 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   inputType: TextInputType.emailAddress,
                   controller: _username,
                   validator: requiredValidator,
-                  onChange: (value) {
-
-                  },
+                  onChange: (value) {},
                 ),
                 SizedBox(
                   height: 10,
@@ -112,12 +112,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () => Navigator.pushReplacementNamed(
                             context, SignupScreen.id),
                         child: Container(
-                         color: Theme.of(context).scaffoldBackgroundColor,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           padding: const EdgeInsets.symmetric(vertical: 30),
                           child: Text(
                             'Sign up',
-                            style: TextStyle(
-                                color:   Palette.signInColor),
+                            style: TextStyle(color: Palette.hobbyHubPrimaryColor),
                           ),
                         ))
                   ],
@@ -128,8 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             color: Colors.white.withOpacity(0.5),
             child: _isLoading
-                ? Center(
-                    child: SpinKitCircle(color: Palette.signInColor))
+                ? Center(child: SpinKitCircle(color: Palette.hobbyHubPrimaryColor))
                 : SizedBox(),
           ),
         ],

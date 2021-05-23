@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/db/app_color_db.dart';
 
 class Palette {
-  static const Color signInColor = Color(0xff00BFA6);
-  static const Color signUpColor = Color(0xff00BFA6);
   static Color scaffold = Color(0xFFF0F2F5);
   static Color accentColor = Color(0xFFFEF9EB);
   static Map<int, Color> color = {
@@ -31,6 +29,7 @@ class Palette {
     800: Palette.hobbyHubPrimaryColor,
     900: Palette.hobbyHubPrimaryColor
   };
+
   static ThemeData get lightTheme {
     MaterialColor primaryAppColor =
         MaterialColor(Palette.hobbyHubPrimaryColor.value, color);
@@ -61,6 +60,7 @@ class Palette {
         primarySwatch: primaryAppColor,
         accentColor: primaryAppColor);
   }
+
   static ThemeData get darkTheme {
     MaterialColor primaryAppColor =
         MaterialColor(Palette.hobbyHubPrimaryColor.value, color);
@@ -94,7 +94,6 @@ class Palette {
                 textStyle: TextStyle(color: Colors.white))),
         primarySwatch: primaryAppColorDark,
         accentColor: primaryAppColor,
-        appBarTheme: AppBarTheme(color: Palette.hobbyHubPrimaryColor),
         scaffoldBackgroundColor: Colors.grey[700]);
   }
 

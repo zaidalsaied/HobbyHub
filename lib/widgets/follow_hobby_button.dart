@@ -18,7 +18,6 @@ class _FollowHobbyButtonState extends State<FollowHobbyButton> {
         UserController().currentUser.hobbies.contains(widget.hobby.name);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: Theme.of(context).primaryColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
       onPressed: () async {

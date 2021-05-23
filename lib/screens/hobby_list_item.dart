@@ -25,9 +25,13 @@ class HobbyListItem extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(color: Colors.white),
+            BoxShadow(color: Colors.grey),
+            BoxShadow(color: Colors.black)
+          ],
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(width: 1.0, color: Colors.grey[200]),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

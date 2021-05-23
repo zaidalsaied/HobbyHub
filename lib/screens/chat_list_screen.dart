@@ -5,6 +5,7 @@ import 'package:hobby_hub_ui/widgets/recent_chats.dart';
 
 class ChatListScreen extends StatefulWidget {
   static const String id = 'chat_list_screen';
+
   @override
   _ChatListScreenState createState() => _ChatListScreenState();
 }
@@ -16,14 +17,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
       drawer: MainSideBar(
         currentUser: UserController().currentUser,
       ),
-      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: Text(
           'Chats',
-          style: TextStyle(
-            fontSize: 28.0,
-            fontWeight: FontWeight.bold,
-          ),
         ),
         elevation: 0.0,
         actions: <Widget>[

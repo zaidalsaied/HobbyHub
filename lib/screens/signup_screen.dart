@@ -6,6 +6,7 @@ import 'package:hobby_hub_ui/config/palette.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/login_screen.dart';
+import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
 import 'package:hobby_hub_ui/widgets/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart' as validator;
 import 'package:image_picker/image_picker.dart';
@@ -83,8 +84,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     Container(
                                         width: 100,
                                         height: 100,
-                                        child: SvgPicture.asset(
-                                            'assets/profile_avatar.svg'),
+                                        child: SvgPicture.string(
+                                            SvgAssets.signUpAvatar),
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             border: Border.all())),
@@ -100,7 +101,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 )
                               : CircleAvatar(
                                   radius: 50,
-                                  backgroundColor: Palette.signUpColor,
+                                  backgroundColor: Palette.hobbyHubPrimaryColor,
                                   backgroundImage: FileImage(_image),
                                 )),
                     ],
@@ -204,7 +205,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               color: Theme.of(context).scaffoldBackgroundColor,
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: Text('Sign in',
-                                  style: TextStyle(color: Palette.signUpColor)),
+                                  style: TextStyle(
+                                      color: Palette.hobbyHubPrimaryColor)),
                             ))
                       ]))
                 ],
@@ -213,7 +215,8 @@ class _SignupScreenState extends State<SignupScreen> {
             Container(
               color: Colors.white.withOpacity(0.5),
               child: _isLoading
-                  ? Center(child: SpinKitCircle(color: Palette.signUpColor))
+                  ? Center(
+                      child: SpinKitCircle(color: Palette.hobbyHubPrimaryColor))
                   : SizedBox(),
             ),
           ],

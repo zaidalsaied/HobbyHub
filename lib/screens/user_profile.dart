@@ -82,9 +82,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ProfileAvatar(
-                  imageUrl: (user.imgUrl == null || user.imgUrl.isEmpty)
-                      ? "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
-                      : user.imgUrl,
+                  imageUrl: user.imgUrl,
                   radius: 50,
                 ),
                 GestureDetector(
@@ -185,20 +183,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios,
-                color: Theme.of(context).accentColor),
+            icon: Icon(
+              Icons.arrow_back_ios,
+            ),
             onPressed: () => Navigator.pop(context)),
-        backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           widget.username ?? "",
-          style: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              letterSpacing: -1),
         ),
       ),
       body: Container(

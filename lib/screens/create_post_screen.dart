@@ -67,12 +67,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
-        title: Text(
-          "Create Post",
-          style: TextStyle(color: Theme.of(context).accentColor),
-        ),
+        title: Text("Create Post"),
         actions: [
           Container(
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),

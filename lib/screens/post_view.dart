@@ -24,7 +24,6 @@ class _PostViewState extends State<PostView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
         title: Text(
             "${widget.post.ownerUsername[0].toUpperCase()}${widget.post.ownerUsername.substring(1)}'s Post"),
         centerTitle: true,

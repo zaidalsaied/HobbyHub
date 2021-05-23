@@ -63,25 +63,15 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
-          brightness: Brightness.light,
-          backgroundColor: Theme.of(context).primaryColor,
           title: Text(
             'Home',
             textAlign: TextAlign.left,
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontSize: 28.0,
-              fontWeight: FontWeight.bold,
-              letterSpacing: -1.2,
-            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
           heroTag: "btn1",
           child: Icon(
             Icons.post_add,
-            color: Theme.of(context).primaryColor,
             size: 30,
           ),
           onPressed: () {
@@ -100,7 +90,8 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
                   return LiquidPullToRefresh(
                     key: widget._refreshIndicator,
                     showChildOpacityTransition: false,
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    color: Theme.of(context).primaryColor,
                     onRefresh: () async {
                       await PostController().getUserFeed();
                       setState(() {});

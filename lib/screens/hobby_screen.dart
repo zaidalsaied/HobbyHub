@@ -7,6 +7,7 @@ class HobbyScreen extends StatefulWidget {
   final Hobby hobby;
 
   const HobbyScreen({Key key, @required this.hobby}) : super(key: key);
+
   @override
   _HobbyScreenState createState() => _HobbyScreenState();
 }
@@ -15,22 +16,16 @@ class _HobbyScreenState extends State<HobbyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeData.light().scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Theme.of(context).accentColor,
             size: 20.0,
           ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           widget.hobby.name,
-          style: TextStyle(
-              fontSize: 28.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).accentColor),
         ),
       ),
       body: Column(
@@ -61,7 +56,6 @@ class _HobbyScreenState extends State<HobbyScreen> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.0),
                   topRight: Radius.circular(30.0),

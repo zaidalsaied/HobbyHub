@@ -23,24 +23,10 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Theme.of(context).accentColor,
-            size: 20.0,
-          ),
+          icon: Icon(Icons.arrow_back_ios, size: 20.0),
           onPressed: () => Navigator.pop(context),
         ),
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
-          'Hobbies',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            color: Theme.of(context).accentColor,
-            fontSize: 28.0,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -1.2,
-          ),
-        ),
+        title: Text('Hobbies', textAlign: TextAlign.left),
       ),
       body: Padding(
           padding: EdgeInsets.only(top: 20.0),

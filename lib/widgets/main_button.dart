@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hobby_hub_ui/config/palette.dart';
 
 class MainButton extends StatelessWidget {
   final String text;
@@ -17,7 +18,7 @@ class MainButton extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          primary: Color(0xff00BFA6),
+          primary: Palette.hobbyHubPrimaryColor,
         ),
         child: Text(
           text,

@@ -20,17 +20,12 @@ class CustomTabBar extends StatelessWidget {
     return TabBar(
       indicatorPadding: EdgeInsets.zero,
       indicator: BoxDecoration(
-        border: isBottomIndicator
-            ? Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).primaryColor, width: 3.0),
-              )
-            : Border(
-                top: BorderSide(
-                  color: Theme.of(context).primaryColor,
-                  width: 3.0,
-                ),
-              ),
+        border: Border(
+          top: BorderSide(
+            color: Theme.of(context).accentColor,
+            width: 3.0,
+          ),
+        ),
       ),
       tabs: icons
           .asMap()
@@ -40,8 +35,8 @@ class CustomTabBar extends StatelessWidget {
                   icon: Icon(
                     e,
                     color: i == selectedIndex
-                        ? Theme.of(context).primaryColor
-                        : null,
+                        ? Theme.of(context).accentColor
+                        : Colors.grey,
                     size: 30.0,
                   ),
                 ),
