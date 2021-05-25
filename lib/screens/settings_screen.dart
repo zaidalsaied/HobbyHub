@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/config/palette.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -16,21 +17,16 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+            icon: Icon(
+              Icons.arrow_back_ios,
+            ),
             onPressed: () => Navigator.pop(context)),
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
-          "Settings",
-          style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              letterSpacing: -1),
-        ),
+        title: Text("Settings"),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           children: [
             _SettingItem(
               text: 'App Color',
@@ -112,6 +108,17 @@ class _SettingScreenState extends State<SettingScreen> {
                 setState(() {});
               },
             ),
+            _SettingItem(
+              icon: Icons.lightbulb_outlined,
+              onPressed: () {},
+              text: "Dark Theme",
+              trailing: CupertinoSwitch(
+                value: false,
+                onChanged: (value) {
+                  setState(() {});
+                },
+              ),
+            )
           ],
         ),
       ),
@@ -123,35 +130,45 @@ class _SettingItem extends StatelessWidget {
   final IconData icon;
   final String text;
   final Function onPressed;
+  final Widget trailing;
 
-  const _SettingItem({Key key, this.icon, this.text, this.onPressed})
+  const _SettingItem(
+      {Key key,
+      this.icon,
+      this.text,
+      this.onPressed,
+      this.trailing = const SizedBox()})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: EdgeInsets.symmetric(vertical: 5),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-            primary: Theme.of(context).accentColor),
+          shadowColor: Colors.grey,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          primary: Theme.of(context).scaffoldBackgroundColor,
+        ),
         onPressed: onPressed,
         child: Row(
           children: [
             Icon(
               icon,
-              color: Theme.of(context).primaryColor,
               size: 30,
+              color: Theme.of(context).primaryColor,
             ),
             SizedBox(
               width: 5,
             ),
             Text(
               text,
-              style: TextStyle(color: Colors.black, fontSize: 18),
-            )
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
+            Expanded(child: SizedBox()),
+            trailing
           ],
         ),
       ),

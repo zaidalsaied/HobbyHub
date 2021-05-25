@@ -49,6 +49,30 @@ class UserApi {
     }
   }
 
+  Future<bool> updateUser(User user) async {
+    try {
+      http.Request request = http.Request(
+          'PUT', Uri.parse("${Endpoints.host}${Endpoints.userEndpoint}"));
+      print("${Endpoints.host}${Endpoints.userEndpoint}");
+      Map<String, String> body = {
+        "email": user.email.trim(),
+        "imageUrl": user.imgUrl,
+        "firstName": user.firstName.trim(),
+        "lastName": user.lastName.trim(),
+      };
+      request.body = jsonEncode(body);
+      request.headers.addAll(Endpoints.authorizedHeaders);
+      print(request.body);
+      print(request.headers);
+      http.StreamedResponse response = await request.send();
+      print(await response.stream.bytesToString());
+      return response.statusCode == 200;
+    } catch (e) {
+      print("UserApi signUp ERROR:$e");
+      return false;
+    }
+  }
+
   Future<Map<String, dynamic>> signIn(String username, String password) async {
     try {
       var request = http.Request(

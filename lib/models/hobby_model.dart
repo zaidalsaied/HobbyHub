@@ -1,4 +1,3 @@
-import 'package:hobby_hub_ui/models/user_model.dart';
 
 class Hobby {
   final String id;

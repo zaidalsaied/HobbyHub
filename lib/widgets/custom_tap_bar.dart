@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/config/palette.dart';
 
 class CustomTabBar extends StatelessWidget {
   final List<IconData> icons;

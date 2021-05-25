@@ -35,18 +35,50 @@ class PostController {
     return trending;
   }
 
-  Future<bool> post(Post post, File image, Uint8List uint8List) async {
-    if (image != null || uint8List != null) {
-      String fileName = UserController().currentUser.username +
-          (UserController().currentUser.posts.length + 1).toString();
-      post.imageUrl = await UploadImageService.uploadImage(
-          fileName, image == null ? File.fromRawPath(uint8List).path : image.path);
+  Future<bool> post(Post post, File image,
+      {String handWritingImagePath}) async {
+    try {
+      if (image != null || handWritingImagePath != null) {
+        String fileName = UserController().currentUser.username +
+            (UserController().currentUser.posts.length + 1).toString();
+        post.imageUrl = await UploadImageService.uploadImage(
+            fileName,
+            image == null
+                ? 'storage//emulated//0//Pictures//$fileName.jpg'
+                : image.path);
+      }
+      if (await PostApi().post(post)) {
+        await getUserFeed();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
     }
-    if (await PostApi().post(post)) {
-      await getUserFeed();
-      return true;
+  }
+
+  Future<bool> editPost(Post post, File image,
+      {String handWritingImagePath}) async {
+    try {
+      if (image != null || handWritingImagePath != null) {
+        String fileName = UserController().currentUser.username +
+            (UserController().currentUser.posts.length + 1).toString();
+        post.imageUrl = await UploadImageService.uploadImage(
+            fileName,
+            image == null
+                ? 'storage//emulated//0//Pictures//$fileName.jpg'
+                : image.path);
+      }
+      if (await PostApi().updatePost(post)) {
+        await getUserFeed();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
     }
-    return false;
   }
 
   Future<Post> getPostByPostId(String postId) async {
@@ -63,6 +95,10 @@ class PostController {
 
   Future<bool> unlike(String postId) async {
     return await PostApi().removeLike(postId);
+  }
+
+  Future<bool> deletePost(String postId) async {
+    return await PostApi().deletePost(postId);
   }
 
   List<Post> _parsePosts(String res) {

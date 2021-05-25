@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/data/data.dart';
-import 'package:hobby_hub_ui/models/models.dart';
+import 'package:hobby_hub_ui/models/message_model.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String id = 'chat_screen';

@@ -92,23 +92,25 @@ class _LocationScreenState extends State<LocationScreen> {
                 future: getLocation(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    print("snap:${snapshot.data}");
-                    LatLng userLocation = snapshot.data;
-                    if (userLocation != null)
-                      UserController().updateUserLocation(
-                          userLocation.latitude.toString(),
-                          userLocation.longitude.toString());
-                    return GoogleMap(
-                        markers: markers,
-                        myLocationButtonEnabled: true,
-                        myLocationEnabled: true,
-                        mapType: MapType.normal,
-                        initialCameraPosition: CameraPosition(
-                                target: snapshot.data, zoom: 14.4746) ??
-                            LocationScreen._kGooglePlex,
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
-                        });
+                    if (_permissionGranted == PermissionStatus.granted) {
+                      LatLng userLocation = snapshot.data;
+                      if (userLocation != null)
+                        UserController().updateUserLocation(
+                            userLocation.latitude.toString(),
+                            userLocation.longitude.toString());
+                      return GoogleMap(
+                          markers: markers,
+                          myLocationButtonEnabled: true,
+                          myLocationEnabled: true,
+                          mapType: MapType.normal,
+                          initialCameraPosition: CameraPosition(
+                                  target: snapshot.data, zoom: 14.4746) ??
+                              LocationScreen._kGooglePlex,
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                          });
+                    } else
+                      return Text("Please accept permision to use the map");
                   } else
                     return Center(
                         child: SpinKitCircle(

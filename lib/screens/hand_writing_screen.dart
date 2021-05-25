@@ -39,9 +39,7 @@ class _HandWritingPageState extends State<HandWritingPage> {
                 Expanded(
                     child: WhiteBoard(
                         onConvertImage: (value) {
-                          setState(() {
                             unit8List = value;
-                          });
                         },
                         strokeColor: pinColor,
                         controller: _controller,

@@ -20,6 +20,24 @@ class AppColorDB {
       print("AppColorDB saveAppColor ERROR:$e");
     }
   }
+  void saveAppTheme(int colorIndex) {
+    try {
+      appColorDB.put('app-theme', colorIndex);
+    } catch (e) {
+      print(e);
+      print("AppColorDB saveAppColor ERROR:$e");
+    }
+  }
+  int getAppTheme(int colorIndex) {
+    try {
+      return appColorDB.get('app-color');
+    } catch (e) {
+      print(e);
+      print("AppColorDB saveAppColor ERROR:$e");
+      return 0;
+    }
+  }
+
 
   int getAppColor() {
     try {

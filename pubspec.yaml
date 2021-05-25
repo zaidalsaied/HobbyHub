@@ -33,6 +33,10 @@ dependencies:
   flutter_svg: ^0.22.0
   adaptive_theme: ^2.2.0
   whiteboard: ^0.0.1
+  image_gallery_saver: ^1.6.9
+  permission_handler: ^8.0.0+2
+  modal_bottom_sheet: ^2.0.0
+  share: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

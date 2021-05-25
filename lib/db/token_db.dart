@@ -24,7 +24,6 @@ class TokenDB {
 
   String getUserToken() {
     try {
-      log("token");
       return tokenDb.get('token');
     } catch (e) {
       print("UserDB getUserToken ERROR:$e");

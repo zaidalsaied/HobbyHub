@@ -39,7 +39,7 @@ class _PostViewState extends State<PostView> {
             PostContainer(
               post: widget.post,
               setState: widget.setState,
-              navigate: false,
+              canNavigate: false,
             ),
             Container(
               width: MediaQuery.of(context).size.width,

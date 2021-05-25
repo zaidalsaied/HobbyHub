@@ -27,6 +27,7 @@ initApp() async {
     await TokenDB().openTokenBox();
     await AppColorDB().openAppColorDbBox();
     isAuth = await UserController().authenticateToken();
+    await HobbyController().getAllHobbies();
     if (isAuth) {
       await PostController().getUserFeed();
       await PostController().getUserTrending();
@@ -50,7 +51,9 @@ class _HobbyHubAppState extends State<HobbyHubApp> {
       dark: Palette.darkTheme,
       light: Palette.lightTheme,
       builder: (ThemeData light, ThemeData dark) => MaterialApp(
-        initialRoute: isAuth ? NavScreen.id : LoginScreen.id,
+        initialRoute: (isAuth || UserController().currentUser != null)
+            ? NavScreen.id
+            : LoginScreen.id,
         routes: Routes.routes,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Project, Graduation Project two.',

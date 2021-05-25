@@ -1,13 +1,16 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hobby_hub_ui/controller/hobby_controller.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/screens/hand_writing_screen.dart';
+import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
 import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -18,27 +21,37 @@ import 'package:permission_handler/permission_handler.dart';
 
 Uint8List unit8List;
 
-class CreatePostScreen extends StatefulWidget {
-  static const String id = 'create_post_screen';
+class EditPostScreen extends StatefulWidget {
+  final Post post;
+  static const String id = 'edit_post_screen';
+
+  const EditPostScreen({Key key, this.post}) : super(key: key);
 
   @override
-  _CreatePostScreenState createState() => _CreatePostScreenState();
+  _EditPostScreenState createState() => _EditPostScreenState();
 }
 
-class _CreatePostScreenState extends State<CreatePostScreen> {
+class _EditPostScreenState extends State<EditPostScreen> {
+  final postTextEditingController = TextEditingController();
   List<MultiSelectItem> _items = HobbyController.hobbies
       .map((hobby) => MultiSelectItem<String>(hobby.name, hobby.name))
       .toList();
 
   initState() {
     super.initState();
-    _items.add(MultiSelectItem<String>("other", "other"));
-    if (post.tags == null) post.tags = [];
-    unit8List = null;
+    try {
+      _items.add(MultiSelectItem<String>("other", "other"));
+      if (widget.post.tags == null) widget.post.tags = [];
+      unit8List = null;
+      postTextEditingController.text = widget.post.text;
+    } catch (e) {
+      print(e);
+    }
   }
 
   File _image;
   final picker = ImagePicker();
+  bool isNetworkImageCanceled = false;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -90,14 +103,28 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
   }
 
+  void cancelImage() {
+    setState(() {
+      _image = null;
+      unit8List = null;
+    });
+  }
+
+  void cancelNetworkImage() {
+    setState(() {
+      widget.post.imageUrl = null;
+      isNetworkImageCanceled = true;
+    });
+  }
+
   bool _isLoading = false;
-  Post post = Post();
 
   @override
   Widget build(BuildContext context) {
-    bool isValid =
-        ((post.text.trim().length > 0 || _image != null || unit8List != null) &&
-            post.tags.length > 0);
+    bool isValid = ((widget.post.text.trim().length > 0 ||
+            _image != null ||
+            unit8List != null) &&
+        widget.post.tags.length > 0);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -118,9 +145,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           _isLoading = true;
                         });
                         await _requestPermission();
-
-                        isSubmitted = await PostController().post(post, _image,
-                            handWritingImagePath: await _save());
+                        if (unit8List != null)
+                          isSubmitted = await PostController().editPost(
+                              widget.post, _image,
+                              handWritingImagePath: await _save());
+                        else
+                          isSubmitted = await PostController().editPost(
+                            widget.post,
+                            _image,
+                          );
                         if (isSubmitted) {
                           setState(() {
                             _isLoading = false;
@@ -129,9 +162,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               context: context,
                               builder: (BuildContext context) {
                                 return MessageAlertDialog(
-                                  title: "Posted!",
+                                  title: "Success!",
                                   message:
-                                      "your post has been successfully posted!",
+                                      "your post has been successfully edited!",
                                 );
                               });
                           Navigator.pop(context);
@@ -183,11 +216,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           shape: MessageBorder()),
                       width: MediaQuery.of(context).size.width * .8,
                       child: TextField(
+                        controller: postTextEditingController,
                         maxLines: null,
                         minLines: 2,
                         onChanged: (value) {
                           setState(() {
-                            post.text = value;
+                            widget.post.text = value;
                           });
                         },
                         style: TextStyle(fontSize: 20),
@@ -216,16 +250,43 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           top: 8,
                           right: 8,
                           child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  unit8List = null;
-                                });
-                              },
+                              onTap: cancelImage,
                               child: Icon(Icons.cancel, size: 35)),
                         ),
                       ],
                     ),
                   ),
+                if (widget.post.imageUrl != null &&
+                    widget.post.imageUrl.trim().length > 1)
+                  !isNetworkImageCanceled
+                      ? Stack(
+                          children: [
+                            Container(
+                              width: size.width,
+                              height: 300,
+                              child: CachedNetworkImage(
+                                imageUrl: widget.post.imageUrl,
+                                errorWidget: (context, url, error) => Center(
+                                  child: SvgPicture.string(
+                                    SvgAssets.notFound,
+                                    allowDrawingOutsideViewBox: false,
+                                    height: 100,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    cancelNetworkImage();
+                                  },
+                                  child: Icon(Icons.cancel, size: 35)),
+                            ),
+                          ],
+                        )
+                      : SizedBox(),
                 if (_image != null)
                   Stack(
                     children: [
@@ -240,11 +301,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         top: 8,
                         right: 8,
                         child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _image = null;
-                              });
-                            },
+                            onTap: cancelImage,
                             child: Icon(Icons.cancel, size: 35)),
                       ),
                     ],
@@ -302,7 +359,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               selectedTextStyle: Theme.of(context).textTheme.bodyText2,
               onTap: (values) {
                 setState(() {
-                  post.tags = values.cast<String>();
+                  widget.post.tags = values.cast<String>();
                 });
               },
             ),

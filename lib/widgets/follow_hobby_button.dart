@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
-import 'package:hobby_hub_ui/models/models.dart';
+import 'package:hobby_hub_ui/models/hobby_model.dart';
 
 class FollowHobbyButton extends StatefulWidget {
   final Hobby hobby;

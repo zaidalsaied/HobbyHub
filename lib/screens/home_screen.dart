@@ -3,12 +3,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
-import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/screens/create_post_screen.dart';
 import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
-import 'package:hobby_hub_ui/widgets/widgets.dart';
+import 'package:hobby_hub_ui/screens/side_bar_screen.dart';
+import 'package:hobby_hub_ui/widgets/main_button.dart';
+import 'package:hobby_hub_ui/widgets/post_container.dart';
+import 'package:hobby_hub_ui/widgets/responsive.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import 'screens.dart';
+import 'hobbies_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'home_screen';
@@ -123,6 +125,7 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
                         for (var post in snapshot.data)
                           PostContainer(
                             post: post,
+                            setState: setState,
                           )
                       ],
                     ),

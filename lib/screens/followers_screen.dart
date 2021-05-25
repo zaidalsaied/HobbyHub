@@ -60,8 +60,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
               builder: (_, snapshot) {
                 User user = snapshot.data;
                 if (snapshot.connectionState == ConnectionState.done) {
-                  bool following =
-                      UserController().currentUser.followers.contains(username);
+                  bool following = UserController().isFollowing(username);
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(

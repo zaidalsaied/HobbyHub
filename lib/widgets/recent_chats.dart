@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/models/models.dart';
-import 'package:hobby_hub_ui/screens/screens.dart';
+import 'package:hobby_hub_ui/models/message_model.dart';
 import 'package:hobby_hub_ui/data/data.dart';
+import 'package:hobby_hub_ui/screens/chat_screen.dart';
 
 class RecentChats extends StatelessWidget {
   @override
@@ -52,15 +52,15 @@ class RecentChats extends StatelessWidget {
                         children: <Widget>[
                           CircleAvatar(
                             radius: 35.0,
-                            backgroundImage:
-                                CachedNetworkImageProvider(chat.sender.imgUrl),
+                            backgroundImage: CachedNetworkImageProvider(
+                                'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
                           ),
                           SizedBox(width: 10.0),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                chat.sender.name,
+                                'chat.sender.name',
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 15.0,

@@ -1,12 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
+import 'package:hobby_hub_ui/screens/edit_profile_screen.dart';
 import 'package:hobby_hub_ui/screens/following_screen.dart';
-import 'package:hobby_hub_ui/screens/screens.dart';
-import 'package:hobby_hub_ui/widgets/widgets.dart';
+import 'package:hobby_hub_ui/widgets/post_container.dart';
+import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
+
+import 'followers_screen.dart';
 
 class UserProfileScreen extends StatefulWidget {
   static const String id = 'user_profile_screen';
@@ -38,6 +42,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     await UserController().unfollowUser(widget.username);
   }
 
+  Future _deleteImageFromCache() async {
+    try {
+      String url = user.imgUrl;
+      await CachedNetworkImage.evictFromCache(url);
+    }  catch (e) {
+      print(e);
+    }
+  }
+
   Widget _getButton() {
     final style = ElevatedButton.styleFrom(
       primary: Theme.of(context).primaryColor,
@@ -46,7 +59,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       return ElevatedButton.icon(
         label: Text("Edit Profile"),
         style: style,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => EditProfileScreen(state: setState)));
+        },
         icon: Icon(Icons.edit),
       );
     } else {
@@ -157,7 +175,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     if (snapshot.connectionState == ConnectionState.done) {
                       Post post = snapshot.data;
                       posts.add(post);
-                      return PostContainer(post: post);
+                      return PostContainer(
+                        post: post,
+                        setState: setState,
+                      );
                     }
                     return Container(
                       height: 80,
@@ -173,6 +194,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               for (var post in posts)
                 PostContainer(
                   post: post,
+                  setState: setState,
                 )
           ])
         ],
@@ -182,6 +204,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _deleteImageFromCache();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

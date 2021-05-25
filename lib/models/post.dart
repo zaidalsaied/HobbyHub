@@ -1,6 +1,4 @@
 import 'package:hobby_hub_ui/models/comment_model.dart';
-import 'package:hobby_hub_ui/models/comment_status_model.dart';
-import 'package:hobby_hub_ui/models/like_status_model.dart';
 
 class Post {
   String postId;
@@ -15,8 +13,7 @@ class Post {
   List<String> tags = [];
   List<String> likes = [];
   List<Comment> comments = [];
-  LikeStatus likeStatus;
-  CommentStatus commentStatus;
+
 
   Post(
       {this.postId = '',

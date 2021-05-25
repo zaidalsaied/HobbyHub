@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/hobby_model.dart';
-import 'package:hobby_hub_ui/models/models.dart';
-import 'package:hobby_hub_ui/widgets/widgets.dart';
-import 'screens.dart';
-
+import 'package:hobby_hub_ui/widgets/follow_hobby_button.dart';
+import 'hobby_screen.dart';
 class HobbyListItem extends StatelessWidget {
   final Hobby hobby;
 
@@ -41,6 +38,7 @@ class HobbyListItem extends StatelessWidget {
               child: Hero(
                 tag: hobby.imgUrl,
                 child: Image(
+                  //todo chached...
                   image: NetworkImage(hobby.imgUrl),
                   width: 100,
                   height: 100,

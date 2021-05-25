@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
-import 'screens.dart';
+import 'package:hobby_hub_ui/screens/side_bar_screen.dart';
 import 'package:hobby_hub_ui/widgets/recent_chats.dart';
 
 class ChatListScreen extends StatefulWidget {

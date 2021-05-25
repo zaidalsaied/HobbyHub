@@ -6,10 +6,12 @@ import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
 import 'package:hobby_hub_ui/screens/signup_screen.dart';
+import 'package:hobby_hub_ui/widgets/custom_text_field.dart';
+import 'package:hobby_hub_ui/widgets/main_button.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
-import 'package:hobby_hub_ui/widgets/widgets.dart';
-import 'screens.dart';
 import 'package:form_field_validator/form_field_validator.dart' as validator;
+
+import 'nav_screen.dart';
 
 //flip_card: ^0.5.0
 class LoginScreen extends StatefulWidget {

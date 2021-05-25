@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
-import 'package:hobby_hub_ui/helper/stack_trace_helper.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/network/user_api.dart';
 import 'package:hobby_hub_ui/service/upload_image_service.dart';
@@ -38,6 +37,18 @@ class UserController {
     }
   }
 
+  Future<bool> updateUser(User user, File image) async {
+    try {
+      if (image != null)
+        user.imgUrl =
+            await UploadImageService.uploadImage(user.username, image.path);
+      return UserApi().updateUser(user);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<bool> signIn(String email, password) async {
     try {
       Map<String, dynamic> response = await UserApi().signIn(email, password);
@@ -50,7 +61,7 @@ class UserController {
       }
       return false;
     } catch (e) {
-      print(LoggerStackTrace.from(StackTrace.current).print(e.toString()));
+      print(e);
       return false;
     }
   }
@@ -59,7 +70,7 @@ class UserController {
     try {
       return TokenDB().getUserToken();
     } catch (e) {
-      print(LoggerStackTrace.from(StackTrace.current).print(e.toString()));
+      print(e);
       return null;
     }
   }
@@ -68,7 +79,7 @@ class UserController {
     try {
       TokenDB().saveUserToken(token);
     } catch (e) {
-      print(LoggerStackTrace.from(StackTrace.current).print(e.toString()));
+      print(e);
       return;
     }
   }
@@ -163,5 +174,9 @@ class UserController {
       print(e.toString());
       return [];
     }
+  }
+
+  bool isFollowing(String username) {
+    return _currentUser.following.contains(username);
   }
 }

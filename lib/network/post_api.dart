@@ -27,14 +27,16 @@ class PostApi {
 
   String _getPostBodyRequest(Post post) {
     Map body = {
+      if (post.postId != null && post.postId.length > 1) "id": post.postId,
       "contentList": [
-        if(post.text!=null)
-        {"contentType": "TEXT", "value": post.text.trim()},
+        if (post.text != null)
+          {"contentType": "TEXT", "value": post.text.trim()},
         if (post.imageUrl != null)
           {"contentType": "IMAGE", "value": post.imageUrl}
       ],
       "categories": post.tags
     };
+    print(jsonEncode(body));
     return jsonEncode(body);
   }
 
@@ -77,21 +79,22 @@ class PostApi {
     }
   }
 
-  void deletePost(String postId) async {
+  Future<bool> deletePost(String postId) async {
     try {
       var request = http.Request('DELETE',
-          Uri.parse('${Endpoints.host}${Endpoints.postEndPoint}$postId)'));
-      request.headers.addAll(Endpoints.headers);
+          Uri.parse('${Endpoints.host}${Endpoints.postEndPoint}/$postId)'));
+      request.headers.addAll(Endpoints.authorizedHeaders);
       http.StreamedResponse response = await request.send();
-
       if (response.statusCode == 200) {
         print(await response.stream.bytesToString());
+        return true;
       } else {
         print(response.reasonPhrase);
+        return false;
       }
-    } on Exception catch (e) {
-      // TODO
+    } catch (e) {
       print(e);
+      return false;
     }
   }
 
@@ -108,6 +111,27 @@ class PostApi {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<bool> updatePost(Post post) async {
+    try {
+      print("update");
+      var request = http.Request(
+          'PUT', Uri.parse('${Endpoints.host}${Endpoints.postEndPoint}'));
+      request.headers.addAll(Endpoints.authorizedHeaders);
+      request.body = _getPostBodyRequest(post);
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        print(await response.stream.bytesToString());
+        return true;
+      } else {
+        print(await response.stream.bytesToString());
+        return false;
+      }
+    } catch (e) {
+      print('PostController updatePost error: $e');
+      return false;
     }
   }
 

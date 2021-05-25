@@ -6,22 +6,26 @@ import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
+import 'package:hobby_hub_ui/screens/edit_post_screen.dart';
 import 'package:hobby_hub_ui/screens/post_view.dart';
 import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
-import 'package:hobby_hub_ui/screens/screens.dart';
+import 'package:hobby_hub_ui/screens/user_profile.dart';
+import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
+import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'widgets.dart';
 
 class PostContainer extends StatefulWidget {
   final Post post;
   final Function setState;
-  final bool navigate;
+  final bool canNavigate;
 
   PostContainer({
     Key key,
     @required this.post,
-    this.setState,
-    this.navigate = true,
+    @required this.setState,
+    this.canNavigate = true,
   }) : super(key: key);
 
   @override
@@ -59,10 +63,13 @@ class _PostContainerState extends State<PostContainer> {
                         ),
                       );
                     },
-                    child: _PostHeader(post: widget.post)),
+                    child: _PostHeader(
+                      post: widget.post,
+                      setState: widget.setState,
+                    )),
                 GestureDetector(
                   onTap: () {
-                    if (widget.navigate)
+                    if (widget.canNavigate)
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -125,7 +132,7 @@ class _PostContainerState extends State<PostContainer> {
             child: _PostStats(
               post: widget.post,
               setState: widget.setState,
-              navigate: widget.navigate,
+              navigate: widget.canNavigate,
             ),
           ),
         ],
@@ -136,14 +143,103 @@ class _PostContainerState extends State<PostContainer> {
 
 class _PostHeader extends StatelessWidget {
   final Post post;
+  final Function setState;
 
-  const _PostHeader({
-    Key key,
-    @required this.post,
-  }) : super(key: key);
+  bool isDeletePostLoading = false;
+
+  _PostHeader({Key key, this.post, this.setState}) : super(key: key);
+
+  Widget _getMoreButton(BuildContext context) {
+    if (UserController().currentUser.username == post.ownerUsername) {
+      return IconButton(
+          icon: const Icon(Icons.more_horiz),
+          onPressed: () {
+            showMaterialModalBottomSheet(
+              context: context,
+              builder: (context) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          child: ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => EditPostScreen(
+                                      post: post,
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: Icon(Icons.edit_outlined),
+                              label: Text("Edit Post"))),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      StatefulBuilder(builder: (context, state) {
+                        return Expanded(
+                            child: ElevatedButton.icon(
+                                onPressed: () async {
+                                  isDeletePostLoading = true;
+                                  state(() {});
+                                  if (await PostController()
+                                      .deletePost(post.postId)) {
+                                    state(() {
+                                      isDeletePostLoading = false;
+                                    });
+
+                                    await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return MessageAlertDialog(
+                                            title: "Deleted!",
+                                            message:
+                                                "your post has been successfully deleted!",
+                                          );
+                                        });
+                                    setState(() {});
+                                    Navigator.pop(context);
+                                  } else {
+                                    state(() {
+                                      isDeletePostLoading = false;
+                                    });
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return MessageAlertDialog(
+                                            title: "Something went wrong",
+                                            message:
+                                                "something went wrong please try again",
+                                          );
+                                        });
+                                  }
+                                },
+                                icon: Icon(Icons.delete),
+                                label: isDeletePostLoading
+                                    ? SpinKitCircle(
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                        size: 25,
+                                      )
+                                    : Text("Delete Post")));
+                      }),
+                    ],
+                  ),
+                  SizedBox(height: 50),
+                ],
+              ),
+            );
+          });
+    }
+    return SizedBox();
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(isDeletePostLoading);
     return Row(
       children: [
         FutureBuilder(
@@ -202,10 +298,7 @@ class _PostHeader extends StatelessWidget {
             ],
           ),
         ),
-        IconButton(
-          icon: const Icon(Icons.more_horiz),
-          onPressed: () => print('More'),
-        ),
+        _getMoreButton(context)
       ],
     );
   }
@@ -286,7 +379,9 @@ class __PostStatsState extends State<_PostStats> {
             ),
             _PostButton(
               icon: Icon(Icons.ios_share, size: 25.0),
-              onTap: () async {},
+              onTap: () {
+                Share.share("share post");
+              },
               label: '',
             ),
           ],

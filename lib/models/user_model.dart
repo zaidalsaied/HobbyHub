@@ -1,7 +1,6 @@
 ///{"userModel":{"id":"","username":"za","password":"12345678?","email":"zaidalsaid@gmail.com","firstName":"z","lastName":"a","gender":"male","currentLocation":null,"imageUrl":null,"usersFollowing":[],"followers":[],"hobbiesFollowing":[],"posts":[]}}
 class User {
   final String id;
-  final String name;
   String username;
   String email;
   String password;
@@ -17,7 +16,6 @@ class User {
 
   User(
       {this.id,
-      this.name,
       this.email,
       this.firstName,
       this.username,
@@ -32,7 +30,8 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json["id"],
-      name: json["name"],
+      firstName: json["firstName"],
+      lastName: json["lastName"],
       imgUrl: json["imageUrl"],
       username: json["username"],
       location: json["currentLocation"],

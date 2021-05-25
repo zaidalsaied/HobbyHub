@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
-import 'package:hobby_hub_ui/widgets/widgets.dart';
+import 'package:hobby_hub_ui/screens/side_bar_screen.dart';
+import 'package:hobby_hub_ui/widgets/post_container.dart';
+import 'package:hobby_hub_ui/widgets/responsive.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import 'screens.dart';
 
 class TrendingScreen extends StatefulWidget {
   static const String id = 'trending_screen';
@@ -91,6 +92,7 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
                     for (var post in snapshot.data)
                       PostContainer(
                         post: post,
+                        setState: setState,
                       )
                   ],
                 ),
