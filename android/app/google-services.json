@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "433565114723",
+    "project_id": "hobby-hub-43707",
+    "storage_bucket": "hobby-hub-43707.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433565114723:android:11bf3f78701a08dad9f356",
+        "android_client_info": {
+          "package_name": "com.example.hobby_hub_ui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433565114723-7vhlmbposf7u2kdgo5dstaeovuese6go.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5kWJTrJJ31pbcghRzyxUvaUNz_1xm1l4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433565114723-7vhlmbposf7u2kdgo5dstaeovuese6go.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
