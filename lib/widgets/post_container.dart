@@ -343,9 +343,7 @@ class __PostStatsState extends State<_PostStats> {
                         .remove(UserController().currentUser.username);
                     widget.post.numberOfLikes--;
                   });
-                  if (widget.setState != null) {
-                    widget.setState(() {});
-                  }
+
                   await PostController().unlike(widget.post.postId);
                 } else {
                   setState(() {
@@ -353,9 +351,6 @@ class __PostStatsState extends State<_PostStats> {
                         .add(UserController().currentUser.username);
                     widget.post.numberOfLikes++;
                   });
-                  if (widget.setState != null) {
-                    widget.setState(() {});
-                  }
                   await PostController().like(widget.post.postId);
                 }
               },

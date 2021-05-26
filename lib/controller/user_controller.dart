@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:hobby_hub_ui/app_maneger.dart';
 import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
+import 'package:hobby_hub_ui/models/message_model.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/network/user_api.dart';
 import 'package:hobby_hub_ui/service/upload_image_service.dart';
@@ -17,12 +19,13 @@ class UserController {
   factory UserController() {
     return _userController;
   }
+  List<Message> messages = [];
 
   Future<bool> signUp(User user, File image) async {
     try {
       if (image != null)
         user.imgUrl =
-            await UploadImageService.uploadImage(user.username, image.path);
+        await UploadImageService.uploadImage(user.username, image.path);
       Map<String, dynamic> response = await UserApi().signUp(user);
       print(response);
       String token = response["token"];
@@ -41,7 +44,7 @@ class UserController {
     try {
       if (image != null)
         user.imgUrl =
-            await UploadImageService.uploadImage(user.username, image.path);
+        await UploadImageService.uploadImage(user.username, image.path);
       return UserApi().updateUser(user);
     } catch (e) {
       print(e);
@@ -176,6 +179,34 @@ class UserController {
     }
   }
 
+  List<Message> _parseMessages(String res) {
+    try {
+      Iterable itr = json.decode(res);
+      return List<Message>.from(itr.map((model) => Message.fromJson(model)));
+    } catch (e) {
+      print("JsonParser _parseUsers error");
+      print(e.toString());
+      return [];
+    }
+  }
+
+  Future<List<Message>> getChatMessages(String receiverId) async {
+    return _parseMessages(
+        await UserApi().getMessages('zaid', receiverId));
+  }
+
+  void listenToNewMessages() {
+    if (true) {
+      ApplicationManager().socketService.socket.on("newPrivateMessage", (v) {
+        Map<String, dynamic> json = v as Map<String, dynamic>;
+        messages.add(Message.fromJson(json));
+      });
+    }
+  }
+  void sendMessage(String body, String senderId, String receiverId){
+
+    ApplicationManager().socketService.sendTextMessage(body, senderId, receiverId);
+  }
   bool isFollowing(String username) {
     return _currentUser.following.contains(username);
   }

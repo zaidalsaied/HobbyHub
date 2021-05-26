@@ -10,7 +10,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="hobby_hub_ui"
         android:requestLegacyExternalStorage="true"
-
+        android:usesCleartextTraffic="true"
         >
 
         <meta-data

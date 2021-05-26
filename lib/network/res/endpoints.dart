@@ -8,6 +8,9 @@ class Endpoints {
   static String get host {
     return 'https://hobby-hub-project.herokuapp.com';
   }
+  static String get chatHost {
+    return 'http://192.168.1.55:3000';
+  }
 
   static Map<String, String> headers = {'Content-Type': 'application/json'};
 
@@ -32,7 +35,7 @@ class Endpoints {
   static const String commentEndPoint = '/comment';
   static const String feed = '/feed';
   static const String likeEndPoint = '/like';
-
+  static const String messagesEndPoint = '/messages';
   static const String hobbyEndpoint = '/hobby';
   static const String getAllHobbies = '/all';
 

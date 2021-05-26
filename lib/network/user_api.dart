@@ -24,6 +24,29 @@ class UserApi {
     }
   }
 
+  Future<String> getMessages(String senderId, String receiverId) async {
+    try {
+      print("getting ");
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${Endpoints.chatHost}${Endpoints.messagesEndPoint}/$senderId/$receiverId'));
+      request.headers.addAll(Endpoints.authorizedHeaders);
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        print('yes');
+        return await response.stream.bytesToString();
+      } else {
+        print('no');
+        print(response.reasonPhrase);
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   Future<Map<String, dynamic>> signUp(User user) async {
     try {
       http.Request request = http.Request(
