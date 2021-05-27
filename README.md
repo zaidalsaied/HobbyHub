@@ -23,7 +23,8 @@ apply what we have learned from the University as software engineers.
 
 
 ```bash
-You can download the app apk from this link the package manager [this link](https://drive.google.com/file/d/1vvxyUVf4Ul___NSXefReOCT9cWjMAe1j/view?usp=sharing).
+You can download the app apk from this link [this link]
+(https://drive.google.com/file/d/1vvxyUVf4Ul___NSXefReOCT9cWjMAe1j/view?usp=sharing).
 ```
 
 ## Contributing
