@@ -1,128 +1,105 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/models/message_model.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hobby_hub_ui/controller/user_controller.dart';
+import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/chat_screen.dart';
+import 'package:hobby_hub_ui/screens/side_bar_screen.dart';
+import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
 
 class RecentChats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0),
-            topRight: Radius.circular(30.0),
-          ),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Chats'),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0),
-            topRight: Radius.circular(30.0),
+        drawer: MainSideBar(
+          currentUser: UserController().currentUser,
+        ),
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(30.0),
+            ),
           ),
           child: ListView.builder(
-            itemCount: 0,
+            itemCount: UserController().currentUser.following.length,
             itemBuilder: (BuildContext context, int index) {
-              final Message chat = Message();
-              return GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ChatScreen(
+              final String username =
+                  UserController().currentUser.following.toList()[index];
 
-                    ),
-                  ),
-                ),
-                child: Container(
-                  margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 20.0),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                  decoration: BoxDecoration(
-                    color: chat.unread ? Color(0xFFFFEFEE) : Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 35.0,
-                            backgroundImage: CachedNetworkImageProvider(
-                                'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
+              return GestureDetector(
+                  onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ChatScreen(
+                            receiverId: username,
                           ),
-                          SizedBox(width: 10.0),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'chat.sender.name',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 5.0),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.45,
-                                child: Text(
-                                  chat.text,
-                                  style: TextStyle(
-                                    color: Colors.blueGrey,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            chat.time,
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
+                  child: FutureBuilder(
+                    future: UserController().getUserByUsername(username),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        User user = snapshot.data;
+                        return Container(
+                          margin: EdgeInsets.only(
+                              top: 5.0, bottom: 5.0, right: 20.0),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10.0),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2
+                                      .color)
+                            ],
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(20.0),
+                              bottomRight: Radius.circular(20.0),
                             ),
                           ),
-                          SizedBox(height: 5.0),
-                          chat.unread
-                              ? Container(
-                                  width: 40.0,
-                                  height: 20.0,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    borderRadius: BorderRadius.circular(30.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  ProfileAvatar(
+                                    imageUrl: user.imgUrl,
                                   ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'NEW',
+                                  SizedBox(width: 10.0),
+                                  Text(
+                                    user.username,
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.0,
+                                      color: Colors.grey,
+                                      fontSize: 15.0,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                )
-                              : Text(''),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Icon(Icons.send),
+                                  SizedBox(height: 5.0),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      } else
+                        return SpinKitCircle(
+                          color: Theme.of(context).primaryColor,
+                        );
+                    },
+                  ));
             },
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

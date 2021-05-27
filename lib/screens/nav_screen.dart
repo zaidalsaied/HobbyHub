@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/screens/chat_screen.dart';
 import 'package:hobby_hub_ui/screens/trending_screen.dart';
 import 'package:hobby_hub_ui/widgets/custom_tap_bar.dart';
+import 'package:hobby_hub_ui/widgets/recent_chats.dart';
 
 import 'chat_list_screen.dart';
 import 'home_screen.dart';
@@ -21,7 +22,7 @@ class _NavScreenState extends State<NavScreen> {
     HomeScreen(),
     TrendingScreen(),
     Container(),
-    ChatScreen()
+    RecentChats()
   ];
   final List<IconData> _icons = const [
     Icons.home,
@@ -46,7 +47,6 @@ class _NavScreenState extends State<NavScreen> {
               onTap: (index) {
                 _selectedIndex = index;
                 if (_selectedIndex == 2) _screens[2] = LocationScreen();
-                if (_selectedIndex == 3) _screens[3] = ChatScreen();
                 setState(() {});
               },
             ),

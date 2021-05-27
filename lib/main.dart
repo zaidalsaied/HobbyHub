@@ -15,12 +15,21 @@ import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/dependency_injection.dart';
 import 'package:hobby_hub_ui/screens/login_screen.dart';
 import 'package:hobby_hub_ui/screens/nav_screen.dart';
+import 'package:provider/provider.dart';
 
 Injector socketInjector;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initApp();
-  runApp(Phoenix(child: HobbyHubApp()));
+  runApp(
+    Phoenix(
+      child: ChangeNotifierProvider(
+        create: (context) => UserController(),
+        child: HobbyHubApp(),
+      ),
+    ),
+  );
 }
 
 bool isAuth = false;
@@ -35,8 +44,7 @@ initApp() async {
     await AppColorDB().openAppColorDbBox();
     isAuth = await UserController().authenticateToken();
     await HobbyController().getAllHobbies();
-    UserController().listenToNewMessages();
-    ApplicationManager().socketService.joinPrivate('zaid', 'thaer');
+
     if (isAuth) {
       await PostController().getUserFeed();
       await PostController().getUserTrending();
@@ -55,6 +63,7 @@ class HobbyHubApp extends StatefulWidget {
 class _HobbyHubAppState extends State<HobbyHubApp> {
   @override
   Widget build(BuildContext context) {
+
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.system,
       dark: Palette.darkTheme,

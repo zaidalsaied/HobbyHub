@@ -9,7 +9,7 @@ class Endpoints {
     return 'https://hobby-hub-project.herokuapp.com';
   }
   static String get chatHost {
-    return 'http://192.168.1.55:3000';
+    return 'https://hobby-hub-chat.herokuapp.com';
   }
 
   static Map<String, String> headers = {'Content-Type': 'application/json'};

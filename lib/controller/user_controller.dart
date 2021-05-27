@@ -108,6 +108,10 @@ class UserController with ChangeNotifier {
     return _currentUser;
   }
 
+  void setCurrentUser(User user) {
+    _currentUser = user;
+  }
+
   Future<void> getCurrentUser() async {
     _currentUser = await UserApi().getUser(_currentUser.username);
   }
@@ -192,14 +196,18 @@ class UserController with ChangeNotifier {
     }
   }
 
-  Future<List<Message>> getChatMessages(String receiverId) async {
-    return _parseMessages(await UserApi().getMessages('zaid', receiverId));
+  Future<void> getChatMessages(String receiverId) async {
+    messages = _parseMessages(
+        await UserApi().getMessages(_currentUser.username, receiverId));
+    notifyListeners();
+    return;
   }
 
   void listenToNewMessages() {
     if (true) {
       ApplicationManager().socketService.socket.on("newPrivateMessage", (v) {
         Map<String, dynamic> json = v as Map<String, dynamic>;
+        print('value:$v');
         messages.add(Message.fromJson(json));
         notifyListeners();
       });
@@ -207,10 +215,17 @@ class UserController with ChangeNotifier {
   }
 
   void sendMessage(String body, String senderId, String receiverId) {
+    print('send');
     ApplicationManager()
         .socketService
         .sendTextMessage(body, senderId, receiverId);
     notifyListeners();
+  }
+
+  void joinPrivate(String receiverId) {
+    ApplicationManager()
+        .socketService
+        .joinPrivate(_currentUser.username, receiverId);
   }
 
   bool isFollowing(String username) {

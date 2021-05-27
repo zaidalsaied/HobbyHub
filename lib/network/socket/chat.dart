@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:hobby_hub_ui/network/res/endpoints.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 const SocketEvents = ["joinPrivate", "newPrivateMessage", 'privateMessage'];
@@ -9,7 +10,7 @@ class SocketService {
   createSocketConnection() {
     try {
       print("try to connect");
-      this.socket = IO.io('http://192.168.1.55:3000', <String, dynamic>{
+      this.socket = IO.io('https://hobby-hub-chat.herokuapp.com', <String, dynamic>{
         'transports': ['websocket']
       });
       this.socket.on("connect", (_) => log('Connected'));
