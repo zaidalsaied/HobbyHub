@@ -49,11 +49,6 @@ initApp() async {
     isAuth = await UserController().authenticateToken();
     await HobbyController().getAllHobbies();
 
-    if (isAuth) {
-      await PostController().getUserFeed();
-      await PostController().getUserTrending();
-      await HobbyController().getAllHobbies();
-    }
   } catch (e) {
     print(e);
   }

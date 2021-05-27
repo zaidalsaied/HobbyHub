@@ -10,12 +10,12 @@ import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/screens/hand_writing_screen.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
 import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_select_flutter/chip_field/multi_select_chip_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 Uint8List unit8List;
 
@@ -78,8 +78,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   Future<String> _save() async {
     try {
-      String fileName = UserController().currentUser.username +
-          (UserController().currentUser.posts.length + 1).toString();
+      String fileName = Provider.of<UserController>(context, listen: false)
+              .currentUser
+              .username +
+          (Provider.of<UserController>(context, listen: false)
+                      .currentUser
+                      .posts
+                      .length +
+                  1)
+              .toString();
       var tempDir = await getTemporaryDirectory();
       File file =
           await File('${tempDir.path}/$fileName.jpg').writeAsBytes(unit8List);
@@ -87,6 +94,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       return file.path;
     } catch (e) {
       print(e);
+      print("yes");
       return null;
     }
   }
@@ -120,8 +128,21 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         });
                         await _requestPermission();
 
-                        isSubmitted = await PostController().post(post, _image,
-                            handWritingImagePath: await _save());
+                        if (unit8List != null)
+                          isSubmitted = await Provider.of<PostController>(
+                                  context,
+                                  listen: false)
+                              .post(post, _image,
+                                  handWritingImagePath: await _save());
+                        else {
+                          isSubmitted = await Provider.of<PostController>(
+                                  context,
+                                  listen: false)
+                              .post(
+                            post,
+                            _image,
+                          );
+                        }
                         if (isSubmitted) {
                           setState(() {
                             _isLoading = false;
@@ -173,7 +194,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ProfileAvatar(
-                        imageUrl: UserController().currentUser.imgUrl),
+                        imageUrl:
+                            Provider.of<UserController>(context, listen: false)
+                                .currentUser
+                                .imgUrl),
                     Container(
                       padding: EdgeInsets.zero,
                       margin:

@@ -5,6 +5,7 @@ import 'package:hobby_hub_ui/controller/pos_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/post.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
+import 'package:hobby_hub_ui/screens/chat_screen.dart';
 import 'package:hobby_hub_ui/screens/edit_profile_screen.dart';
 import 'package:hobby_hub_ui/screens/following_screen.dart';
 import 'package:hobby_hub_ui/widgets/post_container.dart';
@@ -83,7 +84,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
           Expanded(
               child: ElevatedButton(
-                  style: style, onPressed: () {}, child: Text("Message"))),
+                  style: style,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ChatScreen(receiverId: user.username),
+                      ),
+                    );
+                  },
+                  child: Text("Message"))),
         ],
       );
     }

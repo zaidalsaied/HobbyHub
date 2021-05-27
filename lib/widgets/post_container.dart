@@ -13,6 +13,7 @@ import 'package:hobby_hub_ui/screens/user_profile.dart';
 import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
 import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -182,9 +183,11 @@ class _PostHeader extends StatelessWidget {
                         return Expanded(
                             child: ElevatedButton.icon(
                                 onPressed: () async {
-                                  isDeletePostLoading = true;
-                                  state(() {});
-                                  if (await PostController()
+                                  state(() {
+                                    isDeletePostLoading = true;
+                                  });
+                                  if (await Provider.of<PostController>(context,
+                                          listen: false)
                                       .deletePost(post.postId)) {
                                     state(() {
                                       isDeletePostLoading = false;
@@ -199,7 +202,6 @@ class _PostHeader extends StatelessWidget {
                                                 "your post has been successfully deleted!",
                                           );
                                         });
-                                    setState(() {});
                                     Navigator.pop(context);
                                   } else {
                                     state(() {

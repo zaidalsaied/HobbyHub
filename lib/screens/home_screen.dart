@@ -80,7 +80,7 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
         currentUser: UserController().currentUser,
       ),
       body: FutureBuilder(
-          future: Future.delayed(Duration(seconds: 3)),
+          future: Future.delayed(Duration(seconds: 5)),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done)
               return Container(

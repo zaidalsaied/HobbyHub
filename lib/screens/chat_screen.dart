@@ -97,6 +97,13 @@ class _ChatScreenState extends State<ChatScreen> {
           title: Text(
             widget.receiverId,
           ),
+          leading: IconButton(
+            onPressed: () {
+              Provider.of<UserController>(context, listen: false).messages = [];
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.keyboard_backspace),
+          ),
         ),
         body: Provider.of<UserController>(context).messages != null
             ? GestureDetector(

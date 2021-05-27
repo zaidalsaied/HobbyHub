@@ -9,9 +9,9 @@ import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/network/post_api.dart';
 import 'package:hobby_hub_ui/service/upload_image_service.dart';
 
-class PostController with ChangeNotifier{
-   List<Post> feed=[];
-   List<Post> trending=[];
+class PostController with ChangeNotifier {
+  List<Post> feed = [];
+  List<Post> trending = [];
 
   Future<List<Post>> getUserFeed() async {
     print(TokenDB().getUserToken());
@@ -38,23 +38,20 @@ class PostController with ChangeNotifier{
   Future<bool> post(Post post, File image,
       {String handWritingImagePath}) async {
     try {
-      print(handWritingImagePath == null);
       if (image != null || handWritingImagePath != null) {
-        print("path");
-        print(handWritingImagePath);
-
         String fileName = UserController().currentUser.username +
             (UserController().currentUser.posts.length + 1).toString();
         post.imageUrl = await UploadImageService.uploadImage(
             fileName, image == null ? handWritingImagePath : image.path);
       }
       if (await PostApi().post(post)) {
-        await getUserFeed();
+        feed.add(post);
+        notifyListeners();
         return true;
       }
       return false;
     } catch (e) {
-      print(e);
+      print('PostController post error:$e');
       return false;
     }
   }
@@ -66,13 +63,14 @@ class PostController with ChangeNotifier{
         String fileName = UserController().currentUser.username +
             (UserController().currentUser.posts.length + 1).toString();
         post.imageUrl = await UploadImageService.uploadImage(
-            fileName,
-            image == null
-                ? 'storage//emulated//0//Pictures//$fileName.jpg'
-                : image.path);
+            fileName, image == null ? handWritingImagePath : image.path);
       }
       if (await PostApi().updatePost(post)) {
-        await getUserFeed();
+        int index = feed.indexWhere((element) => element.postId == post.postId);
+        if (index >= 0) {
+          feed[index] = post;
+          notifyListeners();
+        }
         return true;
       }
       return false;
@@ -99,7 +97,12 @@ class PostController with ChangeNotifier{
   }
 
   Future<bool> deletePost(String postId) async {
-    return await PostApi().deletePost(postId);
+    bool isDeleted = await PostApi().deletePost(postId);
+    if (isDeleted) {
+      feed.removeWhere((element) => element.postId == postId);
+      notifyListeners();
+    }
+    return isDeleted;
   }
 
   List<Post> _parsePosts(String res) {

@@ -13,8 +13,11 @@ class PostApi {
       request.headers.addAll(Endpoints.authorizedHeaders);
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
+        print("200");
         return true;
       } else {
+        print("not submited");
+        print( request.body);
         print(response.reasonPhrase);
         return false;
       }
@@ -78,8 +81,9 @@ class PostApi {
 
   Future<bool> deletePost(String postId) async {
     try {
+      print(('${Endpoints.host}${Endpoints.postEndPoint}/$postId'));
       var request = http.Request('DELETE',
-          Uri.parse('${Endpoints.host}${Endpoints.postEndPoint}/$postId)'));
+          Uri.parse('${Endpoints.host}${Endpoints.postEndPoint}/$postId'));
       request.headers.addAll(Endpoints.authorizedHeaders);
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
