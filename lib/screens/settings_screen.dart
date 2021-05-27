@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/config/palette.dart';
@@ -14,6 +15,7 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
+    bool isDarkTheme = AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -113,9 +115,13 @@ class _SettingScreenState extends State<SettingScreen> {
               onPressed: () {},
               text: "Dark Theme",
               trailing: CupertinoSwitch(
-                value: false,
+                value: isDarkTheme,
                 onChanged: (value) {
-                  setState(() {});
+                  setState(() {
+                    isDarkTheme
+                        ? AdaptiveTheme.of(context).setLight()
+                        : AdaptiveTheme.of(context).setDark();
+                  });
                 },
               ),
             )
@@ -143,10 +149,13 @@ class _SettingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [BoxShadow(blurRadius: 3, offset: Offset(2, 2))]),
       margin: EdgeInsets.symmetric(vertical: 5),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shadowColor: Colors.grey,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

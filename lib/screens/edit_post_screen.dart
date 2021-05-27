@@ -306,39 +306,43 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       ),
                     ],
                   ),
-                Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Wrap(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: ElevatedButton.icon(
-                            label: Text('Upload Image'),
-                            onPressed: getImage,
-                            icon: Icon(Icons.add_a_photo_rounded)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: ElevatedButton.icon(
-                            label: Text('Take Image'),
-                            onPressed: takeImage,
-                            icon: Icon(Icons.camera)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: ElevatedButton.icon(
-                            label: Text('Hand Write'),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HandWritingPage()));
-                            },
-                            icon: Icon(Icons.edit_outlined)),
-                      ),
-                    ],
+                if (_image == null &&
+                    unit8List == null &&
+                    widget.post.imageUrl == null)
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Wrap(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: ElevatedButton.icon(
+                              label: Text('Upload Image'),
+                              onPressed: getImage,
+                              icon: Icon(Icons.add_a_photo_rounded)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: ElevatedButton.icon(
+                              label: Text('Take Image'),
+                              onPressed: takeImage,
+                              icon: Icon(Icons.camera)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: ElevatedButton.icon(
+                              label: Text('Hand Write'),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            HandWritingPage()));
+                              },
+                              icon: Icon(Icons.edit_outlined)),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),

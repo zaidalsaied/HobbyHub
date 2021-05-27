@@ -68,8 +68,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
                             decoration: BoxDecoration(
                               color: Theme.of(context).scaffoldBackgroundColor,
                               boxShadow: [
-                                BoxShadow(color: Colors.grey),
-                                BoxShadow(color: Colors.grey)
+                                BoxShadow(blurRadius: 3, offset: Offset(2, 2))
                               ],
                               borderRadius: BorderRadius.circular(15),
                             ),

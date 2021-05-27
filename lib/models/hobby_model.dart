@@ -1,3 +1,4 @@
+import 'package:hobby_hub_ui/config/palette.dart';
 
 class Hobby {
   final String id;

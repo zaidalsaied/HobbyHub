@@ -18,7 +18,6 @@ import 'package:hobby_hub_ui/screens/nav_screen.dart';
 import 'package:provider/provider.dart';
 
 Injector socketInjector;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initApp();

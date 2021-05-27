@@ -18,6 +18,7 @@ class _FollowHobbyButtonState extends State<FollowHobbyButton> {
         UserController().currentUser.hobbies.contains(widget.hobby.name);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+          minimumSize: Size(120, 30),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
       onPressed: () async {
@@ -33,7 +34,7 @@ class _FollowHobbyButtonState extends State<FollowHobbyButton> {
         setState(() {});
       },
       child: Text(
-        isFollowing ? 'FOLLOWING' : 'Follow',
+        isFollowing ? 'FOLLOWING' : 'FOLLOW',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

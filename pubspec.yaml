@@ -14,31 +14,31 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.0
-  cached_network_image: ^2.2.0+1
-  material_design_icons_flutter: ^4.0.5345
+  cupertino_icons: ^1.0.3
+  cached_network_image: ^3.0.0
+  material_design_icons_flutter: ^4.0.5955
   provider: ^5.0.0
-  http: ^0.13.1
+  http: ^0.13.3
   form_field_validator: ^1.1.0
-  hive: ^2.0.3
+  hive: ^2.0.4
   hive_flutter: ^1.0.0
   multi_select_flutter: ^4.0.0
-  google_maps_flutter: ^2.0.5
+  google_maps_flutter: ^2.0.6
   timeago: ^3.0.2
   flutter_spinkit: ^5.0.0
   location: ^4.1.1
   liquid_pull_to_refresh: ^3.0.0
   flutter_phoenix: ^1.0.0
-  image_picker: ^0.7.5+2
+  image_picker: ^0.7.5+3
   flutter_svg: ^0.22.0
   adaptive_theme: ^2.2.0
   whiteboard: ^0.0.1
   image_gallery_saver: ^1.6.9
   permission_handler: ^8.0.0+2
   modal_bottom_sheet: ^2.0.0
-  share: ^2.0.1
+  share: ^2.0.4
   socket_io: ^1.0.0
-  socket_io_client: ^1.0.0-nullsafety.0
+  socket_io_client: ^1.0.1
   flutter_simple_dependency_injection: ^2.0.0
   path_provider: ^2.0.2
   intl: ^0.17.0

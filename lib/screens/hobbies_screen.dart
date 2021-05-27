@@ -29,7 +29,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
         title: Text('Hobbies', textAlign: TextAlign.left),
       ),
       body: Padding(
-          padding: EdgeInsets.only(top: 20.0),
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
           child: FutureBuilder(
             future: HobbyController().getAllHobbies(),
             builder: (context, snapshot) {

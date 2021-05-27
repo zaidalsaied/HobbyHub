@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hobby_hub_ui/config/palette.dart';
 import 'package:hobby_hub_ui/models/hobby_model.dart';
+import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
 
 class HobbyScreen extends StatefulWidget {
   final Hobby hobby;
@@ -33,13 +36,12 @@ class _HobbyScreenState extends State<HobbyScreen> {
         children: [
           Stack(
             children: [
-              Hero(
-                tag: widget.hobby.imgUrl,
-                child: Image(
-                  image: CachedNetworkImageProvider(widget.hobby.imgUrl),
-                  width: MediaQuery.of(context).size.width,
-                  height: 250,
-                  fit: BoxFit.contain,
+              Container(
+                height: 250,
+                width: MediaQuery.of(context).size.width,
+                child: SvgPicture.string(
+                  SvgAssets.convertSvgColor(widget.hobby.imgUrl),
+                  allowDrawingOutsideViewBox: false,
                 ),
               ),
               Container(

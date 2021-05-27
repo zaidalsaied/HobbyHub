@@ -77,10 +77,7 @@ class _FollowersScreenState extends State<FollowersScreen> {
                             horizontal: 20.0, vertical: 10.0),
                         decoration: BoxDecoration(
                           color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow: [
-                            BoxShadow(color: Colors.grey),
-                            BoxShadow(color: Colors.grey)
-                          ],
+                          boxShadow: [BoxShadow(blurRadius: 3, offset: Offset(2, 2))],
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Row(

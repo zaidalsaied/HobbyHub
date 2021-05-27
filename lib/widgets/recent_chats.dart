@@ -18,13 +18,6 @@ class RecentChats extends StatelessWidget {
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.0),
-              topRight: Radius.circular(30.0),
-            ),
-          ),
           child: ListView.builder(
             itemCount: UserController().currentUser.following.length,
             itemBuilder: (BuildContext context, int index) {
@@ -47,18 +40,12 @@ class RecentChats extends StatelessWidget {
                         User user = snapshot.data;
                         return Container(
                           margin: EdgeInsets.only(
-                              top: 5.0, bottom: 5.0, right: 20.0),
+                              top: 8.0, bottom: 5.0, right: 20.0),
                           padding: EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 10.0),
+                              horizontal: 20.0, vertical: 20.0),
                           decoration: BoxDecoration(
                             color: Theme.of(context).scaffoldBackgroundColor,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2
-                                      .color)
-                            ],
+                            boxShadow: [BoxShadow(blurRadius: 3, offset: Offset(2, 2))],
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(20.0),
                               bottomRight: Radius.circular(20.0),
@@ -93,8 +80,14 @@ class RecentChats extends StatelessWidget {
                           ),
                         );
                       } else
-                        return SpinKitCircle(
-                          color: Theme.of(context).primaryColor,
+                        return Container(
+                          height: 80,
+                          width: double.infinity,
+                          margin: EdgeInsets.symmetric(vertical: 15),
+                          color: Colors.grey.withOpacity(0.5),
+                          child: SpinKitThreeBounce(
+                              color: Theme.of(context).primaryColor,
+                              size: 50.0),
                         );
                     },
                   ));
