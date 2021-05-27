@@ -169,8 +169,6 @@ class UserController with ChangeNotifier {
   }
 
   void logout() {
-    PostController.feed = [];
-    PostController.trending = [];
     TokenDB().clearUserToken();
   }
 
@@ -215,7 +213,6 @@ class UserController with ChangeNotifier {
   }
 
   void sendMessage(String body, String senderId, String receiverId) {
-    print('send');
     ApplicationManager()
         .socketService
         .sendTextMessage(body, senderId, receiverId);

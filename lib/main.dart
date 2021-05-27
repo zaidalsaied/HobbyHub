@@ -18,14 +18,19 @@ import 'package:hobby_hub_ui/screens/nav_screen.dart';
 import 'package:provider/provider.dart';
 
 Injector socketInjector;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initApp();
   runApp(
     Phoenix(
-      child: ChangeNotifierProvider(
-        create: (context) => UserController(),
-        child: HobbyHubApp(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => UserController()),
+          ChangeNotifierProvider(create: (context) => PostController()),
+          ChangeNotifierProvider(create: (context) => HobbyController()),
+        ],
+        builder: (BuildContext context, _) => HobbyHubApp(),
       ),
     ),
   );
@@ -62,7 +67,6 @@ class HobbyHubApp extends StatefulWidget {
 class _HobbyHubAppState extends State<HobbyHubApp> {
   @override
   Widget build(BuildContext context) {
-
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.system,
       dark: Palette.darkTheme,

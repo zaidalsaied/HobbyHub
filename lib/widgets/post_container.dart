@@ -260,38 +260,47 @@ class _PostHeader extends StatelessWidget {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width - 100,
-                child: Row(children: [
-                  Text(
-                    post.ownerUsername,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 5.0,
-                  ),
-                  Text(
-                    '@${post.ownerUsername} • ',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 11.0,
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * .25,
-                    child: Text(
-                      timeago.format(DateTime.parse(post.date)),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 10.0,
+                child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                          post.ownerUsername,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ]),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                          '@${post.ownerUsername} • ',
+                          textWidthBasis: TextWidthBasis.parent,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 11.0,
+                          ),
+                        ),
+                      ),
+                      FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                          timeago.format(DateTime.parse(post.date)),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 10.0,
+                          ),
+                        ),
+                      ),
+                    ]),
               ),
             ],
           ),

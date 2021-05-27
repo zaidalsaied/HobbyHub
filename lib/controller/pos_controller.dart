@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/models/comment_model.dart';
@@ -8,13 +9,15 @@ import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/network/post_api.dart';
 import 'package:hobby_hub_ui/service/upload_image_service.dart';
 
-class PostController {
-  static List<Post> feed;
-  static List<Post> trending;
+class PostController with ChangeNotifier{
+   List<Post> feed=[];
+   List<Post> trending=[];
 
   Future<List<Post>> getUserFeed() async {
     print(TokenDB().getUserToken());
     feed = _parsePosts(await PostApi().getFeed());
+    notifyListeners();
+    print('notify');
     return feed;
   }
 

@@ -174,9 +174,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       Post post = snapshot.data;
-                      int index = PostController.feed.indexWhere(
-                          (element) => element.postId == post.postId);
-                      if (index >= 0) post = PostController.feed[index];
+
                       posts.add(post);
                       return PostContainer(
                         post: post,

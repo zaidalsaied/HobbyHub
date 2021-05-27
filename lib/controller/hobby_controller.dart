@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:hobby_hub_ui/models/hobby_model.dart';
 import 'package:hobby_hub_ui/network/hobby_api.dart';
 
-class HobbyController {
+class HobbyController with ChangeNotifier{
   static List<Hobby> hobbies = [];
 
   HobbyController._internal();

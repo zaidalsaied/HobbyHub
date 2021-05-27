@@ -10,6 +10,7 @@ import 'package:hobby_hub_ui/widgets/main_button.dart';
 import 'package:hobby_hub_ui/widgets/post_container.dart';
 import 'package:hobby_hub_ui/widgets/responsive.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:provider/provider.dart';
 import 'hobbies_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    Provider.of<PostController>(context, listen: false).getUserFeed();
   }
 
   @override
@@ -66,74 +68,75 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Home')),
-        floatingActionButton: FloatingActionButton(
-          heroTag: "createPostButton",
-          child: Icon(Icons.post_add, size: 30),
-          onPressed: () {
-            Navigator.pushNamed(context, CreatePostScreen.id);
-          },
-        ),
-        drawer: MainSideBar(
-          currentUser: UserController().currentUser,
-        ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          child: FutureBuilder(
-              future: PostController().getUserFeed(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done)
-                  return LiquidPullToRefresh(
-                    key: widget._refreshIndicator,
-                    showChildOpacityTransition: false,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    color: Theme.of(context).primaryColor,
-                    onRefresh: () async {
-                      await PostController().getUserFeed();
-                      setState(() {});
-                    },
-                    child: ListView(
-                      children: [
-                        if (snapshot.data.length == 0)
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: MediaQuery.of(context).size.width * .3,
-                              ),
-                              SvgPicture.string(
-                                SvgAssets.noPosts,
-                                allowDrawingOutsideViewBox: false,
-                                height: 200,
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Text("follow some hobbies to start!"),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              MainButton(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, HobbiesScreen.id);
-                                },
-                                text: "Let's go!",
-                              )
-                            ],
-                          ),
-                        for (var post in snapshot.data)
-                          PostContainer(
-                            post: post,
-                            setState: setState,
-                          )
-                      ],
-                    ),
-                  );
-                return SpinKitCircle(
+      appBar: AppBar(title: Text('Home')),
+      floatingActionButton: FloatingActionButton(
+        heroTag: "createPostButton",
+        child: Icon(Icons.post_add, size: 30),
+        onPressed: () {
+          Navigator.pushNamed(context, CreatePostScreen.id);
+        },
+      ),
+      drawer: MainSideBar(
+        currentUser: UserController().currentUser,
+      ),
+      body: FutureBuilder(
+          future: Future.delayed(Duration(seconds: 3)),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done)
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                child: LiquidPullToRefresh(
+                  key: widget._refreshIndicator,
+                  showChildOpacityTransition: false,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   color: Theme.of(context).primaryColor,
-                );
-              }),
-        ));
+                  onRefresh: () async {
+                    await Provider.of<PostController>(context, listen: false)
+                        .getUserFeed();
+                  },
+                  child: ListView(
+                    children: [
+                      for (var post
+                          in Provider.of<PostController>(context).feed)
+                        PostContainer(post: post, setState: setState),
+                      if (Provider.of<PostController>(context).feed.length == 0)
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.width * .3,
+                            ),
+                            SvgPicture.string(
+                              SvgAssets.noPosts,
+                              allowDrawingOutsideViewBox: false,
+                              height: 200,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text("follow some hobbies to start!"),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            MainButton(
+                              onTap: () {
+                                Navigator.pushNamed(context, HobbiesScreen.id);
+                              },
+                              text: "Let's go!",
+                            )
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            else
+              return Center(
+                child: SpinKitCircle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              );
+          }),
+    );
   }
 }
