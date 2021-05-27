@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:hobby_hub_ui/models/comment_model.dart';
-import 'package:hobby_hub_ui/models/post.dart';
+import 'package:hobby_hub_ui/models/post_model.dart';
 import 'package:hobby_hub_ui/network/res/endpoints.dart';
 import 'package:http/http.dart' as http;
 

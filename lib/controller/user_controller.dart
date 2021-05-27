@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:hobby_hub_ui/app_maneger.dart';
-import 'package:hobby_hub_ui/controller/pos_controller.dart';
+import 'package:hobby_hub_ui/socket_manager.dart';
+import 'package:hobby_hub_ui/controller/post_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/models/message_model.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
@@ -203,7 +203,7 @@ class UserController with ChangeNotifier {
 
   void listenToNewMessages() {
     if (true) {
-      ApplicationManager().socketService.socket.on("newPrivateMessage", (v) {
+      SocketManager().socketService.socket.on("newPrivateMessage", (v) {
         Map<String, dynamic> json = v as Map<String, dynamic>;
         print('value:$v');
         messages.add(Message.fromJson(json));
@@ -213,14 +213,14 @@ class UserController with ChangeNotifier {
   }
 
   void sendMessage(String body, String senderId, String receiverId) {
-    ApplicationManager()
+    SocketManager()
         .socketService
         .sendTextMessage(body, senderId, receiverId);
     notifyListeners();
   }
 
   void joinPrivate(String receiverId) {
-    ApplicationManager()
+    SocketManager()
         .socketService
         .joinPrivate(_currentUser.username, receiverId);
   }

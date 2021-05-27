@@ -4,18 +4,18 @@ import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/following_screen.dart';
 import 'package:hobby_hub_ui/screens/settings_screen.dart';
 import 'package:hobby_hub_ui/screens/user_profile.dart';
-import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
+import 'package:hobby_hub_ui/screens/widgets/profile_avatar.dart';
 
 import 'followers_screen.dart';
 import 'hobbies_screen.dart';
 import 'login_screen.dart';
 
 
-class MainSideBar extends StatelessWidget {
+class DrawerScreen extends StatelessWidget {
   final User currentUser;
   static const String id = 'main_sidebar_screen';
 
-  const MainSideBar({Key key, @required this.currentUser}) : super(key: key);
+  const DrawerScreen({Key key, @required this.currentUser}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

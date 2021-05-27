@@ -1,10 +1,9 @@
-import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hobby_hub_ui/models/hobby_model.dart';
 import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
-import 'package:hobby_hub_ui/widgets/follow_hobby_button.dart';
+import 'package:hobby_hub_ui/screens/widgets/follow_hobby_button.dart';
 import 'hobby_screen.dart';
 
 class HobbyListItem extends StatelessWidget {

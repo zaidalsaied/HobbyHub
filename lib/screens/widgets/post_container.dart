@@ -2,20 +2,21 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hobby_hub_ui/controller/pos_controller.dart';
+import 'package:hobby_hub_ui/controller/post_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
-import 'package:hobby_hub_ui/models/post.dart';
+import 'package:hobby_hub_ui/models/post_model.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/edit_post_screen.dart';
 import 'package:hobby_hub_ui/screens/post_view.dart';
 import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
 import 'package:hobby_hub_ui/screens/user_profile.dart';
-import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
-import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
+import 'package:hobby_hub_ui/screens/widgets/profile_avatar.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import 'mesage_alert_dialog.dart';
 
 class PostContainer extends StatefulWidget {
   final Post post;

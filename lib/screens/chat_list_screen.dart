@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
-import 'package:hobby_hub_ui/screens/side_bar_screen.dart';
-import 'package:hobby_hub_ui/widgets/recent_chats.dart';
+import 'package:hobby_hub_ui/screens/drawer_screen.dart';
+import 'package:hobby_hub_ui/screens/widgets/recent_chats.dart';
 
 class ChatListScreen extends StatefulWidget {
   static const String id = 'chat_list_screen';
@@ -14,7 +14,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainSideBar(
+      drawer: DrawerScreen(
         currentUser: UserController().currentUser,
       ),
       appBar: AppBar(

@@ -3,8 +3,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/chat_screen.dart';
-import 'package:hobby_hub_ui/screens/side_bar_screen.dart';
-import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
+import 'package:hobby_hub_ui/screens/drawer_screen.dart';
+import 'package:hobby_hub_ui/screens/widgets/profile_avatar.dart';
 
 class RecentChats extends StatelessWidget {
   @override
@@ -13,7 +13,7 @@ class RecentChats extends StatelessWidget {
         appBar: AppBar(
           title: Text('Chats'),
         ),
-        drawer: MainSideBar(
+        drawer: DrawerScreen(
           currentUser: UserController().currentUser,
         ),
         body: Container(
@@ -45,7 +45,9 @@ class RecentChats extends StatelessWidget {
                               horizontal: 20.0, vertical: 20.0),
                           decoration: BoxDecoration(
                             color: Theme.of(context).scaffoldBackgroundColor,
-                            boxShadow: [BoxShadow(blurRadius: 3, offset: Offset(2, 2))],
+                            boxShadow: [
+                              BoxShadow(blurRadius: 3, offset: Offset(2, 2))
+                            ],
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(20.0),
                               bottomRight: Radius.circular(20.0),

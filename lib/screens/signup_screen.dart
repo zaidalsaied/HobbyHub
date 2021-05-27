@@ -7,9 +7,9 @@ import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/login_screen.dart';
 import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
-import 'package:hobby_hub_ui/widgets/custom_text_field.dart';
-import 'package:hobby_hub_ui/widgets/main_button.dart';
-import 'package:hobby_hub_ui/widgets/mesage_alert_dialog.dart';
+import 'package:hobby_hub_ui/screens/widgets/custom_text_field.dart';
+import 'package:hobby_hub_ui/screens/widgets/main_button.dart';
+import 'package:hobby_hub_ui/screens/widgets/mesage_alert_dialog.dart';
 
 import 'package:form_field_validator/form_field_validator.dart' as validator;
 import 'package:image_picker/image_picker.dart';

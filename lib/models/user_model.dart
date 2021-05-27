@@ -1,4 +1,3 @@
-///{"userModel":{"id":"","username":"za","password":"12345678?","email":"zaidalsaid@gmail.com","firstName":"z","lastName":"a","gender":"male","currentLocation":null,"imageUrl":null,"usersFollowing":[],"followers":[],"hobbiesFollowing":[],"posts":[]}}
 class User {
   final String id;
   String username;

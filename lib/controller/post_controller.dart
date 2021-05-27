@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
 import 'package:hobby_hub_ui/models/comment_model.dart';
-import 'package:hobby_hub_ui/models/post.dart';
+import 'package:hobby_hub_ui/models/post_model.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/network/post_api.dart';
 import 'package:hobby_hub_ui/service/upload_image_service.dart';

@@ -4,17 +4,17 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hobby_hub_ui/app_maneger.dart';
+import 'package:hobby_hub_ui/socket_manager.dart';
 import 'package:hobby_hub_ui/config/palette.dart';
 import 'package:hobby_hub_ui/config/routes.dart';
 import 'package:hobby_hub_ui/controller/hobby_controller.dart';
-import 'package:hobby_hub_ui/controller/pos_controller.dart';
+import 'package:hobby_hub_ui/controller/post_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/db/app_color_db.dart';
 import 'package:hobby_hub_ui/db/token_db.dart';
-import 'package:hobby_hub_ui/dependency_injection.dart';
+import 'package:hobby_hub_ui/socket_dependency_injection.dart';
 import 'package:hobby_hub_ui/screens/login_screen.dart';
-import 'package:hobby_hub_ui/screens/nav_screen.dart';
+import 'package:hobby_hub_ui/screens/bottom_bar.dart';
 import 'package:provider/provider.dart';
 
 Injector socketInjector;
@@ -41,7 +41,7 @@ bool isAuth = false;
 initApp() async {
   socketInjector = Injector();
   DependencyInjection().initialise(socketInjector);
-  ApplicationManager().socketService.createSocketConnection();
+  SocketManager().socketService.createSocketConnection();
   try {
     await Hive.initFlutter();
     await TokenDB().openTokenBox();

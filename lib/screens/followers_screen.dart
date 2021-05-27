@@ -3,7 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/user_profile.dart';
-import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
+import 'package:hobby_hub_ui/screens/widgets/profile_avatar.dart';
 
 class FollowersScreen extends StatefulWidget {
   static const String id = 'followers_screen';

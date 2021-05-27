@@ -10,10 +10,10 @@ import 'package:hobby_hub_ui/screens/following_screen.dart';
 import 'package:hobby_hub_ui/screens/hobbies_screen.dart';
 import 'package:hobby_hub_ui/screens/home_screen.dart';
 import 'package:hobby_hub_ui/screens/login_screen.dart';
-import 'package:hobby_hub_ui/screens/nav_screen.dart';
+import 'package:hobby_hub_ui/screens/bottom_bar.dart';
 import 'package:hobby_hub_ui/screens/post_view.dart';
 import 'package:hobby_hub_ui/screens/settings_screen.dart';
-import 'package:hobby_hub_ui/screens/side_bar_screen.dart';
+import 'package:hobby_hub_ui/screens/drawer_screen.dart';
 import 'package:hobby_hub_ui/screens/signup_screen.dart';
 import 'package:hobby_hub_ui/screens/trending_screen.dart';
 import 'package:hobby_hub_ui/screens/user_profile.dart';
@@ -25,8 +25,8 @@ class Routes {
       SignupScreen.id: (context) => SignupScreen(),
       HomeScreen.id: (context) => HomeScreen(),
       NavScreen.id: (context) => NavScreen(),
-      MainSideBar.id: (context) =>
-          MainSideBar(currentUser: UserController().currentUser),
+      DrawerScreen.id: (context) =>
+          DrawerScreen(currentUser: UserController().currentUser),
       ChatListScreen.id: (context) => ChatListScreen(),
       ChatScreen.id: (context) => ChatScreen(),
       SettingScreen.id: (context) => SettingScreen(),

@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:hobby_hub_ui/controller/pos_controller.dart';
+import 'package:hobby_hub_ui/controller/post_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
-import 'package:hobby_hub_ui/models/post.dart';
+import 'package:hobby_hub_ui/models/post_model.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/chat_screen.dart';
 import 'package:hobby_hub_ui/screens/edit_profile_screen.dart';
 import 'package:hobby_hub_ui/screens/following_screen.dart';
-import 'package:hobby_hub_ui/widgets/post_container.dart';
-import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
+import 'package:hobby_hub_ui/screens/widgets/post_container.dart';
+import 'package:hobby_hub_ui/screens/widgets/profile_avatar.dart';
 
 import 'followers_screen.dart';
 

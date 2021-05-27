@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hobby_hub_ui/controller/pos_controller.dart';
+import 'package:hobby_hub_ui/controller/post_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/screens/create_post_screen.dart';
 import 'package:hobby_hub_ui/screens/res/svg_assets.dart';
-import 'package:hobby_hub_ui/screens/side_bar_screen.dart';
-import 'package:hobby_hub_ui/widgets/main_button.dart';
-import 'package:hobby_hub_ui/widgets/post_container.dart';
-import 'package:hobby_hub_ui/widgets/responsive.dart';
+import 'package:hobby_hub_ui/screens/drawer_screen.dart';
+import 'package:hobby_hub_ui/screens/widgets/main_button.dart';
+import 'package:hobby_hub_ui/screens/widgets/post_container.dart';
+import 'package:hobby_hub_ui/screens/widgets/responsive.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
 import 'hobbies_screen.dart';
@@ -76,7 +76,7 @@ class __HomeScreenMobileState extends State<_HomeScreenMobile> {
           Navigator.pushNamed(context, CreatePostScreen.id);
         },
       ),
-      drawer: MainSideBar(
+      drawer: DrawerScreen(
         currentUser: UserController().currentUser,
       ),
       body: FutureBuilder(

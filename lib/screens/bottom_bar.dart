@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub_ui/screens/chat_screen.dart';
 import 'package:hobby_hub_ui/screens/trending_screen.dart';
-import 'package:hobby_hub_ui/widgets/custom_tap_bar.dart';
-import 'package:hobby_hub_ui/widgets/recent_chats.dart';
+import 'package:hobby_hub_ui/screens/widgets/custom_tap_bar.dart';
+import 'package:hobby_hub_ui/screens/widgets/recent_chats.dart';
 
 import 'chat_list_screen.dart';
 import 'home_screen.dart';

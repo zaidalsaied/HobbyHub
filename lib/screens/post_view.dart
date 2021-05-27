@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hobby_hub_ui/controller/pos_controller.dart';
+import 'package:hobby_hub_ui/controller/post_controller.dart';
 import 'package:hobby_hub_ui/controller/user_controller.dart';
 import 'package:hobby_hub_ui/models/comment_model.dart';
-import 'package:hobby_hub_ui/models/post.dart';
+import 'package:hobby_hub_ui/models/post_model.dart';
 import 'package:hobby_hub_ui/models/user_model.dart';
 import 'package:hobby_hub_ui/screens/user_profile.dart';
-import 'package:hobby_hub_ui/widgets/post_container.dart';
-import 'package:hobby_hub_ui/widgets/profile_avatar.dart';
+import 'package:hobby_hub_ui/screens/widgets/post_container.dart';
+import 'package:hobby_hub_ui/screens/widgets/profile_avatar.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostView extends StatefulWidget {

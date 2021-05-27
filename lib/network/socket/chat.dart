@@ -10,7 +10,7 @@ class SocketService {
   createSocketConnection() {
     try {
       print("try to connect");
-      this.socket = IO.io('https://hobby-hub-chat.herokuapp.com', <String, dynamic>{
+      this.socket = IO.io(Endpoints.chatHost, <String, dynamic>{
         'transports': ['websocket']
       });
       this.socket.on("connect", (_) => log('Connected'));
